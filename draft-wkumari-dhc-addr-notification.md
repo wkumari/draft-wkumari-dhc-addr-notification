@@ -5,7 +5,7 @@ category: info
 submissiontype: IETF
 
 
-docname: draft-wkumari-dhc-addr-notification
+docname: draft-wkumari-dhc-addr-notification-latest
 ipr: trust200902
 area: Internet
 workgroup: Dynamic Host Configuration (dhc)
