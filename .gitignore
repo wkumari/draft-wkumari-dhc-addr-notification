@@ -1,8 +1,16 @@
-# This is where XML2RFC / Kramdown stores cached references.
-.refcache/
-# Don't check in the XML or TXT, they are generated from the .md.
-*.xml
+*.html
+*.pdf
+*.redxml
+*.swp
 *.txt
-
-# Ignore vscode settings
-.vscode/settings.json
+*.upload
+*~
+.refcache
+.tags
+.targets.mk
+/*-[0-9][0-9].xml
+archive.json
+draft-wkumari-dhc-addr-notification.xml
+lib
+report.xml
+venv/
