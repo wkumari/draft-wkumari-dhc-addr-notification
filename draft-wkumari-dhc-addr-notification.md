@@ -123,7 +123,7 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 {: #figops title="Address Registration ProcedureAddress Registration Procedure"}
 
 
-The registration server MAY apply certain filter/accept criteria for address registration requests, for example to deny registration of addresses in subnets that the server does not know about, etc.
+The registration server MAY apply certain filter/accept criteria for address registration requests (for example to deny registration of addresses that are not appropriate for the link, etc.)
 
 
 # DHCPv6 ADDR-REG-NOTIFICATION Message
