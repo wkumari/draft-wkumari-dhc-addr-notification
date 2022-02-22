@@ -7,16 +7,16 @@ submissiontype: IETF
 
 docname: draft-wkumari-dhc-addr-notification-latest
 ipr: trust200902
-area: Internet
-workgroup: Dynamic Host Configuration (dhc)
+area: "Internet"
+workgroup: "Dynamic Host Configuration"
 keyword: Internet-Draft
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Dynamic Host Configuration"
+  type: "Working Group"
+  mail: "dhcwg@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/dhcwg/"
+  github: "wkumari/draft-wkumari-dhc-addr-notification"
+  latest: "https://wkumari.github.io/draft-wkumari-dhc-addr-notification/draft-wkumari-dhc-addr-notification.html"
 
 stand_alone: yes
 smart_quotes: no
