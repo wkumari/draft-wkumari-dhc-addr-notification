@@ -1,7 +1,7 @@
 ---
 title: "Registering Self-generated IPv6 Addresses using DHCPv6"
 abbrev: "Registering SLAAC Addresses using DHCPv6"
-category: info
+category: exp
 submissiontype: IETF
 
 
