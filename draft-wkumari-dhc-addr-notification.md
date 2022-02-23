@@ -163,8 +163,7 @@ Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the fol
 
 # DHCPv6 Address Registration Procedure
 
-The DHCPv6 protocol is used as the address registration protocol when
-a DHCPv6 server performs the role of an address registration server.
+The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 The DHCPv6 IA Address option {{!RFC3315}}is adopted in order to fulfill the address registration interactions.
 
 ## DHCPv6 Address Registration Request
@@ -175,9 +174,7 @@ The end-host MUST include a Client Identifier option and at least one IA Address
 
 {TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
 
-After receiving this ADDR-REG-NOTIFICATION message, the address
-registration server MUST register the binding between the provided
-Client Identifier and IPv6 address.  If the DHCPv6 server does not support the address registration function, it MUST silently drop the message.
+After receiving this ADDR-REG-NOTIFICATION message, the address registration server MUST register the binding between the provided Client Identifier and IPv6 address.  If the DHCPv6 server does not support the address registration function, it MUST drop the message (and may log the event).
 
 ## Registration Expiry and Refresh
 
@@ -193,7 +190,7 @@ After an address registration server accepts an address registration request, it
 
 The server generates a Reply message and includes a Status Code option with value Success, a Server Identifier option with the server's DUID, and a Client Identifier option with the client's DUID.
 
-If there is no reply received within some interval, the client SHOULD retransmits the message according to section 14 of [RFC3315], using the following parameters:
+If there is no reply received within some interval, the client SHOULD retransmit the message according to section 14 of [RFC3315], using the following parameters:
 
 - IRT ADDR_REG_TIMEOUT
 - MRT ADDR_REG_MAX_RT
@@ -209,23 +206,15 @@ transmission behavior of clients and servers:
   ADDR_REG_MAX_RT   60 secs  Max Addr Registration Request timeout value
   ADDR_REG_MAX_RC   5        Max Request retry attempts
 ~~~~~
-For each IA Address option in the ADDR-REG-NOTIFICATION message
-for which the server does not accept its associated registration
-request, the server adds an IA Address option with the associated
-IPv6 address, and includes a Status Code option with the value
-RegistrationDenied (TBA2) in the IA Address option.  No other options
-are included in the IA Address option.
+For each IA Address option in the ADDR-REG-NOTIFICATION message for which the server does not accept its associated registration request, the server adds an IA Address option with the associated IPv6 address, and includes a Status Code option with the value RegistrationDenied (TBA2) in the IA Address option.  No other options are included in the IA Address option.
 
-Upon receiving a RegistrationDenied error status code, the client MAY
-also resend the message following normal retransmission routines
-defined in [RFC3315] with above parameters.  The client MUST wait out
-the retransmission time before retrying.
+Upon receiving a RegistrationDenied error status code, the client MAY also resend the message following normal retransmission routines defined in [RFC3315] with above parameters.  The client MUST wait out the retransmission time before retrying.
 
 # Security Considerations
 
-An attacker may attempt to register large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC3315].
+An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC3315].
 
-One of the primary use-cases for the mechanism described in this document is to identify which device is infected with malware (or is otherwise doing bad things) so that it can be blocked from accessing the network. As the device itself is responsible for informing the DHCPv6 server that it is using an address, malware (or a malicious client) can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in debugging - it is not a strong security access mechanism.
+One of the primary use-cases for the mechanism described in this document is to identify which device is infected with malware (or is otherwise doing bad things) so that it can be blocked from accessing the network. As the device itself is responsible for informing the DHCPv6 server that it is using an address, malware (or a malicious client) can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in debugging. It is not intended to be a strong security access mechanism.
 
 
 # IANA Considerations
@@ -245,8 +234,11 @@ TBA2    RegistrationDenied          this document
 --- back
 # Acknowledgments
 {:numbered="false"}
+
+"We've Been Trying To Reach You About Your Car's Extended Warranty"
+
 This Internet-Draft borrows very heavily from draft-ietf-dhc-addr-registration, and so the authors of draft-ietf-dhc-addr-registration should be considered authors of this document as well.
 
 ** NOTE NOTE: This is still a drafty draft -- we have not yet asked them for permission. Do not submit without this! https://www.ietf.org/about/groups/iesg/statements/internet-draft-authorship/ **
 
-TODO acknowledge.
+
