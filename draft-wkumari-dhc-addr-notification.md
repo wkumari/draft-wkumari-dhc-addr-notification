@@ -87,13 +87,13 @@ This document defines a method to inform a DHCPv6 server that a device has a sel
 
 # Introduction
 
-It is very common operational practice, especially in enterprise networks, to use DHCP logs for troubleshooting or security purposes. Examples of this include a helpdesk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the IP can be retrieved from the DHCP logs and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs, and then consulting DHCP logs to determine which employee's laptop had that IP address at that time so that they can quarantine it and remove malware.
+It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or security purposes. Examples of this include a helpdesk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the IPv4 address can be retrieved from the DHCP logs and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
 
-This operational practice  relies on the DHCP server knowing the IP address assignments, and so it doesn't work when devices have manually configured static IP addresses, or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{?RFC4862}}).
+This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{?RFC4862}}) are used.
 
 The lack of this parity with IPv4 is one of the reasons that some enterprise networks are unwilling to deploy IPv6.
 
-This document addresses this issue by allowing a device to inform a DHCPv6 server that it has self-configured an IPv6 address (or has a statically configured address) with the expectation that the DHCPv6 server will record this in its bindings database, and include this information in logs.
+This document provides a mechanism for a device to inform the DHCPv6 server that it has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4 in this aspect.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server".
 
