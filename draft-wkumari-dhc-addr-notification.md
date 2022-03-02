@@ -169,20 +169,29 @@ The DHCPv6 IA Address option {{!RFC3315}}is adopted in order to fulfill the addr
 ## DHCPv6 Address Registration Request
 
 The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
+The host SHOULD send the packet from the address being registered.
 
 The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
+The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
+
+The host MUST NOT send the ADDR-REG-NOTIFICATION message for addresses which are not in "preferred" (RFC4862) state.
 
 {TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
 
 After receiving this ADDR-REG-NOTIFICATION message, the address registration server MUST register the binding between the provided Client Identifier and IPv6 address.  If the DHCPv6 server does not support the address registration function, it MUST drop the message (and may log the event).
 
+
 ## Registration Expiry and Refresh
 
 For every successful binding registration, the address registration server MUST record the Client-Identifier-to-IPv6-address bindings and associated valid-lifetimes in its storage, and SHOULD log this information in a manner similar to if it had performed the assignment.
 
-The address registration client MUST refresh the registration before it expires (i.e. before the valid-lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the valid-lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
+If a ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IPv6-address binding the server MAY log the event.
 
-It is RECOMMENDED that clients initiate a refresh at about 85% of the valid-lifetime.  Because RAs may periodically 'reset' the valid- lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the valid-lifetime when they complete a registration operation and only update this timer if 85% of any updated valid-lifetime would be sooner than the timer.
+The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
+
+It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred lifetime.  Because RAs may periodically 'reset' the preferred- lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the preferred lifetime when they complete a registration operation and only update this timer if 85% of any updated preferred lifetime would be sooner than the timer.
+
+{TODO: is the preferred lifetime a good idea? The default value is 7 days which seems rather long. Indeed we might say that it's an administrator's job to configure non-default lifetime... Also,  what about statically assigned addresses or PIOs with the inifinite lifetime??}
 
 ## Acknowledging Registration and Retransmission
 
