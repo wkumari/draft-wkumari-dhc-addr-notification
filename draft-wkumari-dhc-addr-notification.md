@@ -23,41 +23,22 @@ smart_quotes: no
 pi: [toc, sortrefs, symrefs]
 
 author:
- -
-    role: editor
+  -
     name: Warren Kumari
     ins: W. Kumari
     organization: Google, LLC
     email: warren@kumari.net
- -
-    role: editor
+  -
     name:  Suresh Krishnan
     ins: S. Krishnan
     organization: Kaloom
     email: suresh@kaloom.com
-contributor:
   -
     name: Sheng Jiang
     ins: S. Jiang
-    organization: Huawei Technologies Co., Ltd
-    street:
-    - Q14, Huawei Campus
-    - No.156 Beiqing Road
-    - Hai-Dian District
-    city: Beijing
-    code: 100095
-    country: P.R. China
-    email: jiangsheng@huawei.com
-  -
-    name: Gang Chen
-    ins: G. Chen
-    org: China Mobile
-    street:
-    - 53A, Xibianmennei Ave.
-    - Xuanwu District
     city: Beijing
     country: P.R. China
-    email: phdgang@gmail.com
+    email: jiangsheng@gmail.com
   -
     name: Rajiv Asati
     ins: R. Asati
@@ -68,6 +49,18 @@ contributor:
     code: 27709-4987
     country: USA
     email: rajiva@cisco.com
+contributor:
+  -
+    name: Gang Chen
+    ins: G. Chen
+    org: China Mobile
+    street:
+    - 53A, Xibianmennei Ave.
+    - Xuanwu District
+    city: Beijing
+    country: P.R. China
+    email: phdgang@gmail.com
+
 
 normative:
   RFC2119:
@@ -208,13 +201,15 @@ If there is no reply received within some interval, the client SHOULD retransmit
 
 The below presents a table of values used to describe the message
 transmission behavior of clients and servers:
-~~~~~
+
+~~~
   Parameter       Default  Description
   ---------------------------------------------------------------------
   ADDR_REG_TIMEOUT  1  secs  Initial Addr Registration Request timeout
   ADDR_REG_MAX_RT   60 secs  Max Addr Registration Request timeout value
   ADDR_REG_MAX_RC   5        Max Request retry attempts
-~~~~~
+~~~
+
 For each IA Address option in the ADDR-REG-NOTIFICATION message for which the server does not accept its associated registration request, the server adds an IA Address option with the associated IPv6 address, and includes a Status Code option with the value RegistrationDenied (TBA2) in the IA Address option.  No other options are included in the IA Address option.
 
 Upon receiving a RegistrationDenied error status code, the client MAY also resend the message following normal retransmission routines defined in [RFC3315] with above parameters.  The client MUST wait out the retransmission time before retrying.
@@ -246,8 +241,5 @@ TBA2    RegistrationDenied          this document
 
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
-This Internet-Draft borrows very heavily from draft-ietf-dhc-addr-registration, and so the authors of draft-ietf-dhc-addr-registration should be considered authors of this document as well.
-
-** NOTE NOTE: This is still a drafty draft -- we have not yet asked them for permission. Do not submit without this! https://www.ietf.org/about/groups/iesg/statements/internet-draft-authorship/ **
-
+Much thanks to Jen Linkova for additional text on client behavior.
 
