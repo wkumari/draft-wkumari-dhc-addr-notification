@@ -242,4 +242,5 @@ TBA2    RegistrationDenied          this document
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
 Much thanks to Jen Linkova for additional text on client behavior.
+Also, much thanks to Erik Kline and Lorenzo Colitti for significant discussion and feedback.
 
