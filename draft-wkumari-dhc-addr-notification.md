@@ -23,41 +23,22 @@ smart_quotes: no
 pi: [toc, sortrefs, symrefs]
 
 author:
- -
-    role: editor
+  -
     name: Warren Kumari
     ins: W. Kumari
     organization: Google, LLC
     email: warren@kumari.net
- -
-    role: editor
+  -
     name:  Suresh Krishnan
     ins: S. Krishnan
     organization: Kaloom
     email: suresh@kaloom.com
-contributor:
   -
     name: Sheng Jiang
     ins: S. Jiang
-    organization: Huawei Technologies Co., Ltd
-    street:
-    - Q14, Huawei Campus
-    - No.156 Beiqing Road
-    - Hai-Dian District
-    city: Beijing
-    code: 100095
-    country: P.R. China
-    email: jiangsheng@huawei.com
-  -
-    name: Gang Chen
-    ins: G. Chen
-    org: China Mobile
-    street:
-    - 53A, Xibianmennei Ave.
-    - Xuanwu District
     city: Beijing
     country: P.R. China
-    email: phdgang@gmail.com
+    email: jiangsheng@gmail.com
   -
     name: Rajiv Asati
     ins: R. Asati
@@ -68,10 +49,23 @@ contributor:
     code: 27709-4987
     country: USA
     email: rajiva@cisco.com
+contributor:
+  -
+    name: Gang Chen
+    ins: G. Chen
+    org: China Mobile
+    street:
+    - 53A, Xibianmennei Ave.
+    - Xuanwu District
+    city: Beijing
+    country: P.R. China
+    email: phdgang@gmail.com
+
 
 normative:
   RFC2119:
-  RFC3315:
+  RFC8415:
+  RFC8415:
 
 
 informative:
@@ -103,32 +97,28 @@ This document borrows heavily from a previous document, draft-ietf-dhc-addr-regi
 
 
 # Description of Mechanism
-After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD send an ADDR-REG-NOTIFICATION message to a DHCPv6 address registration server.  After receiving the address registration request, the DHCPv6 server records and logs the IPv6 address.  An acknowledgement MUST be sent back to the end host to indicate whether or not the registration operation succeeded.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message.  After receiving the address registration request, the DHCPv6 server MAY record and log the IPv6 address.
 
 ~~~~~~~~~~
-+----+   +-----------+                  +---------------+
-|Host|   |Edge router|                  |Addr-Reg Server|
-+----+   +-----------+                  +---------------+
-|   SLAAC   |                                 |
-|<--------->|                                 |
-|           |                                 |
-|           |     ADDR-REG-NOTIFICATION       |
-|-------------------------------------------->|
-|           |                                 |Register / log
-|           |                                 |address
-|           |         Acknowledgment          |
-|<--------------------------------------------|
++----+   +----------------+                  +---------------+
+|Host|   |First-hop router|                  |Addr-Reg Server|
++----+   +----------------+                  +---------------+
+|   SLAAC   |                                      |
+|<--------->|                                      |
+|           |                                      |
+|           |        ADDR-REG-NOTIFICATION         |
+|------------------------------------------------->|
+|           |                                      |Register / log
+|           |                                      |address
 
 ~~~~~~~~~~
-{: #figops title="Address Registration ProcedureAddress Registration Procedure"}
+{: #figops title="Address Registration Procedure" Address Registration Procedure}
 
-
-The registration server MAY apply certain filter/accept criteria for address registration requests (for example to deny registration of addresses that are not appropriate for the link, etc.)
 
 
 # DHCPv6 ADDR-REG-NOTIFICATION Message
 
-The DHCPv6 client sends an ADDR-REG-NOTIFICATION message to a server to request that the use of this address be registered and logged.  The format of the ADDR-REG-NOTIFICATION message is described as follows:
+The DHCPv6 client sends an ADDR-REG-NOTIFICATION message to inform that an IPv6 address is in use.  The format of the ADDR-REG-NOTIFICATION message is described as follows:
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -150,7 +140,7 @@ The DHCPv6 client sends an ADDR-REG-NOTIFICATION message to a server to request 
 
 
 
-The ADDR-REG-NOTIFICATION message MUST NOT contain server-identifier option and MUST contain the IA Address option.  The ADDR-REG-NOTIFICATION message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-NOTIFICATION message.
+The ADDR-REG-NOTIFICATION message MUST NOT contain server-identifier option and MUST contain the IA Address option.  The ADDR-REG-NOTIFICATION message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-NOTIFICATION message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
 Clients MUST discard any received ADDR-REG-NOTIFICATION messages.
 
@@ -164,7 +154,7 @@ Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the fol
 # DHCPv6 Address Registration Procedure
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
-The DHCPv6 IA Address option {{!RFC3315}}is adopted in order to fulfill the address registration interactions.
+The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the address registration interactions.
 
 ## DHCPv6 Address Registration Request
 
@@ -193,35 +183,15 @@ It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred 
 
 {TODO: is the preferred lifetime a good idea? The default value is 7 days which seems rather long. Indeed we might say that it's an administrator's job to configure non-default lifetime... Also,  what about statically assigned addresses or PIOs with the inifinite lifetime??}
 
-## Acknowledging Registration and Retransmission
+## Retransmission
 
-After an address registration server accepts an address registration request, it MUST send a Reply message as the response to the client. The acceptance reply only means that the server has taken responsibility to remember and log  the client, not that it has yet done so.
+To reduce the effects of packet loss on registration, the client SHOULD retransmit initial registrations. Registrations should be retransmitted according to the Retrans Timer specified by the Router Advertisement on the link. Retries should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement.
 
-The server generates a Reply message and includes a Status Code option with value Success, a Server Identifier option with the server's DUID, and a Client Identifier option with the client's DUID.
-
-If there is no reply received within some interval, the client SHOULD retransmit the message according to section 14 of [RFC3315], using the following parameters:
-
-- IRT ADDR_REG_TIMEOUT
-- MRT ADDR_REG_MAX_RT
-- MRC ADDR_REG_MAX_RC
-- MRD 0
-
-The below presents a table of values used to describe the message
-transmission behavior of clients and servers:
-~~~~~
-  Parameter       Default  Description
-  ---------------------------------------------------------------------
-  ADDR_REG_TIMEOUT  1  secs  Initial Addr Registration Request timeout
-  ADDR_REG_MAX_RT   60 secs  Max Addr Registration Request timeout value
-  ADDR_REG_MAX_RC   5        Max Request retry attempts
-~~~~~
-For each IA Address option in the ADDR-REG-NOTIFICATION message for which the server does not accept its associated registration request, the server adds an IA Address option with the associated IPv6 address, and includes a Status Code option with the value RegistrationDenied (TBA2) in the IA Address option.  No other options are included in the IA Address option.
-
-Upon receiving a RegistrationDenied error status code, the client MAY also resend the message following normal retransmission routines defined in [RFC3315] with above parameters.  The client MUST wait out the retransmission time before retrying.
+The client MUST refresh the registration when 1/3 of the Preferred Lifetime of the address has elapsed. Such retranmisssions should be jittered.
 
 # Security Considerations
 
-An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC3315].
+An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC8415].
 
 One of the primary use-cases for the mechanism described in this document is to identify which device is infected with malware (or is otherwise doing bad things) so that it can be blocked from accessing the network. As the device itself is responsible for informing the DHCPv6 server that it is using an address, malware (or a malicious client) can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in debugging. It is not intended to be a strong security access mechanism.
 
@@ -246,8 +216,6 @@ TBA2    RegistrationDenied          this document
 
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
-This Internet-Draft borrows very heavily from draft-ietf-dhc-addr-registration, and so the authors of draft-ietf-dhc-addr-registration should be considered authors of this document as well.
-
-** NOTE NOTE: This is still a drafty draft -- we have not yet asked them for permission. Do not submit without this! https://www.ietf.org/about/groups/iesg/statements/internet-draft-authorship/ **
-
+Much thanks to Jen Linkova for additional text on client behavior.
+Also, much thanks to Erik Kline and Lorenzo Colitti for significant discussion and feedback.
 
