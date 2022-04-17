@@ -1,0 +1,321 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2022-04-17T00:16:22.951931+00:00",
+  "repo": "wkumari/draft-wkumari-dhc-addr-notification",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOG4kJEc5E7pY8",
+      "title": "Message acknowledgement",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/2",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Do we really need that 'server MUST acknowledge'? As the client has no way to know if the server supports it or not, the only benefit it might save the client sending 4 packets (as it's supposed to retransmit up to 4 times).\r\nAlso, the idea of ACK might lead to a rather undesirable idea of 'NACK' so the server has some authority to prevent the host from using the address.\r\n\r\nIMHO the client shall just send N (default = 3?) packets with X seconds (default: X = 1)  between.",
+      "createdAt": "2022-03-02T05:50:59Z",
+      "updatedAt": "2022-03-02T05:50:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOG4kJEc5FQP_K",
+      "title": "Client Refresh Time - 85% of Valid? 3hours? Default Router Lifetime?",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/3",
+      "state": "OPEN",
+      "author": "wkumari",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "\r\n> -It is RECOMMENDED that clients initiate a refresh at about 85% of the valid-lifetime.  Because RAs may periodically 'reset' the valid- lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the valid-lifetime when they complete a registration operation and only update this timer if 85% of any updated valid-lifetime would be sooner than the timer.\r\n> +{TODO: is the preferred lifetime a good idea? The default value is 7 days which seems rather long. Indeed we might say that it's an administrator's job to configure non-default lifetime... Also,  what about statically assigned addresses or PIOs with the inifinite lifetime??}\r\n>\r\n> So, I think that the desire is that the client does this somewhat as a \"keep-alive\", so that the server knows when to remove it if the client cates on fire, or similar. I think that it should be 85% of the preferred lifetime, or N (4?) hours, whichever is less...\r\n> Basically, if I connect to a WiFi in an airport, configure a SLAAC address for 6 months and then fly away, the DHCPv6 server should be able to purge me from the log / view the address as usable after some time much much less than 6 months :-)\r\n\r\nIndeed. Having a timer is definitely a good idea, the question is: how\r\nto calculate it? My point is that the valid lifetime is not really\r\nsuitable here, due to its default value of 1 month. The preferred\r\nlifetime is a bit high as well. I'd say using a default router\r\nlifetime as a starting point might be a good idea.\r\n\r\n_Originally posted by @furry13 in https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/1#issuecomment-1060056285_",
+      "createdAt": "2022-03-07T20:27:49Z",
+      "updatedAt": "2022-03-15T18:12:37Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The default router lifetime can legitimately be zero.  Even in these networks addr notification may be desired, so tying it dflt rtr lifetime doesn't seem right to me.",
+          "createdAt": "2022-03-15T18:12:37Z",
+          "updatedAt": "2022-03-15T18:12:37Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOG4kJEc5GDnAt",
+      "title": "1 Message per address vs all addresses in a single message",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/4",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I see two ways:\r\n- every time a host send a registration message it includes all addresses configured on the interface. \r\nPros: allow explicit deprecations\r\nCons: allows an attacker to register an address even if it can't send pakcets from that address (by including it into the registration message)\r\n\r\n- each message contains one address only - the address being registered.\r\n -- Pros: additional safety net: if the host can't send a packet from that address (e.g.SAVI) - it can't register the address.\r\n -- Cons: no explicit deprecation (but we can add another message for this, if needed)",
+      "createdAt": "2022-03-21T13:00:10Z",
+      "updatedAt": "2022-03-21T13:00:10Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOG4kJEc5GDqBm",
+      "title": "Having flags to indicate address properties",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/5",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It might be useful to indicate address properties (e.g. stable vs temporary), so maybe we need a field to include this.\r\nSmth like flags field?",
+      "createdAt": "2022-03-21T13:09:16Z",
+      "updatedAt": "2022-03-29T00:33:52Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "COLLABORATOR",
+          "body": "IA_TA (temporary addrress) and IA_NA (non-temporary address) option types already include this 1-bit distinguishing information...",
+          "createdAt": "2022-03-29T00:33:52Z",
+          "updatedAt": "2022-03-29T00:33:52Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOG4kJEc5GIEJr",
+      "title": "Messages SHOULD only be sent if DHCP presence is indicated in RAs",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/7",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The client SHOULD NOT send messages if both M and O RA flags are set to 0.",
+      "createdAt": "2022-03-22T09:40:26Z",
+      "updatedAt": "2022-03-22T09:40:26Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOG4kJEc5GJVZp",
+      "title": "Add mention of RFC 6939 - Client Link-Layer Address Option in DHCPv6",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/8",
+      "state": "OPEN",
+      "author": "wkumari",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "In Sec 5.1. (`DHCPv6 Address Registration Request`) I discuss the DUID and lack of local MAC.\r\nInsert reference to \"[RFC 6939 - Client Link-Layer Address Option in DHCPv6](https://datatracker.ietf.org/doc/rfc6939/)\". It seems that, based on the expected use and deployment cases we should just have this as a MUST, like:\r\n\r\n> MUST include the DHCPv6 Client Link-Layer Address Option (RFC6393)\r\n\r\n\r\nor similar.\r\n",
+      "createdAt": "2022-03-22T14:13:54Z",
+      "updatedAt": "2022-03-22T14:13:54Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOG4kJEc5GlLOj",
+      "title": "support router originated registrations on behalf of clients?",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/9",
+      "state": "OPEN",
+      "author": "ekline",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Question: should there be a mechanism to allow routers to generate registration messages for {L2,L3} pairs is has in its neighbor table?\r\n\r\nSuch a mechanism:\r\n\r\n  * might reuse the same message type or use a new message type\r\n  * would allow updated routers to contribute to debugging data while serving clients that don't support this option\r\n  * might further overload a server on networks where client support for this behaviour is already robust\r\n  * would need to tackle exactly what DUID should be generated by a router for these synthesized messages",
+      "createdAt": "2022-03-29T00:45:27Z",
+      "updatedAt": "2022-03-29T00:45:27Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOG4kJEc4zyjzk",
+      "title": "More details on the client behaviour",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/1",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Specifying that there SHOULD be a message per address;\r\n- Addresses MUST be preferred\r\n- Messages SHOULD be sent from the address registered\r\n- Some comments on refreshing logic",
+      "createdAt": "2022-03-02T05:47:19Z",
+      "updatedAt": "2022-03-06T23:00:54Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "9290e30827f3961b1396b60fbedb1a95d3b34946",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "Client-behaviour",
+      "headRefOid": "6fb810655df97f1ae63bbb53513ff7168980eb75",
+      "closedAt": "2022-03-05T14:24:01Z",
+      "mergedAt": "2022-03-05T14:24:01Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "22e5616d03e01fa779577c4bac0046c2dec5b402"
+      },
+      "comments": [
+        {
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "body": "On Sun, Mar 6, 2022, 1:24 AM Warren Kumari ***@***.***> wrote:\n> +The host SHOULD send the packet from the address being registered.\n>\n> Oooh! Yes... In my mental model it would, but I did't realize that this wasn't stated.\n\n>  The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.\n> +The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.\n> +\n>\n> I'll incorporate this, but why is this better than SHOULD send one packet with all of them, but MAY send separate ones?\n\n It's related to \"the host SHOULD send a packet from the address being\nregistered\" requirement. Sending the registration packet from the\naddress being registred ensures that only addresses the host can use\nfor communication are registered. As a result, if the infrastructure\nhas SABI (or smth similar) enabled, it's less likely that a host B\nwould register an address belonging to host A.\nSo if multiple addresses in the same registration message are allowed,\nonly one of them can be used as the source address - so there is no\nguarantee that other addresses in the message can be used for sending\npackets..\n\n> -It is RECOMMENDED that clients initiate a refresh at about 85% of the valid-lifetime.  Because RAs may periodically 'reset' the valid- lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the valid-lifetime when they complete a registration operation and only update this timer if 85% of any updated valid-lifetime would be sooner than the timer.\n> +{TODO: is the preferred lifetime a good idea? The default value is 7 days which seems rather long. Indeed we might say that it's an administrator's job to configure non-default lifetime... Also,  what about statically assigned addresses or PIOs with the inifinite lifetime??}\n>\n> So, I think that the desire is that the client does this somewhat as a \"keep-alive\", so that the server knows when to remove it if the client cates on fire, or similar. I think that it should be 85% of the preferred lifetime, or N (4?) hours, whichever is less...\n> Basically, if I connect to a WiFi in an airport, configure a SLAAC address for 6 months and then fly away, the DHCPv6 server should be able to purge me from the log / view the address as usable after some time much much less than 6 months :-)\n\nIndeed. Having a timer is definitely a good idea, the question is: how\nto calculate it? My point is that the valid lifetime is not really\nsuitable here, due to its default value of 1 month. The preferred\nlifetime is a bit high as well. I'd say using a default router\nlifetime as a starting point might be a good idea.\n",
+          "createdAt": "2022-03-06T23:00:54Z",
+          "updatedAt": "2022-03-06T23:00:54Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc41s8_i",
+          "commit": {
+            "abbreviatedOid": "6fb8106"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thank you.\r\n\r\nMerging changes, also have comments to explain my thoughts.\r\n\r\nW",
+          "createdAt": "2022-03-05T14:17:20Z",
+          "updatedAt": "2022-03-05T14:23:53Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Oooh! Yes... In my mental model it would, but I did't realize that this wasn't stated.",
+              "createdAt": "2022-03-05T14:17:20Z",
+              "updatedAt": "2022-03-05T14:23:53Z"
+            },
+            {
+              "originalPosition": 8,
+              "body": "I'll incorporate this, but why is this better than SHOULD send one packet with all of them, but MAY send separate ones? ",
+              "createdAt": "2022-03-05T14:19:15Z",
+              "updatedAt": "2022-03-05T14:23:53Z"
+            },
+            {
+              "originalPosition": 28,
+              "body": "So, I think that the desire is that the client does this somewhat as a \"keep-alive\", so that the server knows when to remove it if the client cates on fire, or similar. I think that it should be 85% of the preferred lifetime, or N (4?) hours, whichever is less... \r\n\r\nBasically, if I connect to a WiFi in an airport, configure a SLAAC address for 6 months and then fly away, the DHCPv6 server should be able to purge me from the log / view the address as usable after some time much much less than 6 months :-)",
+              "createdAt": "2022-03-05T14:23:12Z",
+              "updatedAt": "2022-03-05T14:23:53Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOG4kJEc40v-6H",
+      "title": "ACK and retransmits clarification",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/6",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Removing text about ACK.\r\nClarifying retransmit logic.",
+      "createdAt": "2022-03-21T15:40:18Z",
+      "updatedAt": "2022-03-25T06:20:22Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "8d3bf0cb31106e2779216c2b527ce61a95ead4be",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "Client-behaviour",
+      "headRefOid": "310deb5892a6a6350e0decbd4698eb5541b98892",
+      "closedAt": "2022-03-25T06:20:22Z",
+      "mergedAt": "2022-03-25T06:20:22Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "b05f49459725ddf3ab2ae1148c8d1258e9ebf541"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc426KpK",
+          "commit": {
+            "abbreviatedOid": "310deb5"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thanks, and apologies for missing the initial PR submission.",
+          "createdAt": "2022-03-25T06:20:18Z",
+          "updatedAt": "2022-03-25T06:20:18Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOG4kJEc42OoJw",
+      "title": "Messge sending conditions update",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/10",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Only send the message if either M or O are set\r\n- only send for valid global addersses",
+      "createdAt": "2022-04-14T10:16:09Z",
+      "updatedAt": "2022-04-14T10:16:38Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "b05f49459725ddf3ab2ae1148c8d1258e9ebf541",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "Client-behaviour",
+      "headRefOid": "4bc3190917dd852169101a2662b70d653746c876",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
