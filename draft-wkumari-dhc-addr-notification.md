@@ -164,7 +164,7 @@ The host SHOULD send the packet from the address being registered.
 The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
 The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
-The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}) addresses of global scope ({{?RFC4007}).
+The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
 
 The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
