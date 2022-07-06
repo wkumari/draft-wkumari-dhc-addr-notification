@@ -64,12 +64,13 @@ contributor:
 
 normative:
   RFC2119:
+  RFC4007:
+  RFC4862:
   RFC8415:
   RFC8415:
 
 
 informative:
-  RFC4862:
 
 
 --- abstract
@@ -164,7 +165,9 @@ The host SHOULD send the packet from the address being registered.
 The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
 The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
-The host MUST NOT send the ADDR-REG-NOTIFICATION message for addresses which are not in "preferred" (RFC4862) state.
+The host MUST only send the ADDR-REG-NOTIFICATION message for valid (RFC4862) addresses of global scope (RFC4007).
+
+The host MUST NOT send the ADDR-REG-NOTIFICATION message if it hasn't recevied at least Router Advertisement message with either M or O flags set to 1.
 
 {TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
 
