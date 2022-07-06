@@ -67,7 +67,6 @@ normative:
   RFC4007:
   RFC4862:
   RFC8415:
-  RFC8415:
 
 
 informative:
@@ -84,7 +83,7 @@ This document defines a method to inform a DHCPv6 server that a device has a sel
 
 It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or security purposes. Examples of this include a helpdesk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the IPv4 address can be retrieved from the DHCP logs and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
 
-This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{?RFC4862}}) are used.
+This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{!RFC4862}}) are used.
 
 The lack of this parity with IPv4 is one of the reasons that some enterprise networks are unwilling to deploy IPv6.
 
@@ -165,7 +164,7 @@ The host SHOULD send the packet from the address being registered.
 The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
 The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
-The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{?RFC4862}) addresses of global scope ({{?RFC4007}).
+The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}) addresses of global scope ({{?RFC4007}).
 
 The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
