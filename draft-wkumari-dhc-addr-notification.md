@@ -49,6 +49,15 @@ author:
     code: 27709-4987
     country: USA
     email: rajiva@cisco.com
+  -
+    name: Lorenzo Colitti
+    ins: L. Colitti
+    organization: Google
+    street:
+    - Shibuya 3-21-3
+    country: Japan
+    email: lorenzo@google.com
+
 contributor:
   -
     name: Gang Chen
