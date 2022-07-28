@@ -57,7 +57,6 @@ author:
     - Shibuya 3-21-3
     country: Japan
     email: lorenzo@google.com
-
 contributor:
   -
     name: Gang Chen
