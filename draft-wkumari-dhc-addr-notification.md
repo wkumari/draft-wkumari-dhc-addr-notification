@@ -4,7 +4,6 @@ abbrev: "Registering SLAAC Addresses using DHCPv6"
 category: exp
 submissiontype: IETF
 
-
 docname: draft-wkumari-dhc-addr-notification-latest
 ipr: trust200902
 area: "Internet"
