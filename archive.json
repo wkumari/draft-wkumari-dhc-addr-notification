@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2022-04-17T00:16:22.951931+00:00",
+  "timestamp": "2022-07-31T00:18:29.718010+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -47,6 +47,11 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "phase2",
+      "description": "This issue to be considered later.",
+      "color": "B31BC4"
     }
   ],
   "issues": [
@@ -55,31 +60,39 @@
       "id": "I_kwDOG4kJEc5E7pY8",
       "title": "Message acknowledgement",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Do we really need that 'server MUST acknowledge'? As the client has no way to know if the server supports it or not, the only benefit it might save the client sending 4 packets (as it's supposed to retransmit up to 4 times).\r\nAlso, the idea of ACK might lead to a rather undesirable idea of 'NACK' so the server has some authority to prevent the host from using the address.\r\n\r\nIMHO the client shall just send N (default = 3?) packets with X seconds (default: X = 1)  between.",
       "createdAt": "2022-03-02T05:50:59Z",
-      "updatedAt": "2022-03-02T05:50:59Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2022-07-06T20:14:09Z",
+      "closedAt": "2022-07-06T20:14:09Z",
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Cleanup -- already addressed in PR #6.",
+          "createdAt": "2022-07-06T20:14:09Z",
+          "updatedAt": "2022-07-06T20:14:09Z"
+        }
+      ]
     },
     {
       "number": 3,
       "id": "I_kwDOG4kJEc5FQP_K",
       "title": "Client Refresh Time - 85% of Valid? 3hours? Default Router Lifetime?",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "wkumari",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "\r\n> -It is RECOMMENDED that clients initiate a refresh at about 85% of the valid-lifetime.  Because RAs may periodically 'reset' the valid- lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the valid-lifetime when they complete a registration operation and only update this timer if 85% of any updated valid-lifetime would be sooner than the timer.\r\n> +{TODO: is the preferred lifetime a good idea? The default value is 7 days which seems rather long. Indeed we might say that it's an administrator's job to configure non-default lifetime... Also,  what about statically assigned addresses or PIOs with the inifinite lifetime??}\r\n>\r\n> So, I think that the desire is that the client does this somewhat as a \"keep-alive\", so that the server knows when to remove it if the client cates on fire, or similar. I think that it should be 85% of the preferred lifetime, or N (4?) hours, whichever is less...\r\n> Basically, if I connect to a WiFi in an airport, configure a SLAAC address for 6 months and then fly away, the DHCPv6 server should be able to purge me from the log / view the address as usable after some time much much less than 6 months :-)\r\n\r\nIndeed. Having a timer is definitely a good idea, the question is: how\r\nto calculate it? My point is that the valid lifetime is not really\r\nsuitable here, due to its default value of 1 month. The preferred\r\nlifetime is a bit high as well. I'd say using a default router\r\nlifetime as a starting point might be a good idea.\r\n\r\n_Originally posted by @furry13 in https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/1#issuecomment-1060056285_",
       "createdAt": "2022-03-07T20:27:49Z",
-      "updatedAt": "2022-03-15T18:12:37Z",
-      "closedAt": null,
+      "updatedAt": "2022-07-06T20:33:50Z",
+      "closedAt": "2022-07-06T20:33:50Z",
       "comments": [
         {
           "author": "ekline",
@@ -87,6 +100,13 @@
           "body": "The default router lifetime can legitimately be zero.  Even in these networks addr notification may be desired, so tying it dflt rtr lifetime doesn't seem right to me.",
           "createdAt": "2022-03-15T18:12:37Z",
           "updatedAt": "2022-03-15T18:12:37Z"
+        },
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "I've added some comments / todo in the doc -- we could so some complex \"minimum of <some number> and the maximum of the RA / default router lifetime / preferred lifetime\" bit, but I suspect that is just over-engineering and we should instead choose some arbritary number -- the \"failure\" is that some number in 2^64 addresses are not used / the leases table gets full. Also, we need to add some text around not DoSing the lease table, but that is an existing issue....",
+          "createdAt": "2022-07-06T20:33:50Z",
+          "updatedAt": "2022-07-06T20:33:50Z"
         }
       ]
     },
@@ -118,7 +138,7 @@
       "labels": [],
       "body": "It might be useful to indicate address properties (e.g. stable vs temporary), so maybe we need a field to include this.\r\nSmth like flags field?",
       "createdAt": "2022-03-21T13:09:16Z",
-      "updatedAt": "2022-03-29T00:33:52Z",
+      "updatedAt": "2022-07-06T20:38:04Z",
       "closedAt": null,
       "comments": [
         {
@@ -127,6 +147,13 @@
           "body": "IA_TA (temporary addrress) and IA_NA (non-temporary address) option types already include this 1-bit distinguishing information...",
           "createdAt": "2022-03-29T00:33:52Z",
           "updatedAt": "2022-03-29T00:33:52Z"
+        },
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "I'm unclear what the resolution here is. Anything needed to be done?",
+          "createdAt": "2022-07-06T20:38:04Z",
+          "updatedAt": "2022-07-06T20:38:04Z"
         }
       ]
     },
@@ -135,16 +162,24 @@
       "id": "I_kwDOG4kJEc5GIEJr",
       "title": "Messages SHOULD only be sent if DHCP presence is indicated in RAs",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The client SHOULD NOT send messages if both M and O RA flags are set to 0.",
       "createdAt": "2022-03-22T09:40:26Z",
-      "updatedAt": "2022-03-22T09:40:26Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2022-07-06T21:18:51Z",
+      "closedAt": "2022-07-06T21:18:51Z",
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Thank you - you added this in PR #10.\r\n\r\nClosing.",
+          "createdAt": "2022-07-06T21:18:50Z",
+          "updatedAt": "2022-07-06T21:18:50Z"
+        }
+      ]
     },
     {
       "number": 8,
@@ -171,10 +206,52 @@
       "author": "ekline",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "phase2"
+      ],
       "body": "Question: should there be a mechanism to allow routers to generate registration messages for {L2,L3} pairs is has in its neighbor table?\r\n\r\nSuch a mechanism:\r\n\r\n  * might reuse the same message type or use a new message type\r\n  * would allow updated routers to contribute to debugging data while serving clients that don't support this option\r\n  * might further overload a server on networks where client support for this behaviour is already robust\r\n  * would need to tackle exactly what DUID should be generated by a router for these synthesized messages",
       "createdAt": "2022-03-29T00:45:27Z",
-      "updatedAt": "2022-03-29T00:45:27Z",
+      "updatedAt": "2022-07-06T21:23:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOG4kJEc5MJW2c",
+      "title": "consider: mention on-link relays might do validation",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/11",
+      "state": "OPEN",
+      "author": "ekline",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Since some vendor is going to do it anyway, better perhaps to mention the concept here to head off any stupid IPR filing.\r\n\r\nThe basic idea: if an on-link relay has knowledge of this message and access to neighbor table state it may perform some validation checks on the contents of the addr reg message.",
+      "createdAt": "2022-06-21T00:13:41Z",
+      "updatedAt": "2022-07-06T21:18:01Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Any suggested text?\r\n",
+          "createdAt": "2022-07-06T21:18:01Z",
+          "updatedAt": "2022-07-06T21:18:01Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOG4kJEc5OsHWR",
+      "title": "Conflicting sentences re: refresh",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/19",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 5.2:\r\n\"It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred lifetime. \"\r\n\r\nSection 5.3:\r\n\"The client MUST refresh the registration when 1/3 of the Preferred Lifetime of the address has elapsed. Such retransmissions should be jittered.\"",
+      "createdAt": "2022-07-27T22:30:44Z",
+      "updatedAt": "2022-07-27T22:30:44Z",
       "closedAt": null,
       "comments": []
     }
@@ -294,28 +371,92 @@
     {
       "number": 10,
       "id": "PR_kwDOG4kJEc42OoJw",
-      "title": "Messge sending conditions update",
+      "title": "Messge sending conditions update (change to trigger check)",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/10",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Only send the message if either M or O are set\r\n- only send for valid global addersses",
       "createdAt": "2022-04-14T10:16:09Z",
-      "updatedAt": "2022-04-14T10:16:38Z",
+      "updatedAt": "2022-07-06T21:16:54Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "b05f49459725ddf3ab2ae1148c8d1258e9ebf541",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "Client-behaviour",
       "headRefOid": "4bc3190917dd852169101a2662b70d653746c876",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2022-07-06T20:55:46Z",
+      "mergedAt": "2022-07-06T20:55:46Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "22ab060a6a0b9e550462d4288f721a016c7acd7e"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "I'm unable to figure out how to make this rerun checks, so I will just merge the change, then make the edits... ",
+          "createdAt": "2022-07-06T20:55:53Z",
+          "updatedAt": "2022-07-06T20:55:53Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc48XoJz",
+          "commit": {
+            "abbreviatedOid": "4bc3190"
+          },
+          "author": "ekline",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-06-21T00:09:00Z",
+          "updatedAt": "2022-06-21T00:09:01Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "I might suggest: \"if it has not received any Router Advertisement message with...\"",
+              "createdAt": "2022-06-21T00:09:00Z",
+              "updatedAt": "2022-06-21T00:09:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc48XoLP",
+          "commit": {
+            "abbreviatedOid": "4bc3190"
+          },
+          "author": "ekline",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Just a slight wording change",
+          "createdAt": "2022-06-21T00:09:15Z",
+          "updatedAt": "2022-06-21T00:09:15Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOG4kJEc49b3Qw",
+          "commit": {
+            "abbreviatedOid": "4bc3190"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-07-06T21:16:54Z",
+          "updatedAt": "2022-07-06T21:16:54Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "I manually added this. Thank you.",
+              "createdAt": "2022-07-06T21:16:54Z",
+              "updatedAt": "2022-07-06T21:16:54Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
