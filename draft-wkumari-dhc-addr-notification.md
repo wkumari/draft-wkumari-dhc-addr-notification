@@ -51,11 +51,22 @@ author:
   -
     name: Lorenzo Colitti
     ins: L. Colitti
-    organization: Google
+    organization: Google, LLC
     street:
     - Shibuya 3-21-3
     country: Japan
     email: lorenzo@google.com
+  -
+    name: Jen Linkova
+    ins: J. Linkova
+    organization: Google, LLC
+    street:
+    - 1 Darling Island Rd
+    city: Pyrmont
+    code: 2009
+    country: Australia
+    email: lorenzo@google.com
+
 contributor:
   -
     name: Gang Chen
@@ -211,16 +222,6 @@ One of the primary use-cases for the mechanism described in this document is to 
 # IANA Considerations
 
 This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
-
-Value          Description           Reference
------------------------------------------------------
-TBA1   ADDR-REG-NOTIFICATION    this document
-
-This document defines a new DHCPv6 Status code, the RegistrationDenied (TBA2) described in Section 5, that requires an allocation out of the registry of Status Codes defined at http://www.iana.org/assignments/dhcpv6-parameters/
-
-Code            Name                 Reference
-----------------------------------------------------
-TBA2    RegistrationDenied          this document
 
 --- back
 # Acknowledgments
