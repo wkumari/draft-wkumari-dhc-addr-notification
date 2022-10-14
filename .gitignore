@@ -15,3 +15,4 @@ lib
 report.xml
 venv/
 .vscode/settings.json
+ipv6_dhcp_dump.pcapng
