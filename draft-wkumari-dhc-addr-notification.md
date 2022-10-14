@@ -77,6 +77,7 @@ normative:
 
 
 informative:
+  RFC4861:
 
 
 --- abstract
@@ -188,18 +189,13 @@ If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IP
 
 The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred lifetime.  Because RAs may periodically 'reset' the preferred-lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the preferred lifetime when they complete a registration operation and only update this timer if 85% of any updated preferred lifetime would be sooner than the timer.
-
-{TODO: See Issue #3 regarding the appropriate timers, and provide better guidance. We could do some complex "min (4h, max (router_lifetime, preferred_lifetime))" calculation, but that's a bit of a pain and leads to
-bikeshedding. I suspect that just using a static number would be better.}
+The client MUST refresh the registration after 1/3 of the Preferred Lifetime of the address has elapsed, or 4 hours (whichever is less). Such retransmissions should be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 {TODO: Add some text around "feel free to ignore messages if it looks like a DoS attack" / your leases table is getting full. Note that this is an existing issue for DHCP and spoofed MACs (ask me how I know :-)) }
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD retransmit initial registrations. Registrations should be retransmitted according to the Retrans Timer specified by the Router Advertisement on the link. Retries should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement.
-
-The client MUST refresh the registration when 1/3 of the Preferred Lifetime of the address has elapsed. Such retransmissions should be jittered.
+To reduce the effects of packet loss on registration, the client SHOULD retransmit initial registrations. Registrations should be retransmitted according to the Retrans Timer [RFC4861] specified by the Router Advertisement on the link. Retries should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement.
 
 # Security Considerations
 
