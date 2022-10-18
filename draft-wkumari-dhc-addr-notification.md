@@ -153,6 +153,7 @@ Clients MUST discard any received ADDR-REG-NOTIFICATION messages.
 
 Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the following conditions:
 
+- the address is not appropriate for the link;
 - the message does not include a Client Identifier option;
 - the message includes a Server Identifier option;
 - the message does not include at least one IA Address option;
@@ -166,15 +167,14 @@ The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the add
 ## DHCPv6 Address Registration Request
 
 The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The host SHOULD send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this makes it more likely that the packet will be accepted and reach the DHCPv6 server. It also helps prevent confusion if the client has multiple interfaces in different networks.
+The host MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
+The host SHOULD send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this makes it more likely that the packet will be accepted and reach the DHCPv6 server.
 
 The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message. The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
 The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
 
 The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
-
-{TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
 
 After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD register the binding between the provided Client Identifier and IPv6 address in its database. The address registration server SHOULD also log the address registration information (as is done normally for clients which have requested an address).
 
