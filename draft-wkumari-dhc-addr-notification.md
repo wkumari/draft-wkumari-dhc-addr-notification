@@ -189,10 +189,6 @@ The address registration client MUST refresh the registration before it expires 
 
 It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred lifetime.  Because RAs may periodically 'reset' the preferred-lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the preferred lifetime when they complete a registration operation and only update this timer if 85% of any updated preferred lifetime would be sooner than the timer.
 
-{TODO: See Issue #3 regarding the appropriate timers, and provide better guidance. We could do some complex "min (4h, max (router_lifetime, preferred_lifetime))" calculation, but that's a bit of a pain and leads to
-bikeshedding. I suspect that just using a static number would be better.}
-
-{TODO: Add some text around "feel free to ignore messages if it looks like a DoS attack" / your leases table is getting full. Note that this is an existing issue for DHCP and spoofed MACs (ask me how I know :-)) }
 
 ## Retransmission
 
