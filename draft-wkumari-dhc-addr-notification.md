@@ -104,7 +104,7 @@ This document borrows heavily from a previous document, draft-ietf-dhc-addr-regi
 
 
 # Description of Mechanism
-After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message.  After receiving the address registration request, the DHCPv6 server MAY record and log the IPv6 address.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message in order to inform the DHCPv6 server that this address is in use.
 
 ~~~~~~~~~~
 +----+   +----------------+                  +---------------+
@@ -166,10 +166,9 @@ The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the add
 ## DHCPv6 Address Registration Request
 
 The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The host SHOULD send the packet from the address being registered.
+The host SHOULD send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this makes it more likely that the packet will be accepted and reach the DHCPv6 server. It also helps prevent confusion if the client has multiple interfaces in different networks.
 
-The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
-The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
+The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message. The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
 The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
 
@@ -177,12 +176,12 @@ The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received 
 
 {TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
 
-After receiving this ADDR-REG-NOTIFICATION message, the address registration server MUST register the binding between the provided Client Identifier and IPv6 address.  If the DHCPv6 server does not support the address registration function, it MUST drop the message (and may log the event).
+After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD register the binding between the provided Client Identifier and IPv6 address in its database. The address registration server SHOULD also log the address registration information (as is done normally for clients which have requested an address).
+
+If the DHCPv6 server does not support the address registration function, or if the server believes that  address being registered is not "appropriate to the link" [RFC8415], it MUST drop the message, and SHOULD log this fact.
 
 
 ## Registration Expiry and Refresh
-
-For every successful binding registration, the address registration server MUST record the Client-Identifier-to-IPv6-address bindings and associated valid-lifetimes in its storage, and SHOULD log this information in a manner similar to if it had performed the assignment.
 
 If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IPv6-address binding the server MUST log the event.
 
@@ -228,6 +227,6 @@ TBA2    RegistrationDenied          this document
 
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
-Much thanks to Jen Linkova for additional text on client behavior.
-Also, much thanks to Erik Kline and Lorenzo Colitti for significant discussion and feedback.
+Much thanks to Bernie Volz for significant review and feedback, as well as Mark Smith, Ted Lemon and Stuart Cheshire for their feedback, comments and guidance.
+
 
