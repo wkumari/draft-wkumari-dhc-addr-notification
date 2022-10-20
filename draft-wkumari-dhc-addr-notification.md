@@ -84,6 +84,7 @@ normative:
   RFC2119:
   RFC4007:
   RFC4862:
+  RFC6939:
   RFC8415:
 
 
@@ -167,7 +168,7 @@ Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the fol
 - the address is not appropriate for the link;
 - the message does not include a Client Identifier option;
 - the message includes a Server Identifier option;
-- the message does not include at least one IA Address option;
+- the message does not include the IA Address option;
 - the message includes an Option Request Option.
 
 # DHCPv6 Address Registration Procedure
@@ -187,9 +188,15 @@ The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}
 
 The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
-After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD register the binding between the provided Client Identifier and IPv6 address in its database. The address registration server SHOULD also log the address registration information (as is done normally for clients which have requested an address).
+After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD verify that the address being registered is appropriate to the link" [RFC8415]. If the server believes that  address being registered is not "appropriate to the link" [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
 
-If the DHCPv6 server does not support the address registration function, or if the server believes that  address being registered is not "appropriate to the link" [RFC8415], it MUST drop the message, and SHOULD log this fact.
+*     SHOULD register the binding between the provided Client Identifier and IPv6 address in its database;
+*     SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
+*    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
+
+If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
+
+DHCPv6 relay agents that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message the using the Client Link-Layer Address option ({{!RFC6939}})
 
 
 ## Registration Expiry and Refresh
