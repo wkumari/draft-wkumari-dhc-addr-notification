@@ -65,7 +65,7 @@ author:
     city: Pyrmont
     code: 2009
     country: Australia
-    email: lorenzo@google.com
+    email: furry@google.com
 
 contributor:
   -
