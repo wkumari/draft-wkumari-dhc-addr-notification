@@ -206,14 +206,14 @@ If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IP
 
 The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Preferred Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
+The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD send initial registrations ADDREG_MAX_RT times. The minimal interval between retransmissions MUST be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so   the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+To reduce the effects of packet loss on registration, the client SHOULD send initial registrations ADDREG_MAX_RT times. The minimal interval between retransmissions MUST be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
 The default values for the variables:
 
-*      ADDREG_MAX_RT  2
+*     ADDREG_MAX_RT  2
 *     ADDREG_RT_DELAY 3 secs
 
 The client SHOULD allow those variables to be configured by the administrator.
@@ -235,6 +235,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (T
 
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Mark Smith, Ted Lemon and Stuart Cheshire for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ted Lemon and Mark Smith for their feedback, comments and guidance.
 
 
