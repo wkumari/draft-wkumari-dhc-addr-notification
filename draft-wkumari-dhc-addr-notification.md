@@ -189,7 +189,7 @@ If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IP
 
 The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-The client MUST refresh the registration after 1/3 of the Preferred Lifetime of the address has elapsed, or 4 hours (whichever is less). Such retransmissions should be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
+The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh  is min(1/3 of the Preferred Lifetime filed in the PIO; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 {TODO: Add some text around "feel free to ignore messages if it looks like a DoS attack" / your leases table is getting full. Note that this is an existing issue for DHCP and spoofed MACs (ask me how I know :-)) }
 
