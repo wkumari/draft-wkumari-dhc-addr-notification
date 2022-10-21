@@ -195,7 +195,13 @@ The client MUST refresh the registration every AddrRegRefresh seconds, where  Ad
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD retransmit initial registrations. Registrations should be retransmitted according to the Retrans Timer [RFC4861] specified by the Router Advertisement on the link. Retries should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement.
+To reduce the effects of packet loss on registration, the client SHOULD send initial registrations ADDREG_MAX_RT times. The minimal interval between retransmissions MUST be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so   the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+The default values for the variables:
+
+*      ADDREG_MAX_RT  2
+*     ADDREG_RT_DELAY 3 secs
+
+The client SHOULD allow those variables to be configured by the administrator.
 
 # Security Considerations
 
