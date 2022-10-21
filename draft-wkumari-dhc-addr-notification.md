@@ -51,11 +51,22 @@ author:
   -
     name: Lorenzo Colitti
     ins: L. Colitti
-    organization: Google
+    organization: Google, LLC
     street:
     - Shibuya 3-21-3
     country: Japan
     email: lorenzo@google.com
+  -
+    name: Jen Linkova
+    ins: J. Linkova
+    organization: Google, LLC
+    street:
+    - 1 Darling Island Rd
+    city: Pyrmont
+    code: 2009
+    country: Australia
+    email: furry@google.com
+
 contributor:
   -
     name: Gang Chen
@@ -73,6 +84,7 @@ normative:
   RFC2119:
   RFC4007:
   RFC4862:
+  RFC6939:
   RFC8415:
 
 
@@ -105,7 +117,7 @@ This document borrows heavily from a previous document, draft-ietf-dhc-addr-regi
 
 
 # Description of Mechanism
-After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message.  After receiving the address registration request, the DHCPv6 server MAY record and log the IPv6 address.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message in order to inform the DHCPv6 server that this address is in use.
 
 ~~~~~~~~~~
 +----+   +----------------+                  +---------------+
@@ -154,9 +166,10 @@ Clients MUST discard any received ADDR-REG-NOTIFICATION messages.
 
 Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the following conditions:
 
+- the address is not appropriate for the link;
 - the message does not include a Client Identifier option;
 - the message includes a Server Identifier option;
-- the message does not include at least one IA Address option;
+- the message does not include the IA Address option;
 - the message includes an Option Request Option.
 
 # DHCPv6 Address Registration Procedure
@@ -167,31 +180,33 @@ The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the add
 ## DHCPv6 Address Registration Request
 
 The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The host SHOULD send the packet from the address being registered.
+The host MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
+The host SHOULD send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this makes it more likely that the packet will be accepted and reach the DHCPv6 server.
 
-The end-host MUST include a Client Identifier option and at least one IA Address option in the ADDR-REG-NOTIFICATION message.
-The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
+The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message. The host SHOULD send separate messages for each address (so each message include only one IA Address option) but MAY send a single packet containing multiple options.
 
 The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
 
 The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
-{TODO (WK): DHCPv6 uses "DHCP Unique Identifier (DUID)" to identify clients. This doesn't really meet our design goal of "what IP does the printer have?!". One of the DUID types is "DUID Based on Link-layer Address (DUID-LL)", but this is "any one network interface(s)" - this is probably good enough for the inventory use case, but still not ideal}
+After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD verify that the address being registered is appropriate to the link" [RFC8415]. If the server believes that  address being registered is not "appropriate to the link" [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
 
-After receiving this ADDR-REG-NOTIFICATION message, the address registration server MUST register the binding between the provided Client Identifier and IPv6 address.  If the DHCPv6 server does not support the address registration function, it MUST drop the message (and may log the event).
+*     SHOULD register the binding between the provided Client Identifier and IPv6 address in its database;
+*     SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
+*    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
+
+If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
+
+DHCPv6 relay agents that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message the using the Client Link-Layer Address option ({{!RFC6939}})
 
 
 ## Registration Expiry and Refresh
-
-For every successful binding registration, the address registration server MUST record the Client-Identifier-to-IPv6-address bindings and associated valid-lifetimes in its storage, and SHOULD log this information in a manner similar to if it had performed the assignment.
 
 If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IPv6-address binding the server MUST log the event.
 
 The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh  is min(1/3 of the Preferred Lifetime filed in the PIO; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
-
-{TODO: Add some text around "feel free to ignore messages if it looks like a DoS attack" / your leases table is getting full. Note that this is an existing issue for DHCP and spoofed MACs (ask me how I know :-)) }
+The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Preferred Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 ## Retransmission
 
@@ -214,22 +229,12 @@ One of the primary use-cases for the mechanism described in this document is to 
 
 This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
 
-Value          Description           Reference
------------------------------------------------------
-TBA1   ADDR-REG-NOTIFICATION    this document
-
-This document defines a new DHCPv6 Status code, the RegistrationDenied (TBA2) described in Section 5, that requires an allocation out of the registry of Status Codes defined at http://www.iana.org/assignments/dhcpv6-parameters/
-
-Code            Name                 Reference
-----------------------------------------------------
-TBA2    RegistrationDenied          this document
-
 --- back
 # Acknowledgments
 {:numbered="false"}
 
 "We've Been Trying To Reach You About Your Car's Extended Warranty"
 
-Much thanks to Jen Linkova for additional text on client behavior.
-Also, much thanks to Erik Kline and Lorenzo Colitti for significant discussion and feedback.
+Much thanks to Bernie Volz for significant review and feedback, as well as Mark Smith, Ted Lemon and Stuart Cheshire for their feedback, comments and guidance.
+
 
