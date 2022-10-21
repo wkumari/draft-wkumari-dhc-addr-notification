@@ -89,6 +89,7 @@ normative:
 
 
 informative:
+  RFC4861:
 
 
 --- abstract
@@ -205,14 +206,17 @@ If an ADDR-REG-NOTIFICATION message updates the existing Client-Identifier-to-IP
 
 The address registration client MUST refresh the registration before it expires (i.e. before the preferred lifetime of the IA address elapses) by sending a new ADDR-REG-NOTIFICATION to the address registration server.  If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-It is RECOMMENDED that clients initiate a refresh at about 85% of the preferred lifetime.  Because RAs may periodically 'reset' the preferred-lifetime, the refresh timer MUST be independently maintained from the address valid-lifetime.  Clients SHOULD set a refresh timer to 85% of the preferred lifetime when they complete a registration operation and only update this timer if 85% of any updated preferred lifetime would be sooner than the timer.
-
+The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Preferred Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD retransmit initial registrations. Registrations should be retransmitted according to the Retrans Timer specified by the Router Advertisement on the link. Retries should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement.
+To reduce the effects of packet loss on registration, the client SHOULD send initial registrations ADDREG_MAX_RT times. The minimal interval between retransmissions MUST be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so   the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+The default values for the variables:
 
-The client MUST refresh the registration when 1/3 of the Preferred Lifetime of the address has elapsed. Such retransmissions should be jittered.
+*      ADDREG_MAX_RT  2
+*     ADDREG_RT_DELAY 3 secs
+
+The client SHOULD allow those variables to be configured by the administrator.
 
 # Security Considerations
 
