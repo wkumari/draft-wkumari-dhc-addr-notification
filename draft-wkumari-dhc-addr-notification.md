@@ -30,8 +30,8 @@ author:
   -
     name:  Suresh Krishnan
     ins: S. Krishnan
-    organization: Kaloom
-    email: suresh@kaloom.com
+    org: Cisco Systems, Inc.
+    email: suresh.krishnan@gmail.com
   -
     name: Sheng Jiang
     ins: S. Jiang
