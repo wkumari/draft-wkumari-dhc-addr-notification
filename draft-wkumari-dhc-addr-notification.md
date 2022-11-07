@@ -33,12 +33,6 @@ author:
     org: Cisco Systems, Inc.
     email: suresh.krishnan@gmail.com
   -
-    name: Sheng Jiang
-    ins: S. Jiang
-    city: Beijing
-    country: P.R. China
-    email: jiangsheng@gmail.com
-  -
     name: Rajiv Asati
     ins: R. Asati
     org: Cisco Systems, Inc.
