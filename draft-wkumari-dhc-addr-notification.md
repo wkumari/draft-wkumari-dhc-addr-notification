@@ -176,9 +176,9 @@ The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the add
 
 The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
 The host MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
-The host MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-NOTIFICATION messages. The host MUST send separate messages for each address being registered. 
+The host MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-NOTIFICATION messages. The host MUST send separate messages for each address being registered.
 
-The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message. 
+The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message.
 
 The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
 The host MUST NOT send the  ADDR-REG-NOTIFICATION message for addresses configured by DHCPv6.
