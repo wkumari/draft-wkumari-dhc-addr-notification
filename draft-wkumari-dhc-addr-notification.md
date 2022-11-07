@@ -211,8 +211,9 @@ The client SHOULD allow those variables to be configured by the administrator.
 
 An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC8415]. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
 
-One of the primary use-cases for the mechanism described in this document is to identify which device is infected with malware (or is otherwise doing bad things) so that it can be blocked from accessing the network. As the device itself is responsible for informing the DHCPv6 server that it is using an address, malware (or a malicious client) can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in debugging. It is not intended to be a strong security access mechanism.
+If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-NOTIFICATION message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
 
+One of the use-cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
 
 # IANA Considerations
 
@@ -222,8 +223,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (T
 # Acknowledgments
 {:numbered="false"}
 
-"We've Been Trying To Reach You About Your Car's Extended Warranty"
-
-Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ted Lemon and Mark Smith for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Erik Kline, Ted Lemon and Mark Smith for their feedback, comments and guidance.
 
 
