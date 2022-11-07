@@ -98,7 +98,6 @@ The lack of this parity with IPv4 is one of the reasons that some enterprise net
 
 This document provides a mechanism for a device to inform the DHCPv6 server that it has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4 in this aspect.
 
-This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server".
 
 # Conventions and Definitions
 
@@ -225,4 +224,4 @@ This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (T
 
 Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Erik Kline, Ted Lemon and Mark Smith for their feedback, comments and guidance.
 
-
+This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
