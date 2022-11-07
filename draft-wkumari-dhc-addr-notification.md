@@ -223,8 +223,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (T
 # Acknowledgments
 {:numbered="false"}
 
-"We've Been Trying To Reach You About Your Car's Extended Warranty"
-
-Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ted Lemon and Mark Smith for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Erik Kline, Ted Lemon and Mark Smith for their feedback, comments and guidance.
 
 
