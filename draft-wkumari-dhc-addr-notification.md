@@ -201,6 +201,8 @@ The client MUST refresh the registration every AddrRegRefresh seconds, where  Ad
 
 If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
+The client MAY choose to notify the server when an address is stopped being used (the client is disconnecting from the network, the address lifetime expired or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero.
+
 ## Retransmission
 
 The client can not rely on the server acknowledging recipt of the registration message with a REPLY, as the server might not support address registration or choose not to acknowledge.  To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times. If the acknowledgement is received, the client SHOULD stop retransmission. The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-INFORM is the first and the only DHCPv6 message which does not require acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
@@ -227,6 +229,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) d
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Ted Lemon, Eric Levy-Abegnoli, Mark Smith, Eric Vynke for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Ted Lemon, Eric Levy-Abegnoli, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
