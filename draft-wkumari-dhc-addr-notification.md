@@ -198,13 +198,15 @@ If the address registration server does not receive such a refresh after the pre
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times. The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times (unless an acknowledgement is received as described below). The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
 The default values for the variables:
 
 *     ADDRREG_XMIT 3
 *     ADDREG_RT_DELAY 3 secs
 
 The client SHOULD allow those variables to be configured by the administrator.
+
+If the client does receive an acknowledgement from the server, it SHOULD stop retransmitting even if the message hasn't been sent ADDREG_XMIT times.
 
 # Security Considerations
 
@@ -222,6 +224,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (T
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Erik Kline, Ted Lemon and Mark Smith for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Ted Lemon,  Mark Smith, Eric Vynke for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
