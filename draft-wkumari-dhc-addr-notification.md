@@ -114,10 +114,11 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 |   SLAAC   |                                      |
 |<--------->|                                      |
 |           |                                      |
-|           |        ADDR-REG-INFORM         |
+|           |        ADDR-REG-INFORM               |
 |------------------------------------------------->|
 |           |                                      |Register / log
-|           |                                      |address
+|           |        REPLY (optional)              |address
+|<-------------------------------------------------
 
 ~~~~~~~~~~
 {: #figops title="Address Registration Procedure" Address Registration Procedure}
@@ -183,11 +184,15 @@ After receiving this ADDR-REG-INFORM message, the address registration server SH
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database;
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
+*    MAY send back a REPLY message.
 
 If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
 
 DHCPv6 relay agents that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}})
 
+## DHCPv6 Address Registration Acknowledgement
+
+The server MAY choose to acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity. 
 
 ## Registration Expiry and Refresh
 
@@ -198,15 +203,13 @@ If the address registration server does not receive such a refresh after the pre
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times (unless an acknowledgement is received as described below). The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-INFORM is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+The client can not rely on the server acknowledging recipt of the registration message with a REPLY, as the server might not support address registration or choose not to acknowledge.  To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times. If the acknowledgement is received, the client SHOULD stop retransmission. The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-INFORM is the first and the only DHCPv6 message which does not require acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
 The default values for the variables:
 
 *     ADDRREG_XMIT 3
 *     ADDREG_RT_DELAY 3 secs
 
 The client SHOULD allow those variables to be configured by the administrator.
-
-If the client does receive an acknowledgement from the server, it SHOULD stop retransmitting even if the message hasn't been sent ADDREG_XMIT times.
 
 # Security Considerations
 
