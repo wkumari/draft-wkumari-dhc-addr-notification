@@ -105,7 +105,7 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 
 
 # Description of Mechanism
-After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-NOTIFICATION message in order to inform the DHCPv6 server that this address is in use.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this address is in use.
 
 ~~~~~~~~~~
 +----+   +----------------+                  +---------------+
@@ -114,7 +114,7 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 |   SLAAC   |                                      |
 |<--------->|                                      |
 |           |                                      |
-|           |        ADDR-REG-NOTIFICATION         |
+|           |        ADDR-REG-INFORM         |
 |------------------------------------------------->|
 |           |                                      |Register / log
 |           |                                      |address
@@ -124,9 +124,9 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 
 
 
-# DHCPv6 ADDR-REG-NOTIFICATION Message
+# DHCPv6 ADDR-REG-INFORM Message
 
-The DHCPv6 client sends an ADDR-REG-NOTIFICATION message to inform that an IPv6 address is in use.  The format of the ADDR-REG-NOTIFICATION message is described as follows:
+The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is in use.  The format of the ADDR-REG-INFORM message is described as follows:
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -139,20 +139,20 @@ The DHCPv6 client sends an ADDR-REG-NOTIFICATION message to inform that an IPv6 
      |                                                               |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
       msg-type             Identifies the DHCPv6 message type;
-                           Set to ADDR-REG-NOTIFICATION (TBA1).
+                           Set to ADDR-REG-INFORM (TBA1).
 
       transaction-id       The transaction ID for this message exchange.
 
       options              Options carried in this message.
-{: #message title="DHCPv6 ADDR-REG-NOTIFICATION message"}
+{: #message title="DHCPv6 ADDR-REG-INFORM message"}
 
 
 
-The ADDR-REG-NOTIFICATION message MUST NOT contain server-identifier option and MUST contain the IA Address option.  The ADDR-REG-NOTIFICATION message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-NOTIFICATION message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
+The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option.  The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
-Clients MUST discard any received ADDR-REG-NOTIFICATION messages.
+Clients MUST discard any received ADDR-REG-INFORM messages.
 
-Servers MUST discard any ADDR-REG-NOTIFICATION messages that meet any of the following conditions:
+Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following conditions:
 
 - the address is not appropriate for the link;
 - the message does not include a Client Identifier option;
@@ -167,18 +167,18 @@ The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the add
 
 ## DHCPv6 Address Registration Request
 
-The end-host sends a DHCPv6 ADDR-REG-NOTIFICATION message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
+The end-host sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
 The host MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
-The host MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-NOTIFICATION messages. The host MUST send separate messages for each address being registered.
+The host MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. The host MUST send separate messages for each address being registered.
 
-The end-host MUST include a Client Identifier option in the ADDR-REG-NOTIFICATION message.
+The end-host MUST include a Client Identifier option in the ADDR-REG-INFORM message.
 
-The host MUST only send the ADDR-REG-NOTIFICATION message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
-The host MUST NOT send the  ADDR-REG-NOTIFICATION message for addresses configured by DHCPv6.
+The host MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
+The host MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
 
-The host MUST NOT send the ADDR-REG-NOTIFICATION message if it has not received any Router Advertisement message with either M or O flags set to 1.
+The host MUST NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
-After receiving this ADDR-REG-NOTIFICATION message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that  address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
+After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that  address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
 
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database;
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
@@ -198,7 +198,7 @@ If the address registration server does not receive such a refresh after the pre
 
 ## Retransmission
 
-To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times (unless an acknowledgement is received as described below). The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-NOTIFICATION is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
+To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times (unless an acknowledgement is received as described below). The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-INFORM is the first and the only DHCPv6 message which does not require any form of acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
 The default values for the variables:
 
 *     ADDRREG_XMIT 3
@@ -212,18 +212,18 @@ If the client does receive an acknowledgement from the server, it SHOULD stop re
 
 An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC8415]. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
 
-If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-NOTIFICATION message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
+If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
 
-One of the use-cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-NOTIFICATION message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
+One of the use-cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
 
 # IANA Considerations
 
-This document defines a new DHCPv6 message, the ADDR-REG-NOTIFICATION message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
+This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
 
 --- back
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Ted Lemon,  Mark Smith, Eric Vynke for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Ted Lemon, Eric Levy-Abegnoli, Mark Smith, Eric Vynke for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
