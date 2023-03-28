@@ -117,7 +117,7 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 |           |        ADDR-REG-INFORM               |
 |------------------------------------------------->|
 |           |                                      |Register / log
-|           |        REPLY (optional)              |address
+|           |              REPLY                   |address
 |<-------------------------------------------------
 
 ~~~~~~~~~~
@@ -184,7 +184,7 @@ After receiving this ADDR-REG-INFORM message, the address registration server SH
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database;
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
-*    MAY send back a REPLY message.
+*    SHOULD send back a REPLY message.
 
 If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
 
