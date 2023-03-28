@@ -192,10 +192,10 @@ DHCPv6 relay agents that relay address registration messages directly from clien
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server MAY choose to acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity.
+The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity.
+
 
 ## Registration Expiry and Refresh
-
 
 The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
@@ -205,13 +205,14 @@ The client MAY choose to notify the server when an address is no longer being us
 
 ## Retransmission
 
-The client can not rely on the server acknowledging recipt of the registration message with a REPLY, as the server might not support address registration or choose not to acknowledge.  To reduce the effects of packet loss on registration, the client SHOULD send each registration message ADDREG_XMIT times. If the acknowledgement is received, the client SHOULD stop retransmission. The minimal interval between retransmissions ADDRREG_XMIT be at least ADDREG_RT_DELAY second and should be jittered to prevent overloading the DHCP infrastructure when a new prefix is announced to the link via Router Advertisement. It should be noted that ADDR-REG-INFORM is the first and the only DHCPv6 message which does not require acknowledgement from the server, so the retransmission logic described in Section 15 of RFC8415 is not really applicable.
-The default values for the variables:
+To reduce the effects of packet loss on registration, the client SHOULD retransmit the registration message. Retransmissions SHOULD follow the standard retransmission logic specified by section 15 of [RFC8415] with the following default parameters:
 
-*     ADDRREG_XMIT 3
-*     ADDREG_RT_DELAY 3 secs
+*     IRT 1 sec
+*     MRC 3
 
-The client SHOULD allow those variables to be configured by the administrator.
+The client SHOULD allow these parameters to be configured by the administrator.
+
+If an acknowledgement is received, the client MUST stop retransmission. However, the client can not rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
 # Security Considerations
 
