@@ -192,7 +192,7 @@ DHCPv6 relay agents that relay address registration messages directly from clien
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop REPLY messages, MUST NOT add or alter any forwarding or security state based the REPLY message.
+The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop REPLY messages, MUST NOT add or alter any forwarding or security state based on the REPLY message.
 
 
 ## Registration Expiry and Refresh
