@@ -214,6 +214,12 @@ The client SHOULD allow these parameters to be configured by the administrator.
 
 If an acknowledgement is received, the client MUST stop retransmission. However, the client can not rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
+
+# Host configuration
+
+DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM messages. This could be used, for example, to reduce network traffic on networks where the servers are known not to support the message type. Sending the messages SHOULD be enabled by default.
+
+
 # Security Considerations
 
 An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC8415]. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
