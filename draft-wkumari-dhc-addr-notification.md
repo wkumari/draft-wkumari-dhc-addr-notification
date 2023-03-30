@@ -117,7 +117,7 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 |           |        ADDR-REG-INFORM               |
 |------------------------------------------------->|
 |           |                                      |Register / log
-|           |              REPLY                   |address
+|           |        ADDR-REG-REPLY                |address
 |<-------------------------------------------------
 
 ~~~~~~~~~~
@@ -161,6 +161,35 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 - the message does not include the IA Address option;
 - the message includes an Option Request Option.
 
+# DHCPv6 ADDR-REG-REPLY Message
+
+The DHCPv6 server sends an ADDR-REG-REPLY message in response to a valid ADDR-REG-INFORM message.  The format of the ADDR-REG-REPLY message is described as follows:
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |    msg-type   |               transaction-id                  |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                                                               |
+     .                            options                            .
+     .                           (variable)                          .
+     |                                                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      msg-type             Identifies the DHCPv6 message type;
+                           Set to ADDR-REG-REPLY (TBA2).
+
+      transaction-id       The transaction ID for this message exchange.
+
+      options              Options carried in this message.
+{: #message title="DHCPv6 ADDR-REG-REPLY message"}
+
+The ADDR-REG-INFORM message MUST contain an IA Address option for the address being registered.
+
+Servers MUST ignore any received ADDR-REG-REPLY messages.
+
+The IPv6 destination address of the packet is the address being registered.
+
+
 # DHCPv6 Address Registration Procedure
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
@@ -184,7 +213,7 @@ After receiving this ADDR-REG-INFORM message, the address registration server SH
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database;
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
-*    SHOULD send back a REPLY message.
+*    SHOULD send back an ADDR-REG-REPLY message.
 
 If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
 
@@ -192,7 +221,7 @@ DHCPv6 relay agents and switches that relay address registration messages direct
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a REPLY message back. The REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop REPLY messages, MUST NOT add or alter any forwarding or security state based on the REPLY message.
+The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back. The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
 
 
 ## Registration Expiry and Refresh
@@ -212,7 +241,7 @@ To reduce the effects of packet loss on registration, the client SHOULD retransm
 
 The client SHOULD allow these parameters to be configured by the administrator.
 
-If an acknowledgement is received, the client MUST stop retransmission. However, the client can not rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
+If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client can not rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
 
 # Host configuration
