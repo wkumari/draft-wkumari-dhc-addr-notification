@@ -145,7 +145,7 @@ The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 addres
       transaction-id       The transaction ID for this message exchange.
 
       options              Options carried in this message.
-{: #message title="DHCPv6 ADDR-REG-INFORM message"}
+{: #message-inform title="DHCPv6 ADDR-REG-INFORM message"}
 
 
 
@@ -181,7 +181,7 @@ The DHCPv6 server sends an ADDR-REG-REPLY message in response to a valid ADDR-RE
       transaction-id       The transaction ID for this message exchange.
 
       options              Options carried in this message.
-{: #message title="DHCPv6 ADDR-REG-REPLY message"}
+{: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
 
 The ADDR-REG-INFORM message MUST contain an IA Address option for the address being registered.
 
