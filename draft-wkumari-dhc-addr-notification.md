@@ -188,7 +188,7 @@ After receiving this ADDR-REG-INFORM message, the address registration server SH
 
 If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
 
-DHCPv6 relay agents that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}})
+DHCPv6 relay agents and switches that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}})
 
 ## DHCPv6 Address Registration Acknowledgement
 
