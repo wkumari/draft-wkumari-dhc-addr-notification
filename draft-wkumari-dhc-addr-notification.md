@@ -1,7 +1,7 @@
 ---
 title: "Registering Self-generated IPv6 Addresses using DHCPv6"
 abbrev: "Registering SLAAC Addresses using DHCPv6"
-category: exp
+category: std
 submissiontype: IETF
 
 docname: draft-wkumari-dhc-addr-notification-latest
