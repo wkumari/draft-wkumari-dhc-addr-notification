@@ -256,6 +256,7 @@ An attacker may attempt to register a large number of addresses in quick success
 If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
 
 One of the use-cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
+In particular, the ADDR-REG-INFORM message MUST not be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
 
 # IANA Considerations
 
