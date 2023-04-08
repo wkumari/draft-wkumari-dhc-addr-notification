@@ -251,7 +251,7 @@ DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM m
 
 # Security Considerations
 
-An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files.  These attacks may be mitigated by using generic DHCPv6 protection such as the AUTH option [RFC8415]. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
+An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
 
 If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
 
@@ -266,6 +266,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) d
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Michael Richardson, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
