@@ -60,7 +60,7 @@ author:
     code: 2009
     country: Australia
     email: furry@google.com
- -
+  -
     name: Sheng Jiang
     ins: S. Jiang
     organization: Beijing University of Posts and Telecommunications
