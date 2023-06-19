@@ -60,7 +60,18 @@ author:
     code: 2009
     country: Australia
     email: furry@google.com
-
+ -
+    name: Sheng Jiang
+    ins: S. Jiang
+    organization: Beijing University of Posts and Telecommunications
+    street:
+    - No. 10 Xitucheng Road
+    city: Beijing
+    region: Haidian District
+    code: 100083
+    country: China
+    email: shengjiang@bupt.edu.cn
+ 
 contributor:
   -
     name: Gang Chen
