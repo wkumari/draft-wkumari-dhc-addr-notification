@@ -71,7 +71,7 @@ author:
     code: 100083
     country: China
     email: shengjiang@bupt.edu.cn
- 
+
 contributor:
   -
     name: Gang Chen
