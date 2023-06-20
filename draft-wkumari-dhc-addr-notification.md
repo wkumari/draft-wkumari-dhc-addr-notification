@@ -5,8 +5,11 @@ category: std
 submissiontype: IETF
 
 docname: draft-wkumari-dhc-addr-notification-latest
+submissiontype: IETF
 ipr: trust200902
 area: "Internet"
+consensus: true
+v: 3
 workgroup: "Dynamic Host Configuration"
 keyword: Internet-Draft
 venue:
@@ -277,6 +280,7 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
 
 --- back
+
 # Acknowledgments
 {:numbered="false"}
 
