@@ -92,6 +92,9 @@ normative:
   RFC6939:
   RFC8415:
 
+informative:
+  RFC6620:
+
 --- abstract
 
 This document defines a method to inform a DHCPv6 server that a device has a self-generated or statically configured address.
