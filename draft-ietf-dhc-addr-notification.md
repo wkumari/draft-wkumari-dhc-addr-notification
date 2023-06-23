@@ -245,7 +245,7 @@ DHCPv6 relay agents and switches that relay address registration messages direct
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back, using the  address being registered as the destination address for the packet. 
+The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back, using the  address being registered as the destination address for the packet.
 
 The server MUST copy the transaction-id from the ADDR-REG-INFORM message to the transaction-id field of the ADDR-REG-REPLY.
 
