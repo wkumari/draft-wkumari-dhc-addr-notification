@@ -124,7 +124,7 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 # Registration Mechanism Overview
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
-The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the address registration interactions.
+The DHCPv6 IA Address option {{!RFC8415}} is used to specify the address to be registered.
 
 After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use.
 
@@ -218,7 +218,7 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 ## DHCPv6 Address Registration Request
 
 The client sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The client MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
+The client MUST only send the packet on the network interface that has the address being registered (i.e. if the client has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
 The client MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. The client MUST send separate messages for each address being registered.
 
 The client MUST include a Client Identifier option in the ADDR-REG-INFORM message.
@@ -269,7 +269,7 @@ To reduce the effects of packet loss on registration, the client SHOULD retransm
 
 The client SHOULD allow these parameters to be configured by the administrator.
 
-To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-REPLY message.
+To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message.
 
 If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
