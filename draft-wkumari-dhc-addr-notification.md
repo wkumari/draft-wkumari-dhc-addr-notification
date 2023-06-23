@@ -209,9 +209,10 @@ The ADDR-REG-INFORM message MUST contain an IA Address option for the address be
 Servers MUST ignore any received ADDR-REG-REPLY messages.
 
 Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
-- the IA Address option does not contain the address assigned on the interface the client received the message on.
+- The IPv6 destination address does not match the address being registered.
+- The IA-Address option does not match the address being registered
+- The address being registered is not assigned to the interface receiving the message.
 - The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
-
 
 # DHCPv6 Address Registration Procedure
 
