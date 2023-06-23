@@ -4,7 +4,7 @@ abbrev: "Registering SLAAC Addresses using DHCPv6"
 category: std
 submissiontype: IETF
 
-docname: draft-wkumari-dhc-addr-notification-latest
+docname: draft-ietf-dhc-addr-notification-latest
 submissiontype: IETF
 ipr: trust200902
 area: "Internet"
@@ -111,7 +111,7 @@ It is very common operational practice, especially in enterprise networks, to us
 
 This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{!RFC4862}}) are used.
 
-The lack of this parity with IPv4 is one of the reasons that some enterprise networks are unwilling to deploy IPv6.
+The lack of this parity with IPv4 is one of the reasons which may be hindering IPv6 deployment, especially in enterprise networks.
 
 This document provides a mechanism for a device to inform the DHCPv6 server that it has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4 in this aspect.
 
@@ -121,8 +121,12 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 {::boilerplate bcp14-tagged}
 
 
-# Description of Mechanism
-After successfully assigning a self-generated IPv6 address on one of its interfaces, an end-host implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this address is in use.
+# Registration Mechanism Overview
+
+The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
+The DHCPv6 IA Address option {{!RFC8415}} is used to specify the address to be registered.
+
+After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use.
 
 ~~~~~~~~~~
 +----+   +----------------+                  +---------------+
@@ -166,7 +170,7 @@ The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 addres
 
 
 
-The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option.  The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
+The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option. The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
 Clients MUST discard any received ADDR-REG-INFORM messages.
 
@@ -204,26 +208,28 @@ The ADDR-REG-INFORM message MUST contain an IA Address option for the address be
 
 Servers MUST ignore any received ADDR-REG-REPLY messages.
 
-The IPv6 destination address of the packet is the address being registered.
-
+Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
+- The IPv6 destination address does not match the address being registered.
+- The IA-Address option does not match the address being registered
+- The address being registered is not assigned to the interface receiving the message.
+- The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
 
 # DHCPv6 Address Registration Procedure
 
-The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
-The DHCPv6 IA Address option {{!RFC8415}} is adopted in order to fulfill the address registration interactions.
-
 ## DHCPv6 Address Registration Request
 
-The end-host sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The host MUST only send the packet on the network interface that has the address being registered (i.e. if the host has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
-The host MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. The host MUST send separate messages for each address being registered.
+The client sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
+The client MUST only send the packet on the network interface that has the address being registered (i.e. if the client has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
+The client MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. The client MUST send separate messages for each address being registered.
 
-The end-host MUST include a Client Identifier option in the ADDR-REG-INFORM message.
+The client MUST include a Client Identifier option in the ADDR-REG-INFORM message.
 
-The host MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
-The host MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
+The client MUST generate a transaction ID and insert this value in the "transaction-id" field.
 
-The host MUST NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
+The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
+The client MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
+
+The client MUST NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
 After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that  address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
 
@@ -238,12 +244,18 @@ DHCPv6 relay agents and switches that relay address registration messages direct
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back. The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. It MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
+The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back, using the  address being registered as the destination address for the packet. 
+
+The server MUST copy the transaction-id from the ADDR-REG-INFORM message to the transaction-id field of the ADDR-REG-REPLY.
+
+The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
 
 
 ## Registration Expiry and Refresh
 
 The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
+
+The client SHOULD generate a new transaction ID when refreshing the registration.
 
 If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
@@ -258,7 +270,9 @@ To reduce the effects of packet loss on registration, the client SHOULD retransm
 
 The client SHOULD allow these parameters to be configured by the administrator.
 
-If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client can not rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
+To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message.
+
+If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
 
 # Host configuration
@@ -268,9 +282,9 @@ DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM m
 
 # Security Considerations
 
-An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files. The similar attack vector exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
+An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files. Similar attack vectors exist today, e.g. an attacker can DoS the server with messages contained spoofed DUIDs.
 
-If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate owner of the address. This prevents a host from registering an address owned by another host.
+If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a host from registering an address owned by another host.
 
 One of the use-cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
 In particular, the ADDR-REG-INFORM message MUST not be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
@@ -284,6 +298,6 @@ This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) d
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Michael Richardson, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
+Much thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
