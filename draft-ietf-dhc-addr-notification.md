@@ -170,7 +170,9 @@ The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 addres
 
 
 
-The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option. The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
+The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option. The valid-lifetime and preferred-lifetime fields in the option MUST match the current Valid Lifetime and Preferred Lifetime of the address being registered.
+
+The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
 Clients MUST discard any received ADDR-REG-INFORM messages.
 
@@ -204,14 +206,14 @@ The DHCPv6 server sends an ADDR-REG-REPLY message in response to a valid ADDR-RE
       options              Options carried in this message.
 {: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
 
-The ADDR-REG-INFORM message MUST contain an IA Address option for the address being registered.
+The ADDR-REG-REPLY message MUST contain an IA Address option for the address being registered. The option MUST be identical to the one in the ADDR-REG-INFORM message that the server is replying to.
 
 Servers MUST ignore any received ADDR-REG-REPLY messages.
 
 Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
 
 - The IPv6 destination address does not match the address being registered.
-- The IA-Address option does not match the address being registered
+- The IA-Address option does not match the address being registered.
 - The address being registered is not assigned to the interface receiving the message.
 - The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
 
@@ -219,9 +221,7 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 
 ## DHCPv6 Address Registration Request
 
-The client sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).
-The client MUST only send the packet on the network interface that has the address being registered (i.e. if the client has multiple interfaces with different addresses, it should only send the packet on the interface with the address being registered).
-The client MUST send the packet from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. The client MUST send separate messages for each address being registered.
+The client sends a DHCPv6 ADDR-REG-INFORM message to the address registration server to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2). The client MUST send separate messages for each address being registered, and each message MUST be sent from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages. On clients with multiple interfaces, the client MUST only send the packet on the network interface that has the address being registered, even if it has multiple interfaces with different addresses. If the same address is configured onmultiple interfaces, then the client MUST send ADDR-REG-INFORM each time the address is configured on an interface that did not previously have it, and refresh each registration independently from the others.
 
 The client MUST include a Client Identifier option in the ADDR-REG-INFORM message.
 
@@ -292,7 +292,7 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 
 # IANA Considerations
 
-This document defines a new DHCPv6 message, the ADDR-REG-INFORM message (TBA1) described in Section 4, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
+This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4, and ADDR-REG-REPLY (TBA2) described in Section 5, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
 
 --- back
 
