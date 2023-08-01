@@ -107,7 +107,7 @@ This document defines a method to inform a DHCPv6 server that a device has a sel
 
 # Introduction
 
-It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or security purposes. Examples of this include a helpdesk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the IPv4 address can be retrieved from the DHCP logs and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
+It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or security purposes. Examples of this include a help desk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the IPv4 address can be retrieved from the DHCP logs and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
 
 This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{!RFC4862}}) are used.
 
@@ -126,7 +126,7 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 The DHCPv6 IA Address option {{!RFC8415}} is used to specify the address to be registered.
 
-After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use (as shown in Fig.1).
 
 ~~~~~~~~~~
 +----+   +----------------+                  +---------------+
@@ -170,7 +170,9 @@ The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 addres
 
 
 
-The ADDR-REG-INFORM message MUST NOT contain server-identifier option and MUST contain the IA Address option. The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
+The ADDR-REG-INFORM message MUST NOT contain the Server Identification option and MUST contain the IA Address option. The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
+
+The client MUST
 
 Clients MUST discard any received ADDR-REG-INFORM messages.
 
