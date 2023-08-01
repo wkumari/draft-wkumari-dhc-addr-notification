@@ -173,7 +173,7 @@ The client MUST generate a transaction ID and insert this value in the "transact
 
 The client MUST include a Client Identifier option in the ADDR-REG-INFORM message.
 
-The ADDR-REG-INFORM message MUST NOT contain the server-identifier option and MUST contain the IA Address option. The valid-lifetime and preferred-lifetime fields in the option MUST match the current Valid Lifetime and Preferred Lifetime of the address being registered.
+The ADDR-REG-INFORM message MUST NOT contain the server-identifier option and MUST contain exactlu one IA Address option containing the address being registered. The valid-lifetime and preferred-lifetime fields in the option MUST match the current Valid Lifetime and Preferred Lifetime of the address being registered.
 
 The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
