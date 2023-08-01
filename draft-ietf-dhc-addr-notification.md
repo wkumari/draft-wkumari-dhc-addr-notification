@@ -173,7 +173,7 @@ The client MUST generate a transaction ID and insert this value in the "transact
 
 The client MUST include a Client Identifier option in the ADDR-REG-INFORM message.
 
-The ADDR-REG-INFORM message MUST NOT contain the server-identifier option and MUST contain exactlu one IA Address option containing the address being registered. The valid-lifetime and preferred-lifetime fields in the option MUST match the current Valid Lifetime and Preferred Lifetime of the address being registered.
+The ADDR-REG-INFORM message MUST NOT contain the Server Identifier option and MUST contain exactlu one IA Address option containing the address being registered. The valid-lifetime and preferred-lifetime fields in the option MUST match the current Valid Lifetime and Preferred Lifetime of the address being registered.
 
 The ADDR-REG-INFORM message is dedicated for clients to initiate an address registration request toward an address registration server.  Consequently, clients MUST NOT put any Option Request Option(s) in the ADDR-REG-INFORM message. Clients MAY include other options, such as the Client FQDN Option {{!RFC4704}}.
 
@@ -291,7 +291,7 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 
 # IANA Considerations
 
-This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4, and ADDR-REG-REPLY (TBA2) described in Section 5, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/
+This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4, and ADDR-REG-REPLY (TBA2) described in Section 5, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/.
 
 --- back
 
