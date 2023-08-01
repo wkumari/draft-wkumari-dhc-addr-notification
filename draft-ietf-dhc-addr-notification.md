@@ -200,16 +200,14 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 - the message does not include the IA Address option;
 - the message includes an Option Request Option.
 
-After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that  address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
+After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
 
-*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database;
-*    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so;
+*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
+*    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    SHOULD send back an ADDR-REG-REPLY message.
 
-If the DHCPv6 server does not support the address registration function, it MUST drop the message, and SHOULD log this fact.
-
-DHCPv6 relay agents and switches that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}})
+DHCPv6 relay agents and switches that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}).
 
 ## DHCPv6 Address Registration Acknowledgement
 
@@ -260,6 +258,8 @@ The client SHOULD generate a new transaction ID when refreshing the registration
 If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
 The client MAY choose to notify the server when an address is no longer being used (the client is disconnecting from the network, the address lifetime expired or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero.
+
+If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
 
 ## Retransmission
 
