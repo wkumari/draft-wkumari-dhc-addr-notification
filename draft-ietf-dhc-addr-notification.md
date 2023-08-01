@@ -145,40 +145,6 @@ After successfully assigning a self-generated IPv6 address on one of its interfa
 {: #figops title="Address Registration Procedure" Address Registration Procedure}
 
 
-
-# DHCPv6 ADDR-REG-REPLY Message
-
-The DHCPv6 server sends an ADDR-REG-REPLY message in response to a valid ADDR-REG-INFORM message.  The format of the ADDR-REG-REPLY message is described as follows:
-
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |    msg-type   |               transaction-id                  |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                                                               |
-     .                            options                            .
-     .                           (variable)                          .
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      msg-type             Identifies the DHCPv6 message type;
-                           Set to ADDR-REG-REPLY (TBA2).
-
-      transaction-id       The transaction ID for this message exchange.
-
-      options              Options carried in this message.
-{: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
-
-The ADDR-REG-REPLY message MUST contain an IA Address option for the address being registered. The option MUST be identical to the one in the ADDR-REG-INFORM message that the server is replying to.
-
-Servers MUST ignore any received ADDR-REG-REPLY messages.
-
-Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
-
-- The IPv6 destination address does not match the address being registered.
-- The IA-Address option does not match the address being registered.
-- The address being registered is not assigned to the interface receiving the message.
-- The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
-
 # DHCPv6 Address Registration Procedure
 
 ## DHCPv6 Address Registration Request
@@ -247,9 +213,40 @@ DHCPv6 relay agents and switches that relay address registration messages direct
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of an ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back, using the  address being registered as the destination address for the packet.
+The server SHOULD acknowledge receipt of a valid ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back. The format of the ADDR-REG-REPLY message is described as follows:
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |    msg-type   |               transaction-id                  |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                                                               |
+     .                            options                            .
+     .                           (variable)                          .
+     |                                                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      msg-type             Identifies the DHCPv6 message type;
+                           Set to ADDR-REG-REPLY (TBA2).
+
+      transaction-id       The transaction ID for this message exchange.
+
+      options              Options carried in this message.
+{: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
+
+The destination address of the message is the address being registered.
 
 The server MUST copy the transaction-id from the ADDR-REG-INFORM message to the transaction-id field of the ADDR-REG-REPLY.
+
+The ADDR-REG-REPLY message MUST contain an IA Address option for the address being registered. The option MUST be identical to the one in the ADDR-REG-INFORM message that the server is replying to.
+
+Servers MUST ignore any received ADDR-REG-REPLY messages.
+
+Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
+
+- The IPv6 destination address does not match the address being registered.
+- The IA-Address option does not match the address being registered.
+- The address being registered is not assigned to the interface receiving the message.
+- The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
 
 The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
 
