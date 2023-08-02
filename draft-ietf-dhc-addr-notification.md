@@ -91,6 +91,7 @@ contributor:
 normative:
   RFC2119:
   RFC4007:
+  RFC4193:
   RFC4862:
   RFC6939:
   RFC8415:
@@ -183,7 +184,7 @@ Unlike other types of messages, which are sent from the link-local address of th
 
 On clients with multiple interfaces, the client MUST only send the packet on the network interface that has the address being registered, even if it has multiple interfaces with different addresses. If the same address is configured on multiple interfaces, then the client MUST send ADDR-REG-INFORM each time the address is configured on an interface that did not previously have it, and refresh each registration independently from the others.
 
-The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}).
+The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}). This includes ULA addresses, which are defined in {{!RFC4193}} to have global scope.
 The client MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
 
 The client SHOULD NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
@@ -243,7 +244,7 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 - The IPv6 destination address does not match the address being registered.
 - The IA-Address option does not match the address being registered.
 - The address being registered is not assigned to the interface receiving the message.
-- The transaction-id does not match the transaction-id the client used in its ADDR-REG-INFORM messages.
+- The transaction-id does not match the transaction-id the client used in the corresponding ADDR-REG-INFORM message.
 
 The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
 
