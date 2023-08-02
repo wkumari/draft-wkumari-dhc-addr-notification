@@ -194,13 +194,12 @@ Clients MUST discard any received ADDR-REG-INFORM messages.
 
 Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following conditions:
 
-- the address is not appropriate for the link;
 - the message does not include a Client Identifier option;
 - the message includes a Server Identifier option;
-- the message does not include the IA Address option;
+- the message does not include the IA Address option, or the IP address in the IA Address option does not match the source address of the original ADDR-REG-INFORM message sent by the client.
 - the message includes an Option Request Option.
 
-After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. If the address is appropriate, the server:
+After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
 
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so.
@@ -231,7 +230,7 @@ The server SHOULD acknowledge receipt of a valid ADDR-REG-INFORM message by send
       options              Options carried in this message.
 {: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
 
-The destination address of the message is the address being registered.
+If the ADDR-REG-INFORM message that the server is replying to was not relayed, then the IPv6 destination address of the message MUST be the address being registered. If the ADDR-REG-INFORM message was relayed, then the server MUST construct the Relay-reply message as specified in {{!RFC8415}} section 19.3.
 
 The server MUST copy the transaction-id from the ADDR-REG-INFORM message to the transaction-id field of the ADDR-REG-REPLY.
 
@@ -251,13 +250,13 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Registration Expiry and Refresh
 
-The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours ). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
+The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
 
 The client SHOULD generate a new transaction ID when refreshing the registration.
 
-If the address registration server does not receive such a refresh after the preferred lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
+If the address registration server does not receive such a refresh after the Valid Lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
 
-The client MAY choose to notify the server when an address is no longer being used (the client is disconnecting from the network, the address lifetime expired or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero.
+The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero.
 
 If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
 
