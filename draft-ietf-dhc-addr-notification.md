@@ -180,7 +180,7 @@ The ADDR-REG-INFORM message is dedicated for clients to initiate an address regi
 
 The client sends the DHCPv6 ADDR-REG-INFORM message to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2). The client MUST send separate messages for each address being registered.
 
-Unlike other types of messages, which are sent from the link-local address of the client, then ADDR-REG-INFORM message MUST be sent from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages.
+Unlike other types of messages, which are sent from the link-local address of the client, the ADDR-REG-INFORM message MUST be sent from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of L2 security to prevent a client from spoofing other clients' addresses this prevents an attacker from spoofing ADDR-REG-INFORM messages.
 
 On clients with multiple interfaces, the client MUST only send the packet on the network interface that has the address being registered, even if it has multiple interfaces with different addresses. If the same address is configured on multiple interfaces, then the client MUST send ADDR-REG-INFORM each time the address is configured on an interface that did not previously have it, and refresh each registration independently from the others.
 
@@ -197,7 +197,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 
 - the message does not include a Client Identifier option;
 - the message includes a Server Identifier option;
-- the message does not include the IA Address option, or the IP address in the IA Address option does not match the source address of the original ADDR-REG-INFORM message sent by the client.
+- the message does not include the IA Address option, or the IP address in the IA Address option does not match the source address of the original ADDR-REG-INFORM message sent by the client. The source address of the original message is the source IP address of the packet if it is not relayed, or the Peer-Address field of the innermost Relay-Forward message if it is relayed.
 - the message includes an Option Request Option.
 
 After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
@@ -291,7 +291,7 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 
 # IANA Considerations
 
-This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4, and ADDR-REG-REPLY (TBA2) described in Section 5, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/.
+This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4.1, and ADDR-REG-REPLY (TBA2) described in Section 4.2, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/.
 
 --- back
 
