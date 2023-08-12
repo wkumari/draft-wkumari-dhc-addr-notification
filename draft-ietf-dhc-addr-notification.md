@@ -254,8 +254,9 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 The client MUST refresh addresses as described below. Each refresh is scheduled after AddrRegRefresh seconds, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registrations to expire at the same time.
 
 Whenever the client creates an address or receives a PIO which updates the Valid Lifetime of an existing address, then:
+
 1. If no refresh is currently scheduled, it MUST register immediately and schedule a refresh.
-2. If a refresh is currently scheduled, it MUST reschedule the existing refresh if this would result in the refresh being sooner than currently scheduled.
+1. If a refresh is currently scheduled, it MUST reschedule the existing refresh if this would result in the refresh being sooner than currently scheduled.
 
 Discussion: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically:
 - If the network never changes the lifetime, or stops refreshing the lifetime, then only one refresh ever occurs. The address expires.
