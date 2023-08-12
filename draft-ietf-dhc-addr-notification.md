@@ -251,7 +251,18 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Registration Expiry and Refresh
 
-The client MUST refresh the registration every AddrRegRefresh seconds, where  AddrRegRefresh is min(1/3 of the Valid Lifetime filed in the very first PIO received to form the address; 4 hours). Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. In particular, retransmissions SHOULD be jittered to avoid synchronization causing a large number of registrations to expire at the same time.
+The client MUST refresh addresses as described below. Each refresh is scheduled after AddrRegRefresh seconds, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registrations to expire at the same time.
+
+Whenever the client creates an address or receives a PIO which updates the Valid Lifetime of an existing address, then:
+1. If no refresh is currently scheduled, it MUST register immediately and schedule a refresh.
+2. If a refresh is currently scheduled, it MUST reschedule the existing refresh if this would result in the refresh being sooner than currently scheduled.
+
+Discussion: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically:
+- If the network never changes the lifetime, or stops refreshing the lifetime, then only one refresh ever occurs. The address expires.
+- #1 ensures that any time the network changes the lifetime when no refresh is scheduled, the server will be informed of the correct lifetime. If the network does not change the address's lifetime, then the server already knows the correct lifetime and no update needs to be sent.
+- #2 ensures that if the network reduces the lifetime of the address, then the server will be informed of the new lifetime. If the network increases the lifetime of the address, the refresh will be sent at the previously scheduled time, and the server will be informed of the correct lifetime. From this point on, either the address expires (and the server is informed of when this will happen) or an RA increases the lifetime, in which case a refresh will be sent.
+
+Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. 
 
 The client SHOULD generate a new transaction ID when refreshing the registration.
 
