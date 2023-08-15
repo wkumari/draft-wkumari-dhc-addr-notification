@@ -263,7 +263,7 @@ Discussion: this algorithm ensures that refreshes are not sent too frequently, w
 - #1 ensures that any time the network changes the lifetime when no refresh is scheduled, the server will be informed of the correct lifetime. If the network does not change the address's lifetime, then the server already knows the correct lifetime and no update needs to be sent.
 - #2 ensures that if the network reduces the lifetime of the address, then the server will be informed of the new lifetime. If the network increases the lifetime of the address, the refresh will be sent at the previously scheduled time, and the server will be informed of the correct lifetime. From this point on, either the address expires (and the server is informed of when this will happen) or an RA increases the lifetime, in which case a refresh will be sent.
 
-Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below. 
+Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below.
 
 The client SHOULD generate a new transaction ID when refreshing the registration.
 
