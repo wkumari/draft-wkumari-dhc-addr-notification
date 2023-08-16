@@ -205,13 +205,13 @@ If the message is not discarded, the address registration server SHOULD verify t
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
-*    SHOULD send back an ADDR-REG-REPLY message.
+*    MUST send back an ADDR-REG-REPLY message to ensure the client does not retransmit.
 
 DHCPv6 relay agents and switches that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}).
 
 ## DHCPv6 Address Registration Acknowledgement
 
-The server SHOULD acknowledge receipt of a valid ADDR-REG-INFORM message by sending a ADDR-REG-REPLY message back. The format of the ADDR-REG-REPLY message is described as follows:
+The server MUST acknowledge receipt of a valid ADDR-REG-INFORM message by sending back an ADDR-REG-REPLY message. The format of the ADDR-REG-REPLY message is described as follows:
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -246,7 +246,21 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 - The address being registered is not assigned to the interface receiving the message.
 - The transaction-id does not match the transaction-id the client used in the corresponding ADDR-REG-INFORM message.
 
-The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
+The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received and that the client should not retansmit it. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
+
+
+## Retransmission
+
+To reduce the effects of packet loss on registration, the client SHOULD retransmit the registration message. Retransmissions SHOULD follow the standard retransmission logic specified by section 15 of [RFC8415] with the following default parameters:
+
+*     IRT 1 sec
+*     MRC 3
+
+The client SHOULD allow these parameters to be configured by the administrator.
+
+To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message. When the client retranmits the registration message, the lifetimes in the packet MUST be updated so that they match the current lifetimes of the address.
+
+If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
 
 ## Registration Expiry and Refresh
@@ -265,26 +279,13 @@ Discussion: this algorithm ensures that refreshes are not sent too frequently, w
 - Point #2 ensures that if the network reduces the lifetime of the address, then the server will be informed of the new lifetime. If the network increases the lifetime of the address, the refresh will be sent at the previously scheduled time, and the server will be informed of the correct lifetime. From this point on, either the address expires (and the server is informed of when this will happen) or an RA increases the lifetime, in which case a refresh will be sent.
 - The 1% tolerance ensures that the client will not refresh or reschedule refreshes if the Valid Lifetime experiences minor changes due to transmission delays or clock skew between the client and the router(s) sending the Router Advertisement.
 
-Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below.
+Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section above.
 
 The client MUST generate a new transaction ID when refreshing the registration.
 
 When the Client-Identifier-to-IPv6-address binding has expired, the server SHOULD remove remove it and consider the address as available for use.
 
 The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero. If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
-
-## Retransmission
-
-To reduce the effects of packet loss on registration, the client SHOULD retransmit the registration message. Retransmissions SHOULD follow the standard retransmission logic specified by section 15 of [RFC8415] with the following default parameters:
-
-*     IRT 1 sec
-*     MRC 3
-
-The client SHOULD allow these parameters to be configured by the administrator.
-
-To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message. When the client retranmits the registration message, the lifetimes in the packet MUST be updated so that they match the current lifetimes of the address.
-
-If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
 
 # Host configuration
@@ -310,6 +311,6 @@ This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) de
 # Acknowledgments
 {:numbered="false"}
 
-Much thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vynke, Timothy Winter for their feedback, comments and guidance.
+Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Éric Vyncke, Timothy Winters for their feedback, comments and guidance.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
