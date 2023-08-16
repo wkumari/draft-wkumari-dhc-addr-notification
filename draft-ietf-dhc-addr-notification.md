@@ -283,7 +283,7 @@ Registration refresh packets SHOULD be retransmitted using the same logic as des
 
 The client MUST generate a new transaction ID when refreshing the registration.
 
-When the Client-Identifier-to-IPv6-address binding has expired, the server SHOULD remove remove it and consider the address as available for use.
+When the Client-Identifier-to-IPv6-address binding has expired, the server SHOULD remove it and consider the address as available for use.
 
 The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero. If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
 
