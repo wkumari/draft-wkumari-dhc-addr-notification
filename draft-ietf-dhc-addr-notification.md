@@ -281,7 +281,7 @@ To reduce the effects of packet loss on registration, the client SHOULD retransm
 
 The client SHOULD allow these parameters to be configured by the administrator.
 
-To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message.
+To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message. When the client retranmits the registration message, the lifetimes in the packet MUST be updated so that they match the current lifetimes of the address.
 
 If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
