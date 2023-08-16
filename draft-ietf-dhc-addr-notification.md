@@ -202,7 +202,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 
 After receiving this ADDR-REG-INFORM message, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link [RFC8415], it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
 
-*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
+*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients which have requested an address), unless configured not to do so.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    SHOULD send back an ADDR-REG-REPLY message.
@@ -253,7 +253,7 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 The client MUST refresh addresses as described below. Each refresh is scheduled after AddrRegRefresh seconds, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registrations to expire at the same time.
 
-Whenever the client creates an address or receives a PIO which changes the Valid Lifetime of an existing address, then:
+Whenever the client creates an address or receives a PIO which changes the Valid Lifetime of an existing address by more than 1%, then:
 
 1. If no refresh is currently scheduled, it MUST register immediately and schedule a refresh.
 1. If a refresh is currently scheduled, it MUST reschedule the existing refresh if this would result in the refresh being sooner than currently scheduled.
@@ -262,16 +262,15 @@ Discussion: this algorithm ensures that refreshes are not sent too frequently, w
 - If the network never changes the lifetime, or stops refreshing the lifetime, then only one refresh ever occurs. The address expires.
 - #1 ensures that any time the network changes the lifetime when no refresh is scheduled, the server will be informed of the correct lifetime. If the network does not change the address's lifetime, then the server already knows the correct lifetime and no refresh needs to be sent.
 - #2 ensures that if the network reduces the lifetime of the address, then the server will be informed of the new lifetime. If the network increases the lifetime of the address, the refresh will be sent at the previously scheduled time, and the server will be informed of the correct lifetime. From this point on, either the address expires (and the server is informed of when this will happen) or an RA increases the lifetime, in which case a refresh will be sent.
+- The 1% tolerance ensures that the client will not refresh or reschedule refreshes if the Valid Lifetime experiences minor changes due to transmission delays or clock skew between the client and the router(s) sending the Router Advertisement.
 
 Registration refresh packets SHOULD be retransmitted using the same logic as described in the 'Retransmission' section below.
 
 The client SHOULD generate a new transaction ID when refreshing the registration.
 
-If the address registration server does not receive such a refresh after the Valid Lifetime has passed, it SHOULD remove the record of the Client-Identifier-to-IPv6-address binding.
-
 The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero.
 
-If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
+When the Client-Identifier-to-IPv6-address binding has expired, the server SHOULD remove remove it and consider the address as available for use. If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
 
 ## Retransmission
 
@@ -282,7 +281,7 @@ To reduce the effects of packet loss on registration, the client SHOULD retransm
 
 The client SHOULD allow these parameters to be configured by the administrator.
 
-To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message.
+To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message. When the client retranmits the registration message, the lifetimes in the packet MUST be updated so that they match the current lifetimes of the address.
 
 If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
 
