@@ -1,4 +1,4 @@
----
+/---
 title: "Registering Self-generated IPv6 Addresses using DHCPv6"
 abbrev: "Registering SLAAC Addresses using DHCPv6"
 category: std
@@ -206,6 +206,8 @@ If the message is not discarded, the address registration server SHOULD verify t
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    MUST send back an ADDR-REG-REPLY message to ensure the client does not retransmit.
+
+Although a client "MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6", if a server does receive such a message, it should log and discard it.
 
 DHCPv6 relay agents and switches that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}).
 
