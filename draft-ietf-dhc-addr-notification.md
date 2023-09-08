@@ -267,7 +267,7 @@ If an ADDR-REG-REPLY message is received for the address being registered, the c
 
 ## Registration Expiry and Refresh
 
-The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD schedule refreshes as described below. Each refresh is scheduled for AddrRegRefresh seconds in the future, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registration messages from different clients at the same time.
+The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below. Each refresh is scheduled for AddrRegRefresh seconds in the future, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registration messages from different clients at the same time.
 
 Whenever the client creates an address or receives a PIO which changes the Valid Lifetime of an existing address by more than 1%, then:
 
