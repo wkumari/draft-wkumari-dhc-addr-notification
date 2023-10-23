@@ -1,0 +1,30 @@
++------+          +------------------+       +---------------+
+| HOST |          | FIRST-HOP ROUTER |       | DHCPv6 SERVER |
++---+--+          +---------+--------+       +-------+-------+
+    |      SLAAC            |                        |
+    |<--------------------> |                        |
+    |                       |                        |
+    |                                                |
+    |  src: link-local address                       |
+    | -------------------------------------------->  |
+    |    INFORMATION-REQUEST MESSAGE                 |
+    |       - OPTION-REQUEST OPTION                  |
+    |          -- OPTION_ADDRESS_REG_ENABLE code     |
+    |                                                |
+    |                                                |
+    |                                                |
+    | <--------------------------------------------  |
+    |     REPLY MESSAGE                              |
+    |       - ADDR_REG_ENABLE OPTION                 |
+    |                                                |
+    |                                                |
+    |  src: address being registered                 |
+    | -------------------------------------------->  |
+    |    ADDR-REG-INFORM MESSAGE                     |Register/
+    |                                                |log addresses
+    |                                                |
+    |                                                |
+    | <--------------------------------------------  |
+    |        ADD-REG-REPLY MESSAGE                   |
+    |                                                |
+    |                                                |
