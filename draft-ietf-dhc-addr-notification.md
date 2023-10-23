@@ -125,30 +125,81 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 # Registration Mechanism Overview
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
-The DHCPv6 IA Address option {{!RFC8415}} is used to specify the address to be registered.
+This document introduces a new Address Registration (OPTION_ADDRESS_REG_ENABLE) option which indicates that the server supports the registration mechanism.
+Before registering any addresses, the client sends an Information-Request message and includes the Address Registration option code
+into the Option Request option (see Section 21.7 of {{!RFC8415}}).
+If the server supports the address registration, it includes an Address Registration option into its Reply message.
+The client MUST treat an absense of the Address Registration option in the Reply message as the explicit signal, indicating
+that the server does not support (or is not willing to receive) any address registration information. 
+Upon receiving a Reply message containing the Address Registration option, the client proceeds with registering the addresses.
 
-After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use (as shown in Fig.1).
+After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains an DHCPv6 IA Address option {{!RFC8415}} to specify the address to being registered.
 
-~~~~~~~~~~
-+----+   +----------------+                  +---------------+
-|Host|   |First-hop router|                  |Addr-Reg Server|
-+----+   +----------------+                  +---------------+
-|   SLAAC   |                                      |
-|<--------->|                                      |
-|           |                                      |
-|           |        ADDR-REG-INFORM               |
-|------------------------------------------------->|
-|           |                                      |Register / log
-|           |        ADDR-REG-REPLY                |address
-|<-------------------------------------------------
+The address registration mechanism overview is shown in Fig.1. 
 
 ~~~~~~~~~~
-{: #figops title="Address Registration Procedure" Address Registration Procedure}
+
++------+          +------------------+       +---------------+
+| HOST |          | FIRST-HOP ROUTER |       | DHCPv6 SERVER |
++---+--+          +---------+--------+       +-------+-------+
+    |      SLAAC            |                        |
+    |<--------------------> |                        |
+    |                       |                        |
+    |                                                |
+    |  src: link-local address                       |
+    | -------------------------------------------->  |
+    |    INFORMATION-REQUEST MESSAGE                 |
+    |       - OPTION-REQUEST OPTION                  |
+    |          -- OPTION_ADDRESS_REG_ENABLE code     |
+    |                                                |
+    |                                                |
+    |                                                |
+    |<---------------------------------------------  |
+    |     REPLY MESSAGE                              |
+    |       - ADDR_REG_ENABLE OPTION                 |
+    |                                                |
+    |                                                |
+    |  src: address being registered                 |
+    | -------------------------------------------->  |
+    |    ADDR-REG-INFORM MESSAGE                     |Register/
+    |                                                |log addresses
+    |                                                |
+    |                                                |
+    | <--------------------------------------------  |
+    |        ADD-REG-REPLY MESSAGE                   |
+    |                                                |
+
+~~~~~~~~~~
+
+Figure 1: Address Registration Procedure Overview
 
 
 # DHCPv6 Address Registration Procedure
 
-## DHCPv6 Address Registration Request
+## DHCPv6 Address Registration Option
+
+The DHCPv6 server includes an Address Registration option (OPTION_ADDR_REG) to indicate that the server supports the mechanism described in this document.
+The format of the Address Registration option is described as follows:
+
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |          option-code          |           option-len          |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+     option-code           OPTION_ADDR_REG (TBA0)
+
+     option-len            0
+
+
+Figure 2: DHCPv6 Address Registration option
+
+A client SHOULD include this option in an Option-Request Option of the Information-Request message if the client has the address registration mechanism enabled.
+
+A server which supports the address registration mechanism MUST include this option in a Reply message sent in response to a Information-Request message.
+
+## DHCPv6 Address Registration Request Message
 
 The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is in use.  The format of the ADDR-REG-INFORM message is described as follows:
 
@@ -168,7 +219,9 @@ The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 addres
       transaction-id       The transaction ID for this message exchange.
 
       options              Options carried in this message.
-{: #message-inform title="DHCPv6 ADDR-REG-INFORM message"}
+
+Figure 3: DHCPv6 ADDR-REG-INFORM message
+
 
 The client MUST generate a transaction ID as described in [RFC8415] and insert this value in the "transaction-id" field.
 
@@ -231,7 +284,8 @@ The server MUST acknowledge receipt of a valid ADDR-REG-INFORM message by sendin
       transaction-id       The transaction ID for this message exchange.
 
       options              Options carried in this message.
-{: #message-reply title="DHCPv6 ADDR-REG-REPLY message"}
+
+Figure 4: DHCPv6 ADDR-REG-REPLY message
 
 If the ADDR-REG-INFORM message that the server is replying to was not relayed, then the IPv6 destination address of the message MUST be the address being registered. If the ADDR-REG-INFORM message was relayed, then the server MUST construct the Relay-reply message as specified in {{!RFC8415}} section 19.3.
 
@@ -249,6 +303,18 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 - The transaction-id does not match the transaction-id the client used in the corresponding ADDR-REG-INFORM message.
 
 The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received and that the client should not retansmit it. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
+
+## Address Registration Support Signalling
+
+To ensure that ADDR-REG-INFORM messages are only sent if there is at least one DHCPv6 server which supports the address registration mechanism, the client SHOULD send an Information-Request message when connecting to the network and performing IPv6 interface configuration.
+After that, the client transmits periodic Information-request messages as per Section 18.2.6 of {{!RFC8415}}.
+An Option Request option contained in that Information-Request message (see Section 18.1.5 of {{!RFC8415}}) MUST contain an Address Registration option code.
+
+If no Reply messages received in response contain an Address Registration option, the client MUST NOT send any ADDR-REG-INFORM messages. If at least one Reply contains an Address Registration option, the client SHOULD start sending ADDR-REG-INFORM messages as described in this document.
+
+When the client received an Address Registration option in an earlier Reply, then sends an Information-request and
+the Address Registration option is not not present in the Reply, the client MUST stop sending ADDR-REG-INFORM messages
+(see Section 18.2.10 of {{!RFC8415}}).
 
 
 ## Retransmission
@@ -309,7 +375,12 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 
 # IANA Considerations
 
-This document defines two new DHCPv6 messages, ADDR-REG-INFORM message (TBA1) described in Section 4.1, and ADDR-REG-REPLY (TBA2) described in Section 4.2, that requires an allocation out of the registry of Message Types defined at http://www.iana.org/assignments/dhcpv6-parameters/.
+This document introduces the following new entities which require an allocation out of the DHCPv6 registries defined at http://www.iana.org/assignments/dhcpv6-parameters/:
+
+*   one new DHCPv6 option (OPTION_ADDR_REG, TBA0, described in Section 4.1) which requires an allocation out of the registry of DHCPv6 Option Codes.
+*   two new DHCPv6 messages which require an allocation out of the registry of Message Types:
+    *  ADDR-REG-INFORM message (TBA1) described in Section 4.2
+    *  ADDR-REG-REPLY (TBA2) described in Section 4.3. 
 
 --- back
 
