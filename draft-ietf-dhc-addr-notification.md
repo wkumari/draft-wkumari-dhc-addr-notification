@@ -130,12 +130,12 @@ Before registering any addresses, the client sends an Information-Request messag
 into the Option Request option (see Section 21.7 of {{!RFC8415}}).
 If the server supports the address registration, it includes an Address Registration option into its Reply message.
 The client MUST treat an absense of the Address Registration option in the Reply message as the explicit signal, indicating
-that the server does not support (or is not willing to receive) any address registration information. 
+that the server does not support (or is not willing to receive) any address registration information.
 Upon receiving a Reply message containing the Address Registration option, the client proceeds with registering the addresses.
 
 After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains an DHCPv6 IA Address option {{!RFC8415}} to specify the address to being registered.
 
-The address registration mechanism overview is shown in Fig.1. 
+The address registration mechanism overview is shown in Fig.1.
 
 ~~~~~~~~~~
 
