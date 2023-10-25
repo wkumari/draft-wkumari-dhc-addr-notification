@@ -380,7 +380,7 @@ This document introduces the following new entities which require an allocation 
 *   one new DHCPv6 option (OPTION_ADDR_REG, TBA0, described in Section 4.1) which requires an allocation out of the registry of DHCPv6 Option Codes.
 *   two new DHCPv6 messages which require an allocation out of the registry of Message Types:
     *  ADDR-REG-INFORM message (TBA1) described in Section 4.2
-    *  ADDR-REG-REPLY (TBA2) described in Section 4.3. 
+    *  ADDR-REG-REPLY (TBA2) described in Section 4.3.
 
 --- back
 
