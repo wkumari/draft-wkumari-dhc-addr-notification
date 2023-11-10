@@ -304,28 +304,16 @@ Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following 
 
 The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has been received and that the client should not retansmit it. The ADDR-REG-REPLY message MUST NOT be considered as any indication of the address validity and MUST NOT be required for the address to be usable. DHCPv6 relays, or other devices that snoop ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or security state based on the ADDR-REG-REPLY message.
 
-## Address Registration Support Signalling
+## Signalling Address Registration Support
 
-To ensure that ADDR-REG-INFORM messages are only sent if there is at least one DHCPv6 server which supports the address registration mechanism, the client SHOULD send an Information-Request message when connecting to the network and performing IPv6 interface configuration.
-If the Reply messages received in response contain an Address Registration option, the client starts sending Registration Request messages as described above.
+The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client discovers this by using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. Whenever the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it SHOULD start transmitting ADDR-REG-INFORM messsages. Whenever the client receives and processes a Reply message without the OPTION_ADDR_REG_ENABLE option, it MUST stop transmitting ADDR-REG-INFORM messsages.
 
-After that, the client transmits periodic Information-request messages as per Section 18.2.6 of {{!RFC8415}}.
-An Option Request option contained in that Information-Request message (see Section 18.1.5 of {{!RFC8415}}) MUST contain an Address Registration option code.
+If there are multiple DHCPv6 servers on the network, it is possible that some of them support address registration and some do not. {{!RFC8415}} does not specify the client behaviour if a client receives multiple Reply messages from different servers contain conflicting information. In this case, client behaviour is unspecified, and clients might oscillate between enabling and disabling address registration. Consequently:
 
-If Reply messages received in response to an Information-request message does not contain an Address Registration option, the client MUST NOT send any ADDR-REG-INFORM messages.
+*   The registration mechanism is not reliable, since the client might stop using address registration while it is still connected ot the network.
+*   The servers which do not support address registration will still receive ADDR-REG-INFORM messages and will have to discard them.
 
-When the client received an Address Registration option in an earlier Reply, then sends an Information-request and
-the Address Registration option is not not present in the Reply, the client MUST stop sending ADDR-REG-INFORM messages
-(see Section 18.2.10 of {{!RFC8415}}).
-
- {{!RFC8415}} does not specify the client behaviour if the Reply messages received from different servers contain conflicting information (for example, one Reply contain OPTION_ADDR_REG_ENABLE option and another does not).
-If there are multiple DHCPv6 servers on the network, it is possible that only some of those servers support the address registration mechanism, while other servers do not.
-In such networks, every time the client sends an Information-Request message, the client might be oscillating between starting and stopping address registration, depending on the order in which Reply messages are received. As a result, if some servers support the registration mechanism while other don't:
-
-*   the registration mechanism is not reliable (as the client might stop it upon receiving a Reply without the OPTION_ADDR_REG_ENABLE option.
-*   the servers which do not support the registration will still be receiving Registration Request messages (and drop them).
-
-Such configuration can exist during incremental rollout of the registration mechanism support across the DHCPv6 infrastructure and is NOT RECOMMENDED long-term.
+Such a configuration can exist during incremental rollout of address registration support across the DHCPv6 infrastructure and is NOT RECOMMENDED long-term.
 
 ## Retransmission
 
