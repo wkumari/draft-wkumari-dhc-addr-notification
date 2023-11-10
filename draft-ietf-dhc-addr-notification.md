@@ -150,7 +150,7 @@ The address registration mechanism overview is shown in Fig.1.
     | -------------------------------------------->  |
     |    INFORMATION-REQUEST MESSAGE                 |
     |       - OPTION-REQUEST OPTION                  |
-    |          -- OPTION_ADDR_REG_ENABLE code     |
+    |          -- OPTION_ADDR_REG_ENABLE code        |
     |                                                |
     |                                                |
     |                                                |
