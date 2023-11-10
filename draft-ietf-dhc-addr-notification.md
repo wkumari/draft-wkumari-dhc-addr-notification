@@ -126,9 +126,8 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
-Before registering any addresses, the client sends an Information-Request message and includes the Address Registration option code
-into the Option Request option (see Section 21.7 of {{!RFC8415}}).
-If the server supports the address registration, it includes an Address Registration option into its Reply message.
+Before registering any addresses, the client determines whether the network supports address registration by including the Address Registration option code the Option Request option (see Section 21.7 of {{!RFC8415}}) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process.
+If the server supports the address registration, it includes an Address Registration option in its Reply message.
 The client MUST treat an absense of the Address Registration option in the Reply message as the explicit signal, indicating
 that the server does not support (or is not willing to receive) any address registration information.
 Upon receiving a Reply message containing the Address Registration option, the client proceeds with registering the addresses.
@@ -148,10 +147,11 @@ The address registration mechanism overview is shown in Fig.1.
     |                                                |
     |  src: link-local address                       |
     | -------------------------------------------->  |
-    |    INFORMATION-REQUEST MESSAGE                 |
-    |       - OPTION-REQUEST OPTION                  |
+    |    INFORMATION-REQUEST or SOLICIT/...          |
+    |       - OPTION REQUEST OPTION                  |
     |          -- OPTION_ADDR_REG_ENABLE code        |
     |                                                |
+    |    ...                                         |
     |                                                |
     |                                                |
     |<---------------------------------------------  |
@@ -195,9 +195,9 @@ The format of the Address Registration option is described as follows:
 
 Figure 2: DHCPv6 Address Registration option
 
-A client SHOULD include this option in an Option-Request Option of the Information-Request message if the client has the address registration mechanism enabled.
+If a client has the address registration mechanism enabled, it SHOULD include this option in all Option Request options that it sends.
 
-A server which supports the address registration mechanism MUST include this option in a Reply message sent in response to a Information-Request message.
+A server which supports the address registration mechanism MUST include this option in Reply messages.
 
 ## DHCPv6 Address Registration Request Message
 
