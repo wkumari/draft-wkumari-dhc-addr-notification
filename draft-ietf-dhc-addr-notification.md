@@ -125,7 +125,7 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 # Registration Mechanism Overview
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
-This document introduces a new Address Registration (OPTION_ADDRESS_REG_ENABLE) option which indicates that the server supports the registration mechanism.
+This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
 Before registering any addresses, the client sends an Information-Request message and includes the Address Registration option code
 into the Option Request option (see Section 21.7 of {{!RFC8415}}).
 If the server supports the address registration, it includes an Address Registration option into its Reply message.
@@ -150,13 +150,13 @@ The address registration mechanism overview is shown in Fig.1.
     | -------------------------------------------->  |
     |    INFORMATION-REQUEST MESSAGE                 |
     |       - OPTION-REQUEST OPTION                  |
-    |          -- OPTION_ADDRESS_REG_ENABLE code     |
+    |          -- OPTION_ADDR_REG_ENABLE code     |
     |                                                |
     |                                                |
     |                                                |
     |<---------------------------------------------  |
     |     REPLY MESSAGE                              |
-    |       - ADDR_REG_ENABLE OPTION                 |
+    |       - OPTION_ADDR_REG_ENABLE                 |
     |                                                |
     |                                                |
     |  src: address being registered                 |
@@ -178,7 +178,7 @@ Figure 1: Address Registration Procedure Overview
 
 ## DHCPv6 Address Registration Option
 
-The DHCPv6 server includes an Address Registration option (OPTION_ADDR_REG) to indicate that the server supports the mechanism described in this document.
+The DHCPv6 server includes an Address Registration option (OPTION_ADDR_REG_ENABLE) to indicate that the server supports the mechanism described in this document.
 The format of the Address Registration option is described as follows:
 
 
@@ -188,7 +188,7 @@ The format of the Address Registration option is described as follows:
      |          option-code          |           option-len          |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-     option-code           OPTION_ADDR_REG (TBA0)
+     option-code           OPTION_ADDR_REG_ENABLE (TBA0)
 
      option-len            0
 
@@ -377,7 +377,7 @@ In particular, the ADDR-REG-INFORM message MUST not be used for authentication a
 
 This document introduces the following new entities which require an allocation out of the DHCPv6 registries defined at http://www.iana.org/assignments/dhcpv6-parameters/:
 
-*   one new DHCPv6 option (OPTION_ADDR_REG, TBA0, described in Section 4.1) which requires an allocation out of the registry of DHCPv6 Option Codes.
+*   one new DHCPv6 option (OPTION_ADDR_REG_ENABLE, TBA0, described in Section 4.1) which requires an allocation out of the registry of DHCPv6 Option Codes.
 *   two new DHCPv6 messages which require an allocation out of the registry of Message Types:
     *  ADDR-REG-INFORM message (TBA1) described in Section 4.2
     *  ADDR-REG-REPLY (TBA2) described in Section 4.3.
