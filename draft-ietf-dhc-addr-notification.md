@@ -253,7 +253,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 - the message does not include the IA Address option, or the IP address in the IA Address option does not match the source address of the original ADDR-REG-INFORM message sent by the client. The source address of the original message is the source IP address of the packet if it is not relayed, or the Peer-Address field of the innermost Relay-Forward message if it is relayed.
 - the message includes an Option Request Option.
 
-If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415]. If the server believes that the address being registered is not appropriate to the link, it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
+If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client. Otherwise, it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
 
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so.
