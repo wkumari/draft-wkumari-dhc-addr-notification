@@ -25,13 +25,13 @@
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.0.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.9
+    wcwidth 0.2.12
 -->
 <link href="draft-ietf-dhc-addr-notification.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1030,11 +1030,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Registering SLAAC Addresses using DHCPv6</td>
-<td class="right">November 2023</td>
+<td class="right">December 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Kumari, et al.</td>
-<td class="center">Expires 13 May 2024</td>
+<td class="center">Expires 6 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1047,12 +1047,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-dhc-addr-notification-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-11-10" class="published">10 November 2023</time>
+<time datetime="2023-12-04" class="published">4 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-05-13">13 May 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-06">6 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1250,11 +1250,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
-Before registering any addresses, the client determines whether the network supports address registration by including the Address Registration option code the Option Request option (see Section 21.7 of <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span>) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process.
-If the server supports the address registration, it includes an Address Registration option in its Reply message.
-The client <span class="bcp14">MUST</span> treat an absense of the Address Registration option in the Reply message as the explicit signal, indicating
-that the server does not support (or is not willing to receive) any address registration information.
-Upon receiving a Reply message containing the Address Registration option, the client proceeds with registering the addresses.<a href="#section-3-1" class="pilcrow">¶</a></p>
+Before registering any addresses, the client <span class="bcp14">MUST</span> determine whether the network supports address registration. It can do this by including the Address Registration option code the Option Request option (see Section 21.7 of <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span>) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Reply message.
+If the network does not support (or is not willing to receive) any address registration information, the client <span class="bcp14">MUST NOT</span> register any addresses. Otherwise, the client registers addresses as described below.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification <span class="bcp14">SHOULD</span> multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains an DHCPv6 IA Address option <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span> to specify the address to being registered.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">The address registration mechanism overview is shown in Fig.1.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-4">
@@ -1458,17 +1455,8 @@ The client <span class="bcp14">MUST NOT</span> send the  ADDR-REG-INFORM message
         <h3 id="name-signalling-address-registra">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-signalling-address-registra" class="section-name selfRef">Signalling Address Registration Support</a>
         </h3>
-<p id="section-4.4-1">The client <span class="bcp14">MUST NOT</span> register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client discovers this by using the OPTION_ADDR_REG_ENABLE option. The client <span class="bcp14">SHOULD</span> include this option code in all Option Request options that it sends. Whenever the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it <span class="bcp14">SHOULD</span> start transmitting ADDR-REG-INFORM messsages. Whenever the client receives and processes a Reply message without the OPTION_ADDR_REG_ENABLE option, it <span class="bcp14">MUST</span> stop transmitting ADDR-REG-INFORM messsages.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">If there are multiple DHCPv6 servers on the network, it is possible that some of them support address registration and some do not. <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span> does not specify the client behaviour if a client receives multiple Reply messages from different servers contain conflicting information. In this case, client behaviour is unspecified, and clients might oscillate between enabling and disabling address registration. Consequently:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.4-3.1">
-            <p id="section-4.4-3.1.1">The registration mechanism is not reliable, since the client might stop using address registration while it is still connected ot the network.<a href="#section-4.4-3.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-3.2">
-            <p id="section-4.4-3.2.1">The servers which do not support address registration will still receive ADDR-REG-INFORM messages and will have to discard them.<a href="#section-4.4-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.4-4">Such a configuration can exist during incremental rollout of address registration support across the DHCPv6 infrastructure and is <span class="bcp14">NOT RECOMMENDED</span> long-term.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">The client <span class="bcp14">MUST NOT</span> register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client <span class="bcp14">SHOULD</span> include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. If the client later receives and processes a Reply message without the the OPTION_ADDR_REG_ENABLE from a server that previously included the option, it <span class="bcp14">MUST</span> stop transmitting ADDR-REG-INFORM messsages.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">This host behavior allows the network to disable address registration after enabling it. It also allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and re-start address registration if some of the network's DHCPv6 servers support it and some of them do not.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="retransmission">
