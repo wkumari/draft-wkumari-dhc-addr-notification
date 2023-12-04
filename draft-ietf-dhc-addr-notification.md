@@ -126,11 +126,8 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
-Before registering any addresses, the client determines whether the network supports address registration by including the Address Registration option code the Option Request option (see Section 21.7 of {{!RFC8415}}) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process.
-If the server supports the address registration, it includes an Address Registration option in its Reply message.
-The client MUST treat an absense of the Address Registration option in the Reply message as the explicit signal, indicating
-that the server does not support (or is not willing to receive) any address registration information.
-Upon receiving a Reply message containing the Address Registration option, the client proceeds with registering the addresses.
+Before registering any addresses, the client MUST determine whether the network supports address registration. It can do this by including the Address Registration option code the Option Request option (see Section 21.7 of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Reply message.
+If the network does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses. Otherwise, the client registers addresses as described below.
 
 After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains an DHCPv6 IA Address option {{!RFC8415}} to specify the address to being registered.
 
@@ -306,14 +303,9 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Signalling Address Registration Support
 
-The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client discovers this by using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. Whenever the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it SHOULD start transmitting ADDR-REG-INFORM messsages. Whenever the client receives and processes a Reply message without the OPTION_ADDR_REG_ENABLE option, it MUST stop transmitting ADDR-REG-INFORM messsages.
+The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. If the client later receives and processes a Reply message without the the OPTION_ADDR_REG_ENABLE from a server that previously included the option, it MUST stop transmitting ADDR-REG-INFORM messsages.
 
-If there are multiple DHCPv6 servers on the network, it is possible that some of them support address registration and some do not. {{!RFC8415}} does not specify the client behaviour if a client receives multiple Reply messages from different servers contain conflicting information. In this case, client behaviour is unspecified, and clients might oscillate between enabling and disabling address registration. Consequently:
-
-*   The registration mechanism is not reliable, since the client might stop using address registration while it is still connected ot the network.
-*   The servers which do not support address registration will still receive ADDR-REG-INFORM messages and will have to discard them.
-
-Such a configuration can exist during incremental rollout of address registration support across the DHCPv6 infrastructure and is NOT RECOMMENDED long-term.
+This host behavior allows the network to disable address registration after enabling it. It also allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and re-start address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
 ## Retransmission
 
