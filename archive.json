@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-03T00:05:38.950797+00:00",
+  "timestamp": "2023-12-05T00:05:02.497501+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2608,6 +2608,48 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 67,
+      "id": "PR_kwDOG4kJEc5hDbzD",
+      "title": "Avoid flapping if some servers support registration and some don't.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/67",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Instead, always register if at least one server returns the OPTION_ADDR_REG_ENABLE option, and say the client MUST stop registering if that server stops returning the option.\r\n\r\nAs a side effect, this text no longer forbids signalling support for address registration in other ways, e.g., via an RA option.",
+      "createdAt": "2023-12-04T13:18:15Z",
+      "updatedAt": "2023-12-04T21:59:14Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "71618f222e8dac9124b328d8db7f4a5b10164447",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "fix-flap-problem",
+      "headRefOid": "a1b701e94934212a91acd0499eb23ef7c2e733f1",
+      "closedAt": "2023-12-04T21:59:13Z",
+      "mergedAt": "2023-12-04T21:59:13Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "93255f60bf4965f72f846cd715aa853d2bbc7516"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc5pHSwl",
+          "commit": {
+            "abbreviatedOid": "a1b701e"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T21:59:08Z",
+          "updatedAt": "2023-12-04T21:59:08Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
