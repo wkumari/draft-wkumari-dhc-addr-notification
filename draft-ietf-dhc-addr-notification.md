@@ -353,6 +353,40 @@ The client MAY choose to notify the server when an address is no longer being us
 
 DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM messages. This could be used, for example, to reduce network traffic on networks where the servers are known not to support the message type. Sending the messages SHOULD be enabled by default.
 
+# DHCPv6 server configuration
+
+A DHCPv6 server running on a router or system hosting virtual machines (or containers) will often interact with the network as a DHCPv6-client in order to acquire a routable prefix for the "downstream" network.
+
+This DHCPv6 server MUST collect names from ADDR-REG-INFORM options it received into its own database, acknowledging them itself.
+It should do this regardless of whether or not upstream registration is supported, as upstream registration may not yet be enabled.
+
+Such a server MAY send registrations to the upstream DHCPv6 server based upon the database of mappings that it has.
+It should send these registrations one at a time, over the registration interval.
+
+## DHCPv6 prefix per host
+
+When {{?I-D.ietf-v6ops-dhcp-pd-per-device}} is used by a host, then the host may know all of the addresses within the prefix which are in use.
+The host sends registrations for its own name(s) based upon the addresses which it currently has in use.
+This behaviour SHOULD be enabled by default using the same considerations as for a host.
+
+## DHCPv6 prefix for virtual machines and containers
+
+A host system that acts as a hypervisor for virtual machines, or which uses network partitioning technics such as containers obtains a IPv6 prefix for other nodes.
+It may offer addresses via router advertisement (SLAAC), DHCPv6, or in the case of containers, it may be able to configure the addresses directly.
+Such a virtualization system SHOULD send DHCPv6 Advertise messages with the OPTION\_ADDR\_REG\_ENABLE option.
+
+## DHCPv6 prefix for for CPE
+
+An {{RFC7084}} compliant router will obtain a prefix from an upstream ISP.
+The ISP might turn on address registration by adding the OPTION\_ADDR\_REG\_ENABLE option on the WAN side.
+
+The use of the technology in this specification for diagnostics by the home network owner is as important as in the enterprise case, and there are many home routers that already maintain databases of hosts in order to do this.
+(Or allow an ISP technician to help)
+
+However, indistriminate forwarding of the address registrations is a privacy violation when transmitted outside of the home network.
+
+CPEs SHOULD ignore such options and SHOULD NOT proxy registrations from the LAN side of the network onto the WAN side unless explicitely enabled.
+
 
 # Security Considerations
 
