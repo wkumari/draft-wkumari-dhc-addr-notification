@@ -377,7 +377,7 @@ Such a virtualization system SHOULD send DHCPv6 Advertise messages with the OPTI
 
 ## DHCPv6 prefix for for CPE
 
-An {{RFC7084}} compliant router will obtain a prefix from an upstream ISP.
+An {{!RFC7084}} compliant router will obtain a prefix from an upstream ISP.
 The ISP might turn on address registration by adding the OPTION\_ADDR\_REG\_ENABLE option on the WAN side.
 
 The use of the technology in this specification for diagnostics by the home network owner is as important as in the enterprise case, and there are many home routers that already maintain databases of hosts in order to do this.
