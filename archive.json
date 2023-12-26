@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-24T00:05:32.166882+00:00",
+  "timestamp": "2023-12-26T00:05:08.736165+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2650,6 +2650,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 68,
+      "id": "PR_kwDOG4kJEc5itxC8",
+      "title": "Chain of addr inform",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/68",
+      "state": "OPEN",
+      "author": "mcr",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "trial text on address registration proxy operation",
+      "createdAt": "2023-12-24T16:38:29Z",
+      "updatedAt": "2023-12-24T16:51:09Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "93255f60bf4965f72f846cd715aa853d2bbc7516",
+      "headRepository": "mcr/draft-wkumari-dhc-addr-notification",
+      "headRefName": "chain-of-addr-inform",
+      "headRefOid": "f70251c12d23679a5ce26d04fd5e1bb271acf335",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
