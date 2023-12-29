@@ -360,6 +360,16 @@ An attacker may attempt to register a large number of addresses in quick success
 
 If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a host from registering an address owned by another host.
 
+If the network doesn't have MLD snooping enabled, then IPv6 link-local multicast traffic is effectively transmitted as broadcast.
+In such networks, an on-link attacker listening to DHCPv6 messages might obtain information about IPv6 addresses assigned to the host.
+However, hiding information about the specific IPv6 address should not be considered a security measure, as such information is usually disclosed via Duplicate Address Detection {{!RFC4862}} to all nodes anyway if MLD snooping is not enabled.
+
+
+If MLD snooping is enabled, an attacker might be able to join the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group to listen for address registration messages.
+However the same result can be achieved by joining the All Routers Address (ff02::2) group and listen to Gratuitous Neighbor Advertisement messages {{!RFC9131}}. It should be noted that this particular scenario shares the fate with DHCPv6 address assignment: if an attacker can join the All_DHCP_Relay_Agents_and_Servers multicast group, they would be able to monitor all DHCPv6 messages sent from the client to DHCPv6 servers and relays, and therefore obtain the information about addresses being assiged via DHCPv6. 
+If revealing other hosts addresses and alllowing onlink peer-to-peer communication is undesirable for a given network segment, then layer2 (link-layer) isolation shall be used.
+
+
 One of the use cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
 In particular, the ADDR-REG-INFORM message MUST not be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
 
