@@ -5,14 +5,14 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 13 May 2024                                            R. Asati
+Expires: 1 July 2024                                            R. Asati
                                                      Cisco Systems, Inc.
                                                               L. Colitti
                                                               J. Linkova
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                        10 November 2023
+                                                        29 December 2023
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 May 2024.
+   This Internet-Draft will expire on 1 July 2024.
 
 Copyright Notice
 
@@ -82,7 +82,7 @@ Table of Contents
      4.2.  DHCPv6 Address Registration Request Message
        4.2.1.  Server message processing
      4.3.  DHCPv6 Address Registration Acknowledgement
-     4.4.  Address Registration Support Signalling
+     4.4.  Signalling Address Registration Support
      4.5.  Retransmission
      4.6.  Registration Expiry and Refresh
    5.  Host configuration
@@ -138,16 +138,17 @@ Table of Contents
    This document introduces a new Address Registration
    (OPTION_ADDR_REG_ENABLE) option which indicates that the server
    supports the registration mechanism.  Before registering any
-   addresses, the client sends an Information-Request message and
-   includes the Address Registration option code into the Option Request
-   option (see Section 21.7 of [RFC8415]).  If the server supports the
-   address registration, it includes an Address Registration option into
-   its Reply message.  The client MUST treat an absense of the Address
-   Registration option in the Reply message as the explicit signal,
-   indicating that the server does not support (or is not willing to
-   receive) any address registration information.  Upon receiving a
-   Reply message containing the Address Registration option, the client
-   proceeds with registering the addresses.
+   addresses, the client MUST determine whether the network supports
+   address registration.  It can do this by including the Address
+   Registration option code the Option Request option (see Section 21.7
+   of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or
+   Rebind messages it sends to the server as part of the regular
+   stateless or stateful DHCPv6 configuration process.  If the server
+   supports address registration, it includes an Address Registration
+   option in its Reply message.  If the network does not support (or is
+   not willing to receive) any address registration information, the
+   client MUST NOT register any addresses.  Otherwise, the client
+   registers addresses as described below.
 
    After successfully assigning a self-generated IPv6 address on one of
    its interfaces, a client implementing this specification SHOULD
@@ -167,10 +168,11 @@ Table of Contents
        |                                                |
        |  src: link-local address                       |
        | -------------------------------------------->  |
-       |    INFORMATION-REQUEST MESSAGE                 |
-       |       - OPTION-REQUEST OPTION                  |
+       |    INFORMATION-REQUEST or SOLICIT/...          |
+       |       - OPTION REQUEST OPTION                  |
        |          -- OPTION_ADDR_REG_ENABLE code        |
        |                                                |
+       |    ...                                         |
        |                                                |
        |                                                |
        |<---------------------------------------------  |
@@ -211,13 +213,11 @@ Table of Contents
 
    Figure 2: DHCPv6 Address Registration option
 
-   A client SHOULD include this option in an Option-Request Option of
-   the Information-Request message if the client has the address
-   registration mechanism enabled.
+   If a client has the address registration mechanism enabled, it SHOULD
+   include this option in all Option Request options that it sends.
 
    A server which supports the address registration mechanism MUST
-   include this option in a Reply message sent in response to a
-   Information-Request message.
+   include this option in Reply messages.
 
 4.2.  DHCPv6 Address Registration Request Message
 
@@ -405,53 +405,25 @@ Table of Contents
    ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or
    security state based on the ADDR-REG-REPLY message.
 
-4.4.  Address Registration Support Signalling
+4.4.  Signalling Address Registration Support
 
-   To ensure that ADDR-REG-INFORM messages are only sent if there is at
-   least one DHCPv6 server which supports the address registration
-   mechanism, the client SHOULD send an Information-Request message when
-   connecting to the network and performing IPv6 interface
-   configuration.  If the Reply messages received in response contain an
-   Address Registration option, the client starts sending Registration
-   Request messages as described above.
+   The client MUST NOT register addresses using this mechanism unless
+   the network's DHCPv6 servers support address registration.  The
+   client can discover this using the OPTION_ADDR_REG_ENABLE option.
+   The client SHOULD include this option code in all Option Request
+   options that it sends.  If the client receives and processes a Reply
+   message with the OPTION_ADDR_REG_ENABLE option, it concludes that the
+   network supports address registration.  If the client later receives
+   and processes a Reply message without the the OPTION_ADDR_REG_ENABLE
+   from a server that previously included the option, it MUST stop
+   transmitting ADDR-REG-INFORM messsages.
 
-   After that, the client transmits periodic Information-request
-   messages as per Section 18.2.6 of [RFC8415].  An Option Request
-   option contained in that Information-Request message (see
-   Section 18.1.5 of [RFC8415]) MUST contain an Address Registration
-   option code.
-
-   If Reply messages received in response to an Information-request
-   message does not contain an Address Registration option, the client
-   MUST NOT send any ADDR-REG-INFORM messages.
-
-   When the client received an Address Registration option in an earlier
-   Reply, then sends an Information-request and the Address Registration
-   option is not not present in the Reply, the client MUST stop sending
-   ADDR-REG-INFORM messages (see Section 18.2.10 of [RFC8415]).
-
-   [RFC8415] does not specify the client behaviour if the Reply messages
-   received from different servers contain conflicting information (for
-   example, one Reply contain OPTION_ADDR_REG_ENABLE option and another
-   does not).  If there are multiple DHCPv6 servers on the network, it
-   is possible that only some of those servers support the address
-   registration mechanism, while other servers do not.  In such
-   networks, every time the client sends an Information-Request message,
-   the client might be oscillating between starting and stopping address
-   registration, depending on the order in which Reply messages are
-   received.  As a result, if some servers support the registration
-   mechanism while other don't:
-
-   *  the registration mechanism is not reliable (as the client might
-      stop it upon receiving a Reply without the OPTION_ADDR_REG_ENABLE
-      option.
-
-   *  the servers which do not support the registration will still be
-      receiving Registration Request messages (and drop them).
-
-   Such configuration can exist during incremental rollout of the
-   registration mechanism support across the DHCPv6 infrastructure and
-   is NOT RECOMMENDED long-term.
+   This host behavior allows the network to disable address registration
+   after enabling it.  It also allows networks to progressively roll out
+   support for the address registration option across the DHCPv6
+   infrastructure without causing clients to frequently stop and re-
+   start address registration if some of the network's DHCPv6 servers
+   support it and some of them do not.
 
 4.5.  Retransmission
 
@@ -581,6 +553,30 @@ Table of Contents
    holder of the address.  This prevents a host from registering an
    address owned by another host.
 
+   If the network doesn't have MLD snooping enabled, then IPv6 link-
+   local multicast traffic is effectively transmitted as broadcast.  In
+   such networks, an on-link attacker listening to DHCPv6 messages might
+   obtain information about IPv6 addresses assigned to the host.
+   However, hiding information about the specific IPv6 address should
+   not be considered a security measure, as such information is usually
+   disclosed via Duplicate Address Detection [RFC4862] to all nodes
+   anyway if MLD snooping is not enabled.
+
+   If MLD snooping is enabled, an attacker might be able to join the
+   All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group
+   to listen for address registration messages.  However the same result
+   can be achieved by joining the All Routers Address (ff02::2) group
+   and listen to Gratuitous Neighbor Advertisement messages [RFC9131].
+   It should be noted that this particular scenario shares the fate with
+   DHCPv6 address assignment: if an attacker can join the
+   All_DHCP_Relay_Agents_and_Servers multicast group, they would be able
+   to monitor all DHCPv6 messages sent from the client to DHCPv6 servers
+   and relays, and therefore obtain the information about addresses
+   being assiged via DHCPv6.  If revealing other hosts addresses and
+   alllowing onlink peer-to-peer communication is undesirable for a
+   given network segment, then layer2 (link-layer) isolation shall be
+   used.
+
    One of the use cases for the mechanism described in this document is
    to identify sources of malicious traffic after the fact.  Note,
    however, that as the device itself is responsible for informing the
@@ -658,6 +654,11 @@ Table of Contents
               "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)",
               RFC 8415, DOI 10.17487/RFC8415, November 2018,
               <https://www.rfc-editor.org/rfc/rfc8415>.
+
+   [RFC9131]  Linkova, J., "Gratuitous Neighbor Discovery: Creating
+              Neighbor Cache Entries on First-Hop Routers", RFC 9131,
+              DOI 10.17487/RFC9131, October 2021,
+              <https://www.rfc-editor.org/rfc/rfc9131>.
 
 8.2.  Informative References
 
