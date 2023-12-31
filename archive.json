@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-28T00:05:04.403903+00:00",
+  "timestamp": "2023-12-31T00:05:45.260482+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -714,6 +714,24 @@
       "body": "1. Clean up  OPTION_ADDR_REG_ENABLE and OPTION_ADDR_REG (& ADDR_REG_ENABLE) \r\n2. Add more text in section 4.4 (Signalling) about \"inconsistent servers support\" - when some servers do not (yet) support the mechanism",
       "createdAt": "2023-10-24T12:25:42Z",
       "updatedAt": "2023-10-24T12:25:42Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 69,
+      "id": "I_kwDOG4kJEc56vmKV",
+      "title": "Update security consideration re: passive attack",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/69",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "furry13"
+      ],
+      "labels": [],
+      "body": "From the email thread:\r\n\r\n> Are we introducing a privacy concern by using multicast?\r\n> If any server can effective turn on this reporting, and get all the hosts to\r\n> multicast this info, have we just created a new passive discovery attack?\r\n\r\nFirst of all, the vast majority of switches out there do not have MLD snooping enabled. So your passive discovery attack is possible already because of DAD (we discussed exactly that in the Security Consideration section of RFC9131).\u00a0If the network has MLD snooping enabled - then an attacker can join 'all routers' group and still see GRAND (RFC9131) packets as well. If the attacker joins 'all DHCP servers' group and sees all DHCP traffic from the client, in which case all DHCP addresses are revealed anyway.IMHO if the network administrator wishes to hide addresses used by other clients, the network shall provide complete p2p isolation.",
+      "createdAt": "2023-12-29T10:36:18Z",
+      "updatedAt": "2023-12-29T10:36:21Z",
       "closedAt": null,
       "comments": []
     }
@@ -2670,6 +2688,32 @@
       "headRepository": "mcr/draft-wkumari-dhc-addr-notification",
       "headRefName": "chain-of-addr-inform",
       "headRefOid": "f70251c12d23679a5ce26d04fd5e1bb271acf335",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 70,
+      "id": "PR_kwDOG4kJEc5i7-6L",
+      "title": "Passive attack updates (Security Considerations)",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/70",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Describing passive monitoring attack.\r\n\r\nCloses #69 ",
+      "createdAt": "2023-12-29T13:18:10Z",
+      "updatedAt": "2023-12-29T13:21:48Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "93255f60bf4965f72f846cd715aa853d2bbc7516",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "dec2023",
+      "headRefOid": "2d4cc174222d5211b54c7bfa263bbf71f2b1d510",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
