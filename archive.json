@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-07T00:05:46.513666+00:00",
+  "timestamp": "2024-01-09T00:05:34.645901+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -722,7 +722,7 @@
       "id": "I_kwDOG4kJEc56vmKV",
       "title": "Update security consideration re: passive attack",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/69",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -731,8 +731,8 @@
       "labels": [],
       "body": "From the email thread:\r\n\r\n> Are we introducing a privacy concern by using multicast?\r\n> If any server can effective turn on this reporting, and get all the hosts to\r\n> multicast this info, have we just created a new passive discovery attack?\r\n\r\nFirst of all, the vast majority of switches out there do not have MLD snooping enabled. So your passive discovery attack is possible already because of DAD (we discussed exactly that in the Security Consideration section of RFC9131).\u00a0If the network has MLD snooping enabled - then an attacker can join 'all routers' group and still see GRAND (RFC9131) packets as well. If the attacker joins 'all DHCP servers' group and sees all DHCP traffic from the client, in which case all DHCP addresses are revealed anyway.IMHO if the network administrator wishes to hide addresses used by other clients, the network shall provide complete p2p isolation.",
       "createdAt": "2023-12-29T10:36:18Z",
-      "updatedAt": "2023-12-29T10:36:21Z",
-      "closedAt": null,
+      "updatedAt": "2024-01-08T19:26:57Z",
+      "closedAt": "2024-01-08T19:26:57Z",
       "comments": []
     }
   ],
@@ -2700,26 +2700,50 @@
       "id": "PR_kwDOG4kJEc5i7-6L",
       "title": "Passive attack updates (Security Considerations)",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/70",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Describing passive monitoring attack.\r\n\r\nCloses #69 ",
       "createdAt": "2023-12-29T13:18:10Z",
-      "updatedAt": "2023-12-29T13:21:48Z",
+      "updatedAt": "2024-01-08T19:26:56Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "93255f60bf4965f72f846cd715aa853d2bbc7516",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "dec2023",
       "headRefOid": "2d4cc174222d5211b54c7bfa263bbf71f2b1d510",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2024-01-08T19:26:56Z",
+      "mergedAt": "2024-01-08T19:26:56Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "b29dac79d5d4d3768f52ae02c343299a46f2b11e"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Thank you!",
+          "createdAt": "2024-01-08T19:26:51Z",
+          "updatedAt": "2024-01-08T19:26:51Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc5r4JwQ",
+          "commit": {
+            "abbreviatedOid": "2d4cc17"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "Whoo! Thank you.",
+          "createdAt": "2024-01-08T19:26:35Z",
+          "updatedAt": "2024-01-08T19:26:35Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
