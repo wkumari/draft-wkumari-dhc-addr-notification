@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-09T00:05:34.645901+00:00",
+  "timestamp": "2024-01-11T00:05:16.231595+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2681,7 +2681,7 @@
       "labels": [],
       "body": "trial text on address registration proxy operation",
       "createdAt": "2023-12-24T16:38:29Z",
-      "updatedAt": "2023-12-24T16:51:09Z",
+      "updatedAt": "2024-01-10T11:04:35Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "93255f60bf4965f72f846cd715aa853d2bbc7516",
@@ -2692,7 +2692,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As discussed on the list, we probably shouldn't be doing this (more details in https://mailarchive.ietf.org/arch/msg/dhcwg/yROTY1a1TN1rRThz5w6t8bWlASA/ and following messages)",
+          "createdAt": "2024-01-10T11:04:34Z",
+          "updatedAt": "2024-01-10T11:04:34Z"
+        }
+      ],
       "reviews": []
     },
     {
@@ -2744,6 +2752,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 71,
+      "id": "PR_kwDOG4kJEc5jrLcG",
+      "title": "When to start/stop the registration",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/71",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reflecting the WG consensus: see https://mailarchive.ietf.org/arch/msg/dhcwg/3n3ZXr8FeX_cy-oWhFUzu3yAoNA/",
+      "createdAt": "2024-01-10T11:37:30Z",
+      "updatedAt": "2024-01-10T11:37:30Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "b29dac79d5d4d3768f52ae02c343299a46f2b11e",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "jan2024",
+      "headRefOid": "abeb87cd5ab2465cb75d2743a808f12d5a8f9af4",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
