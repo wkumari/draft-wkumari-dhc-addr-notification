@@ -5,14 +5,14 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 11 July 2024                                           R. Asati
+Expires: 15 July 2024                                           R. Asati
                                                      Cisco Systems, Inc.
                                                               L. Colitti
                                                               J. Linkova
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                          8 January 2024
+                                                         12 January 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 July 2024.
+   This Internet-Draft will expire on 15 July 2024.
 
 Copyright Notice
 
@@ -413,17 +413,22 @@ Table of Contents
    The client SHOULD include this option code in all Option Request
    options that it sends.  If the client receives and processes a Reply
    message with the OPTION_ADDR_REG_ENABLE option, it concludes that the
-   network supports address registration.  If the client later receives
-   and processes a Reply message without the the OPTION_ADDR_REG_ENABLE
-   from a server that previously included the option, it MUST stop
-   transmitting ADDR-REG-INFORM messsages.
+   network supports address registration.  Once the client detects that
+   the network supports address registration, it SHOULD start the
+   registration process and SHOULD NOT stop it until disconnected from
+   the link, even if subsequent Reply or Advertise messages do not
+   contain the OPTION_ADDR_REG_ENABLE option.  The client MUST discover
+   if the network supports address registration before sending
+   registration messages every time the client establishes or re-
+   establishes a link-layer connection.  In other words, when connecting
+   to a network, the client MUST NOT utilize any prior knowledge about
+   address registration support by that network.
 
-   This host behavior allows the network to disable address registration
-   after enabling it.  It also allows networks to progressively roll out
-   support for the address registration option across the DHCPv6
-   infrastructure without causing clients to frequently stop and re-
-   start address registration if some of the network's DHCPv6 servers
-   support it and some of them do not.
+   This host behavior allows networks to progressively roll out support
+   for the address registration option across the DHCPv6 infrastructure
+   without causing clients to frequently stop and re-start address
+   registration if some of the network's DHCPv6 servers support it and
+   some of them do not.
 
 4.5.  Retransmission
 
