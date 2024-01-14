@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-11T00:05:16.231595+00:00",
+  "timestamp": "2024-01-14T00:05:48.664901+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2758,26 +2758,50 @@
       "id": "PR_kwDOG4kJEc5jrLcG",
       "title": "When to start/stop the registration",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/71",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Reflecting the WG consensus: see https://mailarchive.ietf.org/arch/msg/dhcwg/3n3ZXr8FeX_cy-oWhFUzu3yAoNA/",
       "createdAt": "2024-01-10T11:37:30Z",
-      "updatedAt": "2024-01-10T11:37:30Z",
+      "updatedAt": "2024-01-12T01:41:11Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "b29dac79d5d4d3768f52ae02c343299a46f2b11e",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "jan2024",
       "headRefOid": "abeb87cd5ab2465cb75d2743a808f12d5a8f9af4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2024-01-12T01:40:58Z",
+      "mergedAt": "2024-01-12T01:40:58Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "0331bf6e28f85b9b979a9dd450d31adcab8d07be"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Thank you, you rock!",
+          "createdAt": "2024-01-12T01:41:10Z",
+          "updatedAt": "2024-01-12T01:41:10Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc5sUCTq",
+          "commit": {
+            "abbreviatedOid": "abeb87c"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-01-12T01:40:53Z",
+          "updatedAt": "2024-01-12T01:40:53Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
