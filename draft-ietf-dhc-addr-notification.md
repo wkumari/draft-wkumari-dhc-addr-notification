@@ -303,12 +303,9 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Signalling Address Registration Support
 
-The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration.
-Once the client detects that the network supports address registration, it SHOULD start the registration process and SHOULD NOT stop it until disconnected from the link, even if subsequent Reply or Advertise messages do not contain the OPTION_ADDR_REG_ENABLE option.
-The client MUST discover if the network supports address registration before sending registration messages every time the client establishes or re-establishes a link-layer connection.
-In other words, when connecting to a network, the client MUST NOT utilize any prior knowledge about address registration support by that network.
+The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it SHOULD start the registration process and immediately register any addresses that are already in use. The client SHOULD NOT stop registering addresses until it disconnects from the link, even if subsequent Reply or Advertise messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
-This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and re-start address registration if some of the network's DHCPv6 servers support it and some of them do not.
+The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and re-start address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
 ## Retransmission
 
