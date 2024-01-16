@@ -391,6 +391,6 @@ This document introduces the following new entities which require an allocation 
 # Acknowledgments
 {:numbered="false"}
 
-Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Éric Vyncke, Timothy Winters for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone’s contributions.
+Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
