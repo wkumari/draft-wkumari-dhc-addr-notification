@@ -678,9 +678,9 @@ Acknowledgments
    Many thanks to Bernie Volz for significant review and feedback, as
    well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan
    DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric
-   Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Éric Vyncke,
+   Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke,
    Timothy Winters for their feedback, comments and guidance.  We
-   apologize if we inadvertently forgot to acknowledge anyone’s
+   apologize if we inadvertently forgot to acknowledge anyone's
    contributions.
 
    This document borrows heavily from a previous document, draft-ietf-
