@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-16T00:05:12.588237+00:00",
+  "timestamp": "2024-01-18T00:04:58.167026+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2802,6 +2802,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 72,
+      "id": "PR_kwDOG4kJEc5kMeEB",
+      "title": "Further clarify when client starts and stops registering.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/72",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-01-16T13:33:19Z",
+      "updatedAt": "2024-01-16T13:40:07Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "0331bf6e28f85b9b979a9dd450d31adcab8d07be",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "further-clarify-stop-start",
+      "headRefOid": "4f0266cb134cf8d8c77b852da9c97fcb04f0f925",
+      "closedAt": "2024-01-16T13:40:07Z",
+      "mergedAt": "2024-01-16T13:40:07Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "98d7fd05f2936558f87985b8cdac7a775688cea1"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
