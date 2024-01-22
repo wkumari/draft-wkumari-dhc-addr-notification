@@ -252,7 +252,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 
 If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client. Otherwise, it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
 
-*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another another client, the server SHOULD log the fact and update the binding.
+*    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    MUST send back an ADDR-REG-REPLY message to ensure the client does not retransmit.
@@ -318,8 +318,7 @@ The client SHOULD allow these parameters to be configured by the administrator.
 
 To comply with section 16.1 of [RFC8415], the client MUST leave the transaction ID unchanged in retransmissions of an ADDR-REG-INFORM message. When the client retranmits the registration message, the lifetimes in the packet MUST be updated so that they match the current lifetimes of the address.
 
-If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission. However, the client cannot rely on the server acknowledging receipt of the registration message, because the server might not support address registration.
-
+If an ADDR-REG-REPLY message is received for the address being registered, the client MUST stop retransmission.
 
 ## Registration Expiry and Refresh
 
@@ -367,7 +366,7 @@ However, hiding information about the specific IPv6 address should not be consid
 
 If MLD snooping is enabled, an attacker might be able to join the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group to listen for address registration messages.
 However the same result can be achieved by joining the All Routers Address (ff02::2) group and listen to Gratuitous Neighbor Advertisement messages {{!RFC9131}}. It should be noted that this particular scenario shares the fate with DHCPv6 address assignment: if an attacker can join the All_DHCP_Relay_Agents_and_Servers multicast group, they would be able to monitor all DHCPv6 messages sent from the client to DHCPv6 servers and relays, and therefore obtain the information about addresses being assiged via DHCPv6.
-If revealing other hosts addresses and alllowing onlink peer-to-peer communication is undesirable for a given network segment, then layer2 (link-layer) isolation shall be used.
+Layer2 (link-layer) isolation allows to mitigate this threat by blocking onlink peer-to-peer communication between hosts.
 
 
 One of the use cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
@@ -391,6 +390,6 @@ This document introduces the following new entities which require an allocation 
 # Acknowledgments
 {:numbered="false"}
 
-Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
+Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
