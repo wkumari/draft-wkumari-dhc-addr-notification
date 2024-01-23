@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-21T00:05:42.244340+00:00",
+  "timestamp": "2024-01-23T00:05:12.706410+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2829,6 +2829,40 @@
         "oid": "98d7fd05f2936558f87985b8cdac7a775688cea1"
       },
       "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 73,
+      "id": "PR_kwDOG4kJEc5kueoC",
+      "title": " Aditi Patange's comments",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/73",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Addressing minor issues  Aditi Patange mentioned\r\n- Rephrasing p2p isolation sentence in Security Considerations w/o using normative language",
+      "createdAt": "2024-01-22T14:07:32Z",
+      "updatedAt": "2024-01-22T14:46:11Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "720a74eb8bea96a03857648dca402c2b829e7af2",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "jan2024-1",
+      "headRefOid": "4d5d1f1e985b8464ae784e20a36a65790e470e49",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "This seems fine / good to me, but Lorenzo's review was requested, so this is just a note...",
+          "createdAt": "2024-01-22T14:46:11Z",
+          "updatedAt": "2024-01-22T14:46:11Z"
+        }
+      ],
       "reviews": []
     }
   ]
