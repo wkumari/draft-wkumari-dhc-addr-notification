@@ -322,20 +322,21 @@ If an ADDR-REG-REPLY message is received for the address being registered, the c
 
 ## Registration Expiry and Refresh
 
-The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below. Each refresh is scheduled for AddrRegRefresh seconds in the future, where AddrRegRefresh is min(4 hours, 80% of the address's current Valid Lifetime). Refreshes SHOULD be jittered by +/- 10% to avoid synchronization causing a large number of registration messages from different clients at the same time.
+The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below.
 
-Whenever the client creates an address or receives a PIO which changes the Valid Lifetime of an existing address by more than 1%, then:
+We define a function AddrRegRefreshInterval(address) as min(4 hours, 80% of the address's current Valid Lifetime). When calculating this value, the client SHOULD apply a jitter of +/- 10% to avoid synchronization causing a large number of registration messages from different clients at the same time.
 
-1. If no refresh is currently scheduled, it MUST register immediately and schedule a refresh.
-1. If a refresh is currently scheduled, it MUST reschedule the existing refresh if this would result in the refresh being sooner than currently scheduled.
+Whenever the client registers or refreshes an address, it calculates a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval seconds in the future, but does not schedule any refreshes.
+
+Whenever the client receives a PIO which changes the Valid Lifetime of an existing address by more than 1%, then the client calculates a new AddrRegRefreshInterval. The client schedules a refresh for min(now + AddrRegRefreshInterval, NextAddrRegRefreshTime). If the refresh would be scheduled in the past, then the refresh occurs immediately.
 
 When a refresh is performed, the client MAY refresh all addresses assigned to the interface that are scheduled to be refreshed within the next AddrRegRefreshCoalesce seconds. The value of AddrRegRefreshCoalesce is implementation-dependent, and a suggested default is 60 seconds.
 
-Discussion: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically:
+Discussion: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically, after every registration:
 
-- If the network never changes the lifetime, or stops refreshing the lifetime, then only one refresh ever occurs. The address expires.
-- Point #1 ensures that any time the network changes the lifetime when no refresh is scheduled, the server will be informed of the correct lifetime. If the network does not change the address's lifetime, then the server already knows the correct lifetime and no refresh needs to be sent.
-- Point #2 ensures that if the network reduces the lifetime of the address, then the server will be informed of the new lifetime. If the network increases the lifetime of the address, the refresh will be sent at the previously scheduled time, and the server will be informed of the correct lifetime. From this point on, either the address expires (and the server is informed of when this will happen) or an RA increases the lifetime, in which case a refresh will be sent.
+- If the network never changes the lifetime, or stops refreshing the lifetime, then no refreshes occur. Refreshes are not necessary, because the address expires at the time the server expects it to expire.
+- Any time the network changes the lifetime of the address (i.e., changes the time at which the address will expire) the client ensures that a refresh is scheduled, so that server will be informed of the new expiry.
+- The client attempts to ensure that the the refresh never occurs later than a point 90% between the time when the address was registered and the time when the address will expire. This allows the client can retransmit the registration for up to 10% of the original interval before it expires. This may not be possible if the network sends an RA very close to the time when the address would have expired. In this case, the client refreshes immediately, which is the best it can do.   
 - The 1% tolerance ensures that the client will not refresh or reschedule refreshes if the Valid Lifetime experiences minor changes due to transmission delays or clock skew between the client and the router(s) sending the Router Advertisement.
 - AddrRegRefreshCoalesce allows battery-powered hosts to wake up less often. In particular, it allows the client to coalesce refreshes for multiple addresses formed from the same prefix, such as the stable and privacy addresses. Higher values will result in fewer wakeups, but may result in more network traffic, because if a refresh is sent early, then the next RA received will cause the client to immediately send a refresh message.
 
@@ -345,7 +346,7 @@ The client MUST generate a new transaction ID when refreshing the registration.
 
 When the Client-Identifier-to-IPv6-address binding has expired, the server SHOULD remove it and consider the address as available for use.
 
-The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero. If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.
+The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option to zero. If the server receives a message with a valid-lifetime of zero, it SHOULD act as if the address has expired.f
 
 
 # Host configuration
