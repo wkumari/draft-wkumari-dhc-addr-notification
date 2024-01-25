@@ -5,14 +5,14 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 19 July 2024                                           R. Asati
+Expires: 28 July 2024                                           R. Asati
                                                      Cisco Systems, Inc.
                                                               L. Colitti
                                                               J. Linkova
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                         16 January 2024
+                                                         25 January 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 July 2024.
+   This Internet-Draft will expire on 28 July 2024.
 
 Copyright Notice
 
@@ -321,8 +321,8 @@ Table of Contents
       Identifier and IPv6 address in its database.  The lifetime of the
       binding is equal to the Valid Lifetime of the address reported by
       the client.  If there is already a binding between the registered
-      address and another another client, the server SHOULD log the fact
-      and update the binding.
+      address and another client, the server SHOULD log the fact and
+      update the binding.
 
    *  SHOULD log the address registration information (as is done
       normally for clients to which it has assigned an address), unless
@@ -451,9 +451,7 @@ Table of Contents
    current lifetimes of the address.
 
    If an ADDR-REG-REPLY message is received for the address being
-   registered, the client MUST stop retransmission.  However, the client
-   cannot rely on the server acknowledging receipt of the registration
-   message, because the server might not support address registration.
+   registered, the client MUST stop retransmission.
 
 4.6.  Registration Expiry and Refresh
 
@@ -577,10 +575,9 @@ Table of Contents
    All_DHCP_Relay_Agents_and_Servers multicast group, they would be able
    to monitor all DHCPv6 messages sent from the client to DHCPv6 servers
    and relays, and therefore obtain the information about addresses
-   being assiged via DHCPv6.  If revealing other hosts addresses and
-   alllowing onlink peer-to-peer communication is undesirable for a
-   given network segment, then layer2 (link-layer) isolation shall be
-   used.
+   being assiged via DHCPv6.  Layer2 (link-layer) isolation allows to
+   mitigate this threat by blocking onlink peer-to-peer communication
+   between hosts.
 
    One of the use cases for the mechanism described in this document is
    to identify sources of malicious traffic after the fact.  Note,
@@ -678,10 +675,10 @@ Acknowledgments
    Many thanks to Bernie Volz for significant review and feedback, as
    well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan
    DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric
-   Levy-Abegnoli, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke,
-   Timothy Winters for their feedback, comments and guidance.  We
-   apologize if we inadvertently forgot to acknowledge anyone's
-   contributions.
+   Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark
+   Smith, Eric Vyncke, Timothy Winters for their feedback, comments and
+   guidance.  We apologize if we inadvertently forgot to acknowledge
+   anyone's contributions.
 
    This document borrows heavily from a previous document, draft-ietf-
    dhc-addr-registration, which defined "a mechanism to register self-
