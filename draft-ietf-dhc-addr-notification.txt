@@ -5,14 +5,14 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 28 July 2024                                           R. Asati
+Expires: 29 July 2024                                           R. Asati
                                                      Cisco Systems, Inc.
                                                               L. Colitti
                                                               J. Linkova
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                         25 January 2024
+                                                         26 January 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 July 2024.
+   This Internet-Draft will expire on 29 July 2024.
 
 Copyright Notice
 
@@ -457,23 +457,27 @@ Table of Contents
 
    The client MUST refresh registrations to ensure that the server is
    always aware of which addresses are still valid.  The client SHOULD
-   perform refreshes as described below.  Each refresh is scheduled for
-   AddrRegRefresh seconds in the future, where AddrRegRefresh is min(4
-   hours, 80% of the address's current Valid Lifetime).  Refreshes
-   SHOULD be jittered by +/- 10% to avoid synchronization causing a
-   large number of registration messages from different clients at the
-   same time.
+   perform refreshes as described below.
 
-   Whenever the client creates an address or receives a PIO which
-   changes the Valid Lifetime of an existing address by more than 1%,
-   then:
+   We define a function AddrRegRefreshInterval(address) as min(4 hours,
+   80% of the address's current Valid Lifetime).  When calculating this
+   value, the client applies a multiplier of AddrRegDesyncMultiplier to
+   avoid synchronization causing a large number of registration messages
+   from different clients at the same time.  AddrRegDesyncMultiplier is
+   between 0.9 and 1.1 and is chosen by the client when it starts the
+   registration process, to ensure that refreshes for addresses with the
+   same lifetime are coalesced (see below).
 
-   1.  If no refresh is currently scheduled, it MUST register
-       immediately and schedule a refresh.
+   Whenever the client registers or refreshes an address, it calculates
+   a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval
+   seconds in the future, but does not schedule any refreshes.
 
-   2.  If a refresh is currently scheduled, it MUST reschedule the
-       existing refresh if this would result in the refresh being sooner
-       than currently scheduled.
+   Whenever the client receives a PIO which changes the Valid Lifetime
+   of an existing address by more than 1%, then the client calculates a
+   new AddrRegRefreshInterval.  The client schedules a refresh for
+   min(now + AddrRegRefreshInterval, NextAddrRegRefreshTime).  If the
+   refresh would be scheduled in the past, then the refresh occurs
+   immediately.
 
    When a refresh is performed, the client MAY refresh all addresses
    assigned to the interface that are scheduled to be refreshed within
@@ -483,25 +487,28 @@ Table of Contents
 
    Discussion: this algorithm ensures that refreshes are not sent too
    frequently, while ensuring that the server never believes that the
-   address has expired when it has not.  Specifically:
+   address has expired when it has not.  Specifically, after every
+   registration:
 
-   *  If the network never changes the lifetime, or stops refreshing the
-      lifetime, then only one refresh ever occurs.  The address expires.
+   *  If the client never receives a PIO that changes the lifetime
+      (e.g., if no further PIOs are received, or if all PIO lifetimes
+      decrease in step with the passage of time), then no refreshes
+      occur.  Refreshes are not necessary, because the address expires
+      at the time the server expects it to expire.
 
-   *  Point #1 ensures that any time the network changes the lifetime
-      when no refresh is scheduled, the server will be informed of the
-      correct lifetime.  If the network does not change the address's
-      lifetime, then the server already knows the correct lifetime and
-      no refresh needs to be sent.
+   *  Any time a PIO changes the lifetime of the address (i.e., changes
+      the time at which the address will expire) the client ensures that
+      a refresh is scheduled, so that server will be informed of the new
+      expiry.
 
-   *  Point #2 ensures that if the network reduces the lifetime of the
-      address, then the server will be informed of the new lifetime.  If
-      the network increases the lifetime of the address, the refresh
-      will be sent at the previously scheduled time, and the server will
-      be informed of the correct lifetime.  From this point on, either
-      the address expires (and the server is informed of when this will
-      happen) or an RA increases the lifetime, in which case a refresh
-      will be sent.
+   *  Because AddrRegDesyncMultiplier is at most 1.1, the refresh never
+      occurs later than a point 88% between the time when the address
+      was registered and the time when the address will expire.  This
+      allows the client to retransmit the registration for up to 12% of
+      the original interval before it expires.  This may not be possible
+      if the network sends an RA very close to the time when the address
+      would have expired.  In this case, the client refreshes
+      immediately, which is the best it can do.
 
    *  The 1% tolerance ensures that the client will not refresh or
       reschedule refreshes if the Valid Lifetime experiences minor
@@ -515,6 +522,14 @@ Table of Contents
       fewer wakeups, but may result in more network traffic, because if
       a refresh is sent early, then the next RA received will cause the
       client to immediately send a refresh message.
+
+   *  In typical networks, the lifetimes in periodic Router
+      Advertisements either contain constant values, or values that
+      decrease over time to match the another lifetime, such as the
+      lifetime of a prefix delegated to the network.  In both these
+      cases, this algorithm will refresh order of once per address
+      lifetime, which is similar to the number of refreshes that are
+      necessary using stateful DHCPv6.
 
    Registration refresh packets SHOULD be retransmitted using the same
    logic as described in the 'Retransmission' section above.
