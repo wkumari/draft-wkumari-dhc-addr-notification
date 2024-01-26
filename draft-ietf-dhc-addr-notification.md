@@ -324,7 +324,7 @@ If an ADDR-REG-REPLY message is received for the address being registered, the c
 
 The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below.
 
-We define a function AddrRegRefreshInterval(address) as min(4 hours, 80% of the address's current Valid Lifetime). When calculating this value, the client SHOULD apply a jitter of +/- 10% to avoid synchronization causing a large number of registration messages from different clients at the same time.
+We define a function AddrRegRefreshInterval(address) as min(4 hours, 80% of the address's current Valid Lifetime). When calculating this value, the client applies a multiplier of AddrRegDesyncMultiplier to avoid synchronization causing a large number of registration messages from different clients at the same time. AddrRegDesyncMultiplier is between 0.9 and 1.1 and is chosen by the client when it starts the registration process, to ensure that refreshes for addresses with the same lifetime are coalesced (see below).
 
 Whenever the client registers or refreshes an address, it calculates a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval seconds in the future, but does not schedule any refreshes.
 
