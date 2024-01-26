@@ -490,22 +490,23 @@ Table of Contents
    address has expired when it has not.  Specifically, after every
    registration:
 
-   *  If the network never changes the lifetime, or stops refreshing the
-      lifetime, then no refreshes occur.  Refreshes are not necessary,
-      because the address expires at the time the server expects it to
-      expire.
+   *  If the client never receives a PIO that changes the lifetime
+      (e.g., if no further PIOs are received, or if all PIO lifetimes
+      decrease in step with the passage of time), then no refreshes
+      occur.  Refreshes are not necessary, because the address expires
+      at the time the server expects it to expire.
 
-   *  Any time the network changes the lifetime of the address (i.e.,
-      changes the time at which the address will expire) the client
-      ensures that a refresh is scheduled, so that server will be
-      informed of the new expiry.
+   *  Any time a PIO changes the lifetime of the address (i.e., changes
+      the time at which the address will expire) the client ensures that
+      a refresh is scheduled, so that server will be informed of the new
+      expiry.
 
-   *  The client attempts to ensure that the the refresh never occurs
-      later than a point 90% between the time when the address was
-      registered and the time when the address will expire.  This allows
-      the client can retransmit the registration for up to 10% of the
-      original interval before it expires.  This may not be possible if
-      the network sends an RA very close to the time when the address
+   *  Because AddrRegDesyncMultiplier is at most 1.1, the refresh never
+      occurs later than a point 88% between the time when the address
+      was registered and the time when the address will expire.  This
+      allows the client to retransmit the registration for up to 12% of
+      the original interval before it expires.  This may not be possible
+      if the network sends an RA very close to the time when the address
       would have expired.  In this case, the client refreshes
       immediately, which is the best it can do.
 
