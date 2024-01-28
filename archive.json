@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-25T00:05:19.728325+00:00",
+  "timestamp": "2024-01-28T00:05:52.751478+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -2674,21 +2674,21 @@
       "id": "PR_kwDOG4kJEc5itxC8",
       "title": "Chain of addr inform",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/68",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "mcr",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "trial text on address registration proxy operation",
       "createdAt": "2023-12-24T16:38:29Z",
-      "updatedAt": "2024-01-10T11:04:35Z",
+      "updatedAt": "2024-01-25T07:23:30Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "93255f60bf4965f72f846cd715aa853d2bbc7516",
       "headRepository": "mcr/draft-wkumari-dhc-addr-notification",
       "headRefName": "chain-of-addr-inform",
       "headRefOid": "f70251c12d23679a5ce26d04fd5e1bb271acf335",
-      "closedAt": null,
+      "closedAt": "2024-01-25T07:23:30Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -2836,24 +2836,26 @@
       "id": "PR_kwDOG4kJEc5kueoC",
       "title": " Aditi Patange's comments",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/73",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Addressing minor issues  Aditi Patange mentioned\r\n- Rephrasing p2p isolation sentence in Security Considerations w/o using normative language",
       "createdAt": "2024-01-22T14:07:32Z",
-      "updatedAt": "2024-01-22T14:46:11Z",
+      "updatedAt": "2024-01-25T07:41:59Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "720a74eb8bea96a03857648dca402c2b829e7af2",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "jan2024-1",
       "headRefOid": "4d5d1f1e985b8464ae784e20a36a65790e470e49",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-01-25T07:41:59Z",
+      "mergedAt": "2024-01-25T07:41:59Z",
+      "mergedBy": "lcolitti",
+      "mergeCommit": {
+        "oid": "acc1dddb7fd4fb55480677251a815423feb66bf1"
+      },
       "comments": [
         {
           "author": "wkumari",
@@ -2863,7 +2865,170 @@
           "updatedAt": "2024-01-22T14:46:11Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc5t2d34",
+          "commit": {
+            "abbreviatedOid": "4d5d1f1"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-01-25T07:26:43Z",
+          "updatedAt": "2024-01-25T07:36:13Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Actually it's still possible for the client to receive no reply. For example, the server might be temporarily unreachable, or packet loss might cause all the ADDR-REG_REQUEST packets to be dropped.",
+              "createdAt": "2024-01-25T07:26:43Z",
+              "updatedAt": "2024-01-25T07:36:13Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 74,
+      "id": "PR_kwDOG4kJEc5lCy89",
+      "title": "New address registration algorithm",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/74",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This algorithm is more efficient than what is currently in the draft, because it does not refresh the registration on the first RA after the refresh.\r\n\r\nIt's also simpler than the various versions we've been thinking of lately.",
+      "createdAt": "2024-01-25T09:50:14Z",
+      "updatedAt": "2024-01-26T08:11:53Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "acc1dddb7fd4fb55480677251a815423feb66bf1",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "lcolitti-patch-2",
+      "headRefOid": "222ab01a706ce1ae6095c91954bfca7c6adbc928",
+      "closedAt": "2024-01-26T08:11:31Z",
+      "mergedAt": "2024-01-26T08:11:31Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "6db3f57a8f1580ec6a6bb378df00ad57a8a49977"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc5t3y8A",
+          "commit": {
+            "abbreviatedOid": "3ae188b"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-25T10:22:12Z",
+          "updatedAt": "2024-01-25T10:22:13Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "...any furture/subsequent refreshes?",
+              "createdAt": "2024-01-25T10:22:12Z",
+              "updatedAt": "2024-01-25T10:22:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc5t6r3z",
+          "commit": {
+            "abbreviatedOid": "3ae188b"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-25T16:04:48Z",
+          "updatedAt": "2024-01-25T16:04:48Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "s/If the network never changes the lifetime, or stops refreshing the lifetime/If the client stops receiving RAs refreshing the lifetime/ maybe..",
+              "createdAt": "2024-01-25T16:04:48Z",
+              "updatedAt": "2024-01-25T16:04:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc5t7Q-2",
+          "commit": {
+            "abbreviatedOid": "3ae188b"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-25T17:09:29Z",
+          "updatedAt": "2024-01-25T17:09:29Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Is the jitter fixed per client/per PIO? Otherwise we have a slight problem:\r\n\r\nIn theory,  as long as the network sends RAs with the same lifetime, the first RA creates an address, the second schedule a refresh, and all subsequent RAs do nothing until NextAddrRegRefreshTime comes (as min(now + AddrRegRefreshInterval, NextAddrRegRefreshTime) wouldn't change). However if you apply *dfferent* jitter every time when AddrRegRefreshInterval() is calculated, the client will be rescheduling the refresh there abd back again on *every* RA. ",
+              "createdAt": "2024-01-25T17:09:29Z",
+              "updatedAt": "2024-01-25T17:09:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc5t_CMA",
+          "commit": {
+            "abbreviatedOid": "48a84a3"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-26T08:11:14Z",
+          "updatedAt": "2024-01-26T08:11:14Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "Changed to be fixed per-client.",
+              "createdAt": "2024-01-26T08:11:14Z",
+              "updatedAt": "2024-01-26T08:11:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc5t_COy",
+          "commit": {
+            "abbreviatedOid": "222ab01"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-01-26T08:11:23Z",
+          "updatedAt": "2024-01-26T08:11:23Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOG4kJEc5t_CYQ",
+          "commit": {
+            "abbreviatedOid": "48a84a3"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-26T08:11:53Z",
+          "updatedAt": "2024-01-26T08:11:53Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "Well, something that is scheduled generally *has* to be in the future... :-)",
+              "createdAt": "2024-01-26T08:11:53Z",
+              "updatedAt": "2024-01-26T08:11:53Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
