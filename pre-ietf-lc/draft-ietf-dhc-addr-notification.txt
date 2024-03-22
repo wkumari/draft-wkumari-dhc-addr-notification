@@ -5,14 +5,15 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 29 July 2024                                           R. Asati
-                                                     Cisco Systems, Inc.
+Expires: 23 September 2024                           Cisco Systems, Inc.
+                                                                R. Asati
+                                                             Independent
                                                               L. Colitti
                                                               J. Linkova
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                         26 January 2024
+                                                           22 March 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -56,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 July 2024.
+   This Internet-Draft will expire on 23 September 2024.
 
 Copyright Notice
 
@@ -602,7 +603,7 @@ Table of Contents
    informational, optional mechanism, and is designed to aid in
    troubleshooting and forensics.  On its own, it is not intended to be
    a strong security access mechanism.  In particular, the ADDR-REG-
-   INFORM message MUST not be used for authentication and authorization
+   INFORM message MUST NOT be used for authentication and authorization
    purposes, because in addition to the reasons above, the packets
    containing the message may be dropped.
 
@@ -725,11 +726,8 @@ Authors' Addresses
 
 
    Rajiv Asati
-   Cisco Systems, Inc.
-   7025 Kit Creek road
-   Research Triangle Park,  27709-4987
-   United States of America
-   Email: rajiva@cisco.com
+   Independent
+   Email: rajiv.asati@gmail.com
 
 
    Lorenzo Colitti
@@ -744,7 +742,7 @@ Authors' Addresses
    1 Darling Island Rd
    Pyrmont  2009
    Australia
-   Email: furry@google.com
+   Email: furry13@gmail.com
 
 
    Sheng Jiang
