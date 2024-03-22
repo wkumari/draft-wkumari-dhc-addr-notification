@@ -38,13 +38,8 @@ author:
   -
     name: Rajiv Asati
     ins: R. Asati
-    org: Cisco Systems, Inc.
-    street:
-    - 7025 Kit Creek road
-    city: Research Triangle Park
-    code: 27709-4987
-    country: USA
-    email: rajiva@cisco.com
+    org: Independent
+    email: rajiv.asati@gmail.com
   -
     name: Lorenzo Colitti
     ins: L. Colitti
@@ -63,6 +58,7 @@ author:
     code: 2009
     country: Australia
     email: furry@google.com
+    email: furry13@gmail.com
   -
     name: Sheng Jiang
     ins: S. Jiang
@@ -372,7 +368,7 @@ Layer2 (link-layer) isolation allows to mitigate this threat by blocking onlink 
 
 
 One of the use cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
-In particular, the ADDR-REG-INFORM message MUST not be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
+In particular, the ADDR-REG-INFORM message MUST NOT be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
 
 # IANA Considerations
 
