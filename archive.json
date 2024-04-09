@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-04-07T00:06:24.866218+00:00",
+  "timestamp": "2024-04-09T00:05:21.486519+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -3077,26 +3077,42 @@
       "id": "PR_kwDOG4kJEc5r3NH8",
       "title": "Address many of Eric's AD comments",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/76",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "wkumari",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "The easy ones :-)\r\n\r\nSee Eric's mail for explanations / the ones this is missing.",
       "createdAt": "2024-04-05T15:55:49Z",
-      "updatedAt": "2024-04-05T15:56:12Z",
+      "updatedAt": "2024-04-08T09:04:20Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "f5a4138228ff0280fbcb6b434eb440efaceed4c4",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "ad_comments_one",
       "headRefOid": "0487176a479e82bac3bc5da2bd13130e7a37f302",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-04-08T09:04:20Z",
+      "mergedAt": "2024-04-08T09:04:20Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "e2d7e1ec03164e60d42462647d8f1f36620d0177"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc52XYqO",
+          "commit": {
+            "abbreviatedOid": "0487176"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-08T08:59:47Z",
+          "updatedAt": "2024-04-08T08:59:47Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
