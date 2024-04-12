@@ -258,7 +258,7 @@ If a client is multihomed (connected to multiple administrative domains, each op
 
 Although a client "MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6", if a server does receive such a message, it should log and discard it.
 
-DHCPv6 relay agents and switches that relay address registration messages directly from clients MUST include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}) if they would do so for other DHCPv6 client messages such as SOLICIT, REQUEST, and REBIND. 
+DHCPv6 relay agents and switches that relay address registration messages directly from clients MUST include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}) if they would do so for other DHCPv6 client messages such as SOLICIT, REQUEST, and REBIND.
 
 ## DHCPv6 Address Registration Acknowledgement
 
