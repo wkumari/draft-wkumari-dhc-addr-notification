@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 10 October 2024                             Cisco Systems, Inc.
+Expires: 14 October 2024                             Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 10 October 2024                             Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                            8 April 2024
+                                                           12 April 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 October 2024.
+   This Internet-Draft will expire on 14 October 2024.
 
 Copyright Notice
 
@@ -330,7 +330,9 @@ Table of Contents
 
    *  SHOULD log the address registration information (as is done
       normally for clients to which it has assigned an address), unless
-      configured not to do so.
+      configured not to do so.  The server SHOULD log the client DUID
+      and the link-layer address, if available.  The server MAY log any
+      other information.
 
    *  SHOULD mark the address as unavailable for use and not include it
       in future ADVERTISE messages.
@@ -338,14 +340,22 @@ Table of Contents
    *  MUST send back an ADDR-REG-REPLY message to ensure the client does
       not retransmit.
 
+   If a client is multihomed (connected to multiple administrative
+   domains, each operating its own DHCPv6 infrastructure), the
+   requirement to verify that the registered address is appropriate for
+   the link or belongs to a delegated prefix ensures that each DHCPv6
+   server only registers bindings for addresses from the given
+   administrative domain.
+
    Although a client "MUST NOT send the ADDR-REG-INFORM message for
    addresses configured by DHCPv6", if a server does receive such a
    message, it should log and discard it.
 
    DHCPv6 relay agents and switches that relay address registration
-   messages directly from clients SHOULD include the client's link-layer
+   messages directly from clients MUST include the client's link-layer
    address in the relayed message using the Client Link-Layer Address
-   option ([RFC6939]).
+   option ([RFC6939]) if they would do so for other DHCPv6 client
+   messages such as SOLICIT, REQUEST, and REBIND.
 
 4.3.  DHCPv6 Address Registration Acknowledgement
 
