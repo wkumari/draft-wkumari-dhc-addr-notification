@@ -358,7 +358,7 @@ DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM m
 
 An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files. Similar attack vectors exist today, e.g. an attacker can DoS the server with messages contained spoofed DHCP Unique Identifiers (DUIDs) {{!RFC8415}}.
 
-If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a host from registering an address owned by another host.
+If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a host from registering an address configured on another host.
 
 If the network doesn't have MLD snooping enabled, then IPv6 link-local multicast traffic is effectively transmitted as broadcast.
 In such networks, an on-link attacker listening to DHCPv6 messages might obtain information about IPv6 addresses assigned to the host.
