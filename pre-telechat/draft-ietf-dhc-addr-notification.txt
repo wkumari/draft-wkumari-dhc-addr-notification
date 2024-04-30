@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 23 September 2024                           Cisco Systems, Inc.
+Expires: 1 November 2024                             Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 23 September 2024                           Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                           22 March 2024
+                                                           30 April 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -22,7 +22,8 @@ Expires: 23 September 2024                           Cisco Systems, Inc.
 Abstract
 
    This document defines a method to inform a DHCPv6 server that a
-   device has a self-generated or statically configured address.
+   device has one or more self-generated or statically configured
+   addresses.
 
 About This Document
 
@@ -57,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 September 2024.
+   This Internet-Draft will expire on 1 November 2024.
 
 Copyright Notice
 
@@ -99,16 +100,17 @@ Table of Contents
 1.  Introduction
 
    It is very common operational practice, especially in enterprise
-   networks, to use IPv4 DHCP logs for troubleshooting or security
+   networks, to use IPv4 DHCP logs for troubleshooting or forensics
    purposes.  Examples of this include a help desk dealing with a ticket
    such as "The CEO's laptop cannot connect to the printer"; if the MAC
    address of the printer is known (for example from an inventory
-   system), the IPv4 address can be retrieved from the DHCP logs and the
-   printer pinged to determine if it is reachable.  Another common
-   example is a Security Operations team discovering suspicious events
-   in outbound firewall logs and then consulting DHCP logs to determine
-   which employee's laptop had that IPv4 address at that time so that
-   they can quarantine it and remove the malware.
+   system), the printer's IPv4 address can be retrieved from the DHCP
+   log or lease table and the printer pinged to determine if it is
+   reachable.  Another common example is a Security Operations team
+   discovering suspicious events in outbound firewall logs and then
+   consulting DHCP logs to determine which employee's laptop had that
+   IPv4 address at that time so that they can quarantine it and remove
+   the malware.
 
    This operational practice relies on the DHCP server knowing the IP
    address assignments.  Therefore, the practice does not work if static
@@ -116,11 +118,11 @@ Table of Contents
    addresses (such as when self-configuring an IPv6 address using SLAAC
    [RFC4862]) are used.
 
-   The lack of this parity with IPv4 is one of the reasons which may be
+   The lack of this parity with IPv4 is one of the reasons that may be
    hindering IPv6 deployment, especially in enterprise networks.
 
    This document provides a mechanism for a device to inform the DHCPv6
-   server that it has a self-configured IPv6 address (or has a
+   server that the device has a self-configured IPv6 address (or has a
    statically configured address), and thus provides parity with IPv4 in
    this aspect.
 
@@ -171,7 +173,7 @@ Table of Contents
        | -------------------------------------------->  |
        |    INFORMATION-REQUEST or SOLICIT/...          |
        |       - OPTION REQUEST OPTION                  |
-       |          -- OPTION_ADDR_REG_ENABLE code        |
+       |          -- OPTION_ADDR_REG_ENABLE             |
        |                                                |
        |    ...                                         |
        |                                                |
@@ -188,7 +190,7 @@ Table of Contents
        |                                                |
        |                                                |
        | <--------------------------------------------  |
-       |        ADD-REG-REPLY MESSAGE                   |
+       |        ADDR-REG-REPLY MESSAGE                  |
        |                                                |
 
    Figure 1: Address Registration Procedure Overview
@@ -217,8 +219,8 @@ Table of Contents
    If a client has the address registration mechanism enabled, it SHOULD
    include this option in all Option Request options that it sends.
 
-   A server which supports the address registration mechanism MUST
-   include this option in Reply messages.
+   A server which is configured to support the address registration
+   mechanism MUST include this option in Reply messages.
 
 4.2.  DHCPv6 Address Registration Request Message
 
@@ -248,8 +250,8 @@ Table of Contents
    The client MUST generate a transaction ID as described in [RFC8415]
    and insert this value in the "transaction-id" field.
 
-   The client MUST include a Client Identifier option in the ADDR-REG-
-   INFORM message.
+   The client MUST include the Client Identifier option [RFC8415] in the
+   ADDR-REG-INFORM message.
 
    The ADDR-REG-INFORM message MUST NOT contain the Server Identifier
    option and MUST contain exactly one IA Address option containing the
@@ -270,9 +272,10 @@ Table of Contents
    Unlike other types of messages, which are sent from the link-local
    address of the client, the ADDR-REG-INFORM message MUST be sent from
    the address being registered.  This is primarily for "fate sharing"
-   purposes - for example, if the network implements some form of L2
-   security to prevent a client from spoofing other clients' addresses
-   this prevents an attacker from spoofing ADDR-REG-INFORM messages.
+   purposes - for example, if the network implements some form of
+   layer-2 security to prevent a client from spoofing other clients' MAC
+   addresses, this prevents an attacker from spoofing ADDR-REG-INFORM
+   messages.
 
    On clients with multiple interfaces, the client MUST only send the
    packet on the network interface that has the address being
@@ -327,7 +330,9 @@ Table of Contents
 
    *  SHOULD log the address registration information (as is done
       normally for clients to which it has assigned an address), unless
-      configured not to do so.
+      configured not to do so.  The server SHOULD log the client DUID
+      and the link-layer address, if available.  The server MAY log any
+      other information.
 
    *  SHOULD mark the address as unavailable for use and not include it
       in future ADVERTISE messages.
@@ -335,14 +340,22 @@ Table of Contents
    *  MUST send back an ADDR-REG-REPLY message to ensure the client does
       not retransmit.
 
+   If a client is multihomed (connected to multiple administrative
+   domains, each operating its own DHCPv6 infrastructure), the
+   requirement to verify that the registered address is appropriate for
+   the link or belongs to a delegated prefix ensures that each DHCPv6
+   server only registers bindings for addresses from the given
+   administrative domain.
+
    Although a client "MUST NOT send the ADDR-REG-INFORM message for
    addresses configured by DHCPv6", if a server does receive such a
    message, it should log and discard it.
 
    DHCPv6 relay agents and switches that relay address registration
-   messages directly from clients SHOULD include the client's link-layer
+   messages directly from clients MUST include the client's link-layer
    address in the relayed message using the Client Link-Layer Address
-   option ([RFC6939]).
+   option ([RFC6939]) if they would do so for other DHCPv6 client
+   messages such as SOLICIT, REQUEST, and REBIND.
 
 4.3.  DHCPv6 Address Registration Acknowledgement
 
@@ -399,7 +412,7 @@ Table of Contents
       used in the corresponding ADDR-REG-INFORM message.
 
    The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM
-   message has been received and that the client should not retansmit
+   message has been received and that the client should not retransmit
    it.  The ADDR-REG-REPLY message MUST NOT be considered as any
    indication of the address validity and MUST NOT be required for the
    address to be usable.  DHCPv6 relays, or other devices that snoop
@@ -473,12 +486,12 @@ Table of Contents
    a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval
    seconds in the future, but does not schedule any refreshes.
 
-   Whenever the client receives a PIO which changes the Valid Lifetime
-   of an existing address by more than 1%, then the client calculates a
-   new AddrRegRefreshInterval.  The client schedules a refresh for
-   min(now + AddrRegRefreshInterval, NextAddrRegRefreshTime).  If the
-   refresh would be scheduled in the past, then the refresh occurs
-   immediately.
+   Whenever the client receives a Prefix Information option [RFC4861]
+   which changes the Valid Lifetime of an existing address by more than
+   1%, then the client calculates a new AddrRegRefreshInterval.  The
+   client schedules a refresh for min(now + AddrRegRefreshInterval,
+   NextAddrRegRefreshTime).  If the refresh would be scheduled in the
+   past, then the refresh occurs immediately.
 
    When a refresh is performed, the client MAY refresh all addresses
    assigned to the interface that are scheduled to be refreshed within
@@ -486,7 +499,7 @@ Table of Contents
    AddrRegRefreshCoalesce is implementation-dependent, and a suggested
    default is 60 seconds.
 
-   Discussion: this algorithm ensures that refreshes are not sent too
+   Justification: this algorithm ensures that refreshes are not sent too
    frequently, while ensuring that the server never believes that the
    address has expired when it has not.  Specifically, after every
    registration:
@@ -565,12 +578,12 @@ Table of Contents
    quick succession in order to overwhelm the address registration
    server and / or fill up log files.  Similar attack vectors exist
    today, e.g. an attacker can DoS the server with messages contained
-   spoofed DUIDs.
+   spoofed DHCP Unique Identifiers (DUIDs) [RFC8415].
 
    If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can
    trust that the ADDR-REG-INFORM message was sent by the legitimate
    holder of the address.  This prevents a host from registering an
-   address owned by another host.
+   address configured on another host.
 
    If the network doesn't have MLD snooping enabled, then IPv6 link-
    local multicast traffic is effectively transmitted as broadcast.  In
@@ -591,9 +604,8 @@ Table of Contents
    All_DHCP_Relay_Agents_and_Servers multicast group, they would be able
    to monitor all DHCPv6 messages sent from the client to DHCPv6 servers
    and relays, and therefore obtain the information about addresses
-   being assiged via DHCPv6.  Layer2 (link-layer) isolation allows to
-   mitigate this threat by blocking onlink peer-to-peer communication
-   between hosts.
+   being assigned via DHCPv6.  Layer-2 isolation allows to mitigate this
+   threat by blocking onlink peer-to-peer communication between hosts.
 
    One of the use cases for the mechanism described in this document is
    to identify sources of malicious traffic after the fact.  Note,
@@ -679,6 +691,11 @@ Table of Contents
               <https://www.rfc-editor.org/rfc/rfc9131>.
 
 8.2.  Informative References
+
+   [RFC4861]  Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
+              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
+              DOI 10.17487/RFC4861, September 2007,
+              <https://www.rfc-editor.org/rfc/rfc4861>.
 
    [RFC6620]  Nordmark, E., Bagnulo, M., and E. Levy-Abegnoli, "FCFS
               SAVI: First-Come, First-Served Source Address Validation
