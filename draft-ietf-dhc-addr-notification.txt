@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 14 October 2024                             Cisco Systems, Inc.
+Expires: 1 November 2024                             Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 14 October 2024                             Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                           12 April 2024
+                                                           30 April 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 October 2024.
+   This Internet-Draft will expire on 1 November 2024.
 
 Copyright Notice
 
@@ -583,7 +583,7 @@ Table of Contents
    If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can
    trust that the ADDR-REG-INFORM message was sent by the legitimate
    holder of the address.  This prevents a host from registering an
-   address owned by another host.
+   address configured on another host.
 
    If the network doesn't have MLD snooping enabled, then IPv6 link-
    local multicast traffic is effectively transmitted as broadcast.  In
