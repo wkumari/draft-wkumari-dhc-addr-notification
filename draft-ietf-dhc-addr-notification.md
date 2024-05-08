@@ -294,7 +294,7 @@ Servers MUST ignore any received ADDR-REG-REPLY messages.
 Clients MUST discard any ADDR-REG-REPLY messages that meet any of the following conditions:
 
 - The IPv6 destination address does not match the address being registered.
-- The IA-Address option does not match the address being registered.
+- The IA Address option does not match the address being registered.
 - The address being registered is not assigned to the interface receiving the message.
 - The transaction-id does not match the transaction-id the client used in the corresponding ADDR-REG-INFORM message.
 
@@ -304,7 +304,7 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it SHOULD start the registration process and immediately register any addresses that are already in use. The client SHOULD NOT stop registering addresses until it disconnects from the link, even if subsequent Reply or Advertise messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
-The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and re-start address registration if some of the network's DHCPv6 servers support it and some of them do not.
+The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
 ## Retransmission
 
@@ -391,6 +391,6 @@ This document introduces the following new entities which require an allocation 
 # Acknowledgments
 {:numbered="false"}
 
-Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter Yee for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
+Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Mallory Knodel, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter Yee for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
