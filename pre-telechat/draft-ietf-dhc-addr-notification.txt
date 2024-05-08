@@ -155,10 +155,10 @@ Table of Contents
 
    After successfully assigning a self-generated IPv6 address on one of
    its interfaces, a client implementing this specification SHOULD
-   multicast an ADDR-REG-INFORM message in order to inform the DHCPv6
-   server that this self-generated address is in use.  Each ADDR-REG-
-   INFORM message contains a DHCPv6 IA Address option [RFC8415] to
-   specify the address being registered.
+   multicast an ADDR-REG-INFORM message (see Section 4.2) in order to
+   inform the DHCPv6 server that this self-generated address is in use.
+   Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option
+   [RFC8415] to specify the address being registered.
 
    The address registration mechanism overview is shown in Fig.1.
 
@@ -708,10 +708,10 @@ Acknowledgments
 
    Many thanks to Bernie Volz for significant review and feedback, as
    well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan
-   DeKok, Ryan Globus, Erik Kline, Mallory Knodel, David Lamparter, Ted
-   Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael
-   Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter Yee for
-   their feedback, comments and guidance.  We apologize if we
+   DeKok, James Guichard, Ryan Globus, Erik Kline, Mallory Knodel, David
+   Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid,
+   Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter
+   Yee for their feedback, comments and guidance.  We apologize if we
    inadvertently forgot to acknowledge anyone's contributions.
 
    This document borrows heavily from a previous document, draft-ietf-
