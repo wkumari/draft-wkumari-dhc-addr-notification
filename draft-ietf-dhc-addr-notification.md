@@ -126,7 +126,7 @@ This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) opt
 Before registering any addresses, the client MUST determine whether the network supports address registration. It can do this by including the Address Registration option code in the Option Request option (see Section 21.7 of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Reply message.
 If the network does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses. Otherwise, the client registers addresses as described below.
 
-After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option {{!RFC8415}} to specify the address being registered.
+After successfully assigning a self-generated IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message (see Section 4.2) in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option {{!RFC8415}} to specify the address being registered.
 
 The address registration mechanism overview is shown in Fig.1.
 
@@ -391,6 +391,6 @@ This document introduces the following new entities which require an allocation 
 # Acknowledgments
 {:numbered="false"}
 
-Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, Ryan Globus, Erik Kline, Mallory Knodel, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter Yee for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
+Many thanks to Bernie Volz for significant review and feedback, as well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan DeKok, James Guichard, Ryan Globus, Erik Kline, Mallory Knodel, David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson, Mark Smith, Eric Vyncke, Timothy Winters, Peter Yee for their feedback, comments and guidance. We apologize if we inadvertently forgot to acknowledge anyone's contributions.
 
 This document borrows heavily from a previous document, draft-ietf-dhc-addr-registration, which defined "a mechanism to register self-generated and statically configured addresses in DNS through a DHCPv6 server". That document was written Sheng Jiang, Gang Chen, Suresh Krishnan, and Rajiv Asati.
