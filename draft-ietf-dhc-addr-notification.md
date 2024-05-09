@@ -149,7 +149,7 @@ The address registration mechanism overview is shown in Fig.1.
     |                                                |
     |                                                |
     |<---------------------------------------------  |
-    |     REPLY MESSAGE                              |
+    |     REPLY or ADVERTISE MESSAGE                 |
     |       - OPTION_ADDR_REG_ENABLE                 |
     |                                                |
     |                                                |
