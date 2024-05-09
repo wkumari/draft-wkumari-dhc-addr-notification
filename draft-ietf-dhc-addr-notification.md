@@ -194,7 +194,8 @@ A server which is configured to support the address registration mechanism MUST 
 
 ## DHCPv6 Address Registration Request Message
 
-The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is in use.  The format of the ADDR-REG-INFORM message is described as follows:
+The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is configured on the client's interface and can be used.
+The format of the ADDR-REG-INFORM message is described as follows:
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -230,8 +231,8 @@ Unlike other types of messages, which are sent from the link-local address of th
 
 On clients with multiple interfaces, the client MUST only send the packet on the network interface that has the address being registered, even if it has multiple interfaces with different addresses. If the same address is configured on multiple interfaces, then the client MUST send ADDR-REG-INFORM each time the address is configured on an interface that did not previously have it, and refresh each registration independently from the others.
 
-The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}). This includes ULA addresses, which are defined in {{!RFC4193}} to have global scope.
-The client MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
+The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}). This includes ULA addresses, which are defined in {{!RFC4193}} to have global scope. This also includes statically assigned addresses of global scope (such addresses are considered to be valid indefinitely).
+The client MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6.
 
 The client SHOULD NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
 
@@ -246,7 +247,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 - the message does not include the IA Address option, or the IP address in the IA Address option does not match the source address of the original ADDR-REG-INFORM message sent by the client. The source address of the original message is the source IP address of the packet if it is not relayed, or the Peer-Address field of the innermost Relay-Forward message if it is relayed.
 - the message includes an Option Request Option.
 
-If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client. Otherwise, it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
+If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client via DHCPv6-PD (see Section 6.3 of {{!RFC8415}}). Otherwise, it MUST drop the message, and SHOULD log this fact. Otherwise, the server:
 
 *    SHOULD register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so. The server SHOULD log the client DUID and the link-layer address, if available. The server MAY log any other information.
