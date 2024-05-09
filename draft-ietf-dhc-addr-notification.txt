@@ -229,8 +229,8 @@ Table of Contents
 4.2.  DHCPv6 Address Registration Request Message
 
    The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an
-   IPv6 address is configured on the client's interface and can be used.
-   The format of the ADDR-REG-INFORM message is described as follows:
+   IPv6 address is assigned to the client's interface.  The format of
+   the ADDR-REG-INFORM message is described as follows:
 
      0                   1                   2                   3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
