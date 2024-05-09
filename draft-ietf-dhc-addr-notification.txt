@@ -181,7 +181,7 @@ Table of Contents
        |                                                |
        |                                                |
        |<---------------------------------------------  |
-       |     REPLY MESSAGE                              |
+       |     REPLY or ADVERTISE MESSAGE                 |
        |       - OPTION_ADDR_REG_ENABLE                 |
        |                                                |
        |                                                |
@@ -229,8 +229,8 @@ Table of Contents
 4.2.  DHCPv6 Address Registration Request Message
 
    The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an
-   IPv6 address is in use.  The format of the ADDR-REG-INFORM message is
-   described as follows:
+   IPv6 address is configured on the client's interface and can be used.
+   The format of the ADDR-REG-INFORM message is described as follows:
 
      0                   1                   2                   3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -291,9 +291,11 @@ Table of Contents
 
    The client MUST only send the ADDR-REG-INFORM message for valid
    ([RFC4862]) addresses of global scope ([RFC4007]).  This includes ULA
-   addresses, which are defined in [RFC4193] to have global scope.  The
-   client MUST NOT send the ADDR-REG-INFORM message for addresses
-   configured by DHCPv6.
+   addresses, which are defined in [RFC4193] to have global scope.  This
+   also includes statically assigned addresses of global scope (such
+   addresses are considered to be valid indefinitely).  The client MUST
+   NOT send the ADDR-REG-INFORM message for addresses configured by
+   DHCPv6.
 
    The client SHOULD NOT send the ADDR-REG-INFORM message unless it has
    received a Router Advertisement message with either M or O flags set
@@ -322,8 +324,9 @@ Table of Contents
    If the message is not discarded, the address registration server
    SHOULD verify that the address being registered is "appropriate to
    the link" as defined by [RFC8415] or within a prefix delegated to the
-   client.  Otherwise, it MUST drop the message, and SHOULD log this
-   fact.  Otherwise, the server:
+   client via DHCPv6-PD (see Section 6.3 of [RFC8415]).  Otherwise, it
+   MUST drop the message, and SHOULD log this fact.  Otherwise, the
+   server:
 
    *  SHOULD register or update a binding between the provided Client
       Identifier and IPv6 address in its database.  The lifetime of the

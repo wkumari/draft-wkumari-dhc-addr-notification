@@ -1273,7 +1273,7 @@ To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not supp
     |                                                |
     |                                                |
     |&lt;---------------------------------------------  |
-    |     REPLY MESSAGE                              |
+    |     REPLY or ADVERTISE MESSAGE                 |
     |       - OPTION_ADDR_REG_ENABLE                 |
     |                                                |
     |                                                |
@@ -1326,7 +1326,8 @@ To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not supp
         <h3 id="name-dhcpv6-address-registration-r">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-dhcpv6-address-registration-r" class="section-name selfRef">DHCPv6 Address Registration Request Message</a>
         </h3>
-<p id="section-4.2-1">The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is in use.  The format of the ADDR-REG-INFORM message is described as follows:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an IPv6 address is configured on the client's interface and can be used.
+The format of the ADDR-REG-INFORM message is described as follows:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2-2">
 <pre>
   0                   1                   2                   3
@@ -1355,8 +1356,8 @@ To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not supp
 <p id="section-4.2-8">The client sends the DHCPv6 ADDR-REG-INFORM message to the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2). The client <span class="bcp14">MUST</span> send separate messages for each address being registered.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
 <p id="section-4.2-9">Unlike other types of messages, which are sent from the link-local address of the client, the ADDR-REG-INFORM message <span class="bcp14">MUST</span> be sent from the address being registered. This is primarily for "fate sharing" purposes - for example, if the network implements some form of layer-2 security to prevent a client from spoofing other clients' MAC addresses, this prevents an attacker from spoofing ADDR-REG-INFORM messages.<a href="#section-4.2-9" class="pilcrow">¶</a></p>
 <p id="section-4.2-10">On clients with multiple interfaces, the client <span class="bcp14">MUST</span> only send the packet on the network interface that has the address being registered, even if it has multiple interfaces with different addresses. If the same address is configured on multiple interfaces, then the client <span class="bcp14">MUST</span> send ADDR-REG-INFORM each time the address is configured on an interface that did not previously have it, and refresh each registration independently from the others.<a href="#section-4.2-10" class="pilcrow">¶</a></p>
-<p id="section-4.2-11">The client <span class="bcp14">MUST</span> only send the ADDR-REG-INFORM message for valid (<span>[<a href="#RFC4862" class="cite xref">RFC4862</a>]</span>) addresses of global scope (<span>[<a href="#RFC4007" class="cite xref">RFC4007</a>]</span>). This includes ULA addresses, which are defined in <span>[<a href="#RFC4193" class="cite xref">RFC4193</a>]</span> to have global scope.
-The client <span class="bcp14">MUST NOT</span> send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.<a href="#section-4.2-11" class="pilcrow">¶</a></p>
+<p id="section-4.2-11">The client <span class="bcp14">MUST</span> only send the ADDR-REG-INFORM message for valid (<span>[<a href="#RFC4862" class="cite xref">RFC4862</a>]</span>) addresses of global scope (<span>[<a href="#RFC4007" class="cite xref">RFC4007</a>]</span>). This includes ULA addresses, which are defined in <span>[<a href="#RFC4193" class="cite xref">RFC4193</a>]</span> to have global scope. This also includes statically assigned addresses of global scope (such addresses are considered to be valid indefinitely).
+The client <span class="bcp14">MUST NOT</span> send the ADDR-REG-INFORM message for addresses configured by DHCPv6.<a href="#section-4.2-11" class="pilcrow">¶</a></p>
 <p id="section-4.2-12">The client <span class="bcp14">SHOULD NOT</span> send the ADDR-REG-INFORM message unless it has received a Router Advertisement message with either M or O flags set to 1.<a href="#section-4.2-12" class="pilcrow">¶</a></p>
 <p id="section-4.2-13">Clients <span class="bcp14">MUST</span> discard any received ADDR-REG-INFORM messages.<a href="#section-4.2-13" class="pilcrow">¶</a></p>
 <div id="server-message-processing">
@@ -1379,7 +1380,7 @@ The client <span class="bcp14">MUST NOT</span> send the  ADDR-REG-INFORM message
               <p id="section-4.2.1-2.4.1">the message includes an Option Request Option.<a href="#section-4.2.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.2.1-3">If the message is not discarded, the address registration server <span class="bcp14">SHOULD</span> verify that the address being registered is "appropriate to the link" as defined by <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span> or within a prefix delegated to the client. Otherwise, it <span class="bcp14">MUST</span> drop the message, and <span class="bcp14">SHOULD</span> log this fact. Otherwise, the server:<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-3">If the message is not discarded, the address registration server <span class="bcp14">SHOULD</span> verify that the address being registered is "appropriate to the link" as defined by <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span> or within a prefix delegated to the client via DHCPv6-PD (see Section 6.3 of <span>[<a href="#RFC8415" class="cite xref">RFC8415</a>]</span>). Otherwise, it <span class="bcp14">MUST</span> drop the message, and <span class="bcp14">SHOULD</span> log this fact. Otherwise, the server:<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2.1-4.1">
               <p id="section-4.2.1-4.1.1"><span class="bcp14">SHOULD</span> register or update a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and another client, the server <span class="bcp14">SHOULD</span> log the fact and update the binding.<a href="#section-4.2.1-4.1.1" class="pilcrow">¶</a></p>
