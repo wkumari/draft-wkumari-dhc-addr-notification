@@ -1,6 +1,6 @@
 ---
 title: "Registering Self-generated IPv6 Addresses using DHCPv6"
-abbrev: "Registering SLAAC Addresses using DHCPv6"
+abbrev: "Registering self-generated Addresses using DHCPv6"
 category: std
 submissiontype: IETF
 
@@ -123,8 +123,8 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
-Before registering any addresses, the client MUST determine whether the network supports address registration. It can do this by including the Address Registration option code in the Option Request option (see Section 21.7 of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Reply message.
-If the DHCPv6 infrastructure does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses. Otherwise, the client registers addresses as described below.
+Before registering any addresses, the client MUST determine whether the network supports address registration. It can do this by including the Address Registration option code in the Option Request option (see Section 21.7 of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Advertise or Reply messages.
+To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses. Otherwise, the client registers addresses as described below.
 
 After successfully assigning a self-generated or statically configured IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message (see Section 4.2) in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option {{!RFC8415}} to specify the address being registered.
 
@@ -172,8 +172,7 @@ Figure 1: Address Registration Procedure Overview
 
 ## DHCPv6 Address Registration Option
 
-The DHCPv6 server includes an Address Registration option (OPTION_ADDR_REG_ENABLE) in Reply messages to indicate that the server supports the mechanism described in this document.
-The format of the Address Registration option is described as follows:
+The Address Registration option (OPTION_ADDR_REG_ENABLE) indicates that the server supports the mechanism described in this document. The format of the Address Registration option is described as follows:
 
 
       0                   1                   2                   3
@@ -191,7 +190,7 @@ Figure 2: DHCPv6 Address Registration option
 
 If a client has the address registration mechanism enabled, it SHOULD include this option in all Option Request options that it sends.
 
-A server which is configured to support the address registration mechanism MUST include this option in Reply messages.
+A server which is configured to support the address registration mechanism MUST include this option in Advertise and Reply messages if the client message it is replying to contained this option in the Option Request option.
 
 ## DHCPv6 Address Registration Request Message
 
@@ -302,7 +301,7 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Signaling Address Registration Support
 
-The client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes a Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it SHOULD start the registration process and immediately register any addresses that are already in use. The client SHOULD NOT stop registering addresses until it disconnects from the link, even if subsequent Reply or Advertise messages do not contain the OPTION_ADDR_REG_ENABLE option.
+To avoid undesired multicast traffic, the client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it SHOULD start the registration process and immediately register any addresses that are already in use. The client SHOULD NOT stop registering addresses until it disconnects from the link, even if subsequent Advertise or Reply messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
 The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
@@ -323,7 +322,7 @@ If an ADDR-REG-REPLY message is received for the address being registered, the c
 
 The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below.
 
-A function AddrRegRefreshInterval(address) is defined as min(4 hours, 80% of the address's current Valid Lifetime). When calculating this value, the client applies a multiplier of AddrRegDesyncMultiplier to avoid synchronization causing a large number of registration messages from different clients at the same time. AddrRegDesyncMultiplier is between 0.9 and 1.1 (inclusive) and is chosen by the client when it starts the registration process, to ensure that refreshes for addresses with the same lifetime are coalesced (see below).
+A function AddrRegRefreshInterval(address) is defined as min(4 hours, 80% of the address's current Valid Lifetime). When calculating this value, the client applies a multiplier of AddrRegDesyncMultiplier to avoid synchronization causing a large number of registration messages from different clients at the same time. AddrRegDesyncMultiplier is a random value uniformly distributed between 0.9 and 1.1 (inclusive) and is chosen by the client when it starts the registration process, to ensure that refreshes for addresses with the same lifetime are coalesced (see below).
 
 Whenever the client registers or refreshes an address, it calculates a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval seconds in the future but does not schedule any refreshes.
 
