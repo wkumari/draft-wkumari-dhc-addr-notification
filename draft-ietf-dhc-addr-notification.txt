@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 9 November 2024                             Cisco Systems, Inc.
+Expires: 10 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 9 November 2024                             Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                              8 May 2024
+                                                              9 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 November 2024.
+   This Internet-Draft will expire on 10 November 2024.
 
 Copyright Notice
 
@@ -710,12 +710,12 @@ Acknowledgments
 
    Many thanks to Bernie Volz for significant review and feedback, as
    well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan
-   DeKok, James Guichard, Ryan Globus, Erik Kline, Mallory Knodel, David
-   Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid,
-   Michael Richardson, Mark Smith, Gunter Van de Velde, Eric Vyncke,
-   Timothy Winters, Peter Yee for their feedback, comments and guidance.
-   We apologize if we inadvertently forgot to acknowledge anyone's
-   contributions.
+   DeKok, James Guichard, James Guichard, Erik Kline, Mallory Knodel,
+   David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim
+   Reid, Michael Richardson, Mark Smith, Gunter Van de Velde, Eric
+   Vyncke, Timothy Winters, Peter Yee for their feedback, comments and
+   guidance.  We apologize if we inadvertently forgot to acknowledge
+   anyone's contributions.
 
    This document borrows heavily from a previous document, draft-ietf-
    dhc-addr-registration, which defined "a mechanism to register self-
