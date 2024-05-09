@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-07T00:04:51.031967+00:00",
+  "timestamp": "2024-05-09T00:05:14.338792+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -3177,6 +3177,69 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 79,
+      "id": "PR_kwDOG4kJEc5u5Es5",
+      "title": "Addressing some minor (easy) pre-telechat comments ",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/79",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From:\r\n-Peter Yee\r\n- Mallory Knodel \r\n- James Guichard\r\n- Gunter Van de Velde",
+      "createdAt": "2024-05-08T14:51:38Z",
+      "updatedAt": "2024-05-08T20:02:12Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "b0506812a05c64a1b33499486851aaf4058317de",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "pre-telechat",
+      "headRefOid": "a6ff96812d4f5525db60f2d420664af2bc5cea62",
+      "closedAt": "2024-05-08T20:02:00Z",
+      "mergedAt": "2024-05-08T20:02:00Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "3b1ea8bf764049c38953c032523944e0cc0126ed"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Seriously, thank you!",
+          "createdAt": "2024-05-08T20:02:10Z",
+          "updatedAt": "2024-05-08T20:02:10Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc55-57S",
+          "commit": {
+            "abbreviatedOid": "a6ff968"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "THANK YOU!!!!!!!",
+          "createdAt": "2024-05-08T20:00:52Z",
+          "updatedAt": "2024-05-08T20:00:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOG4kJEc55-6HX",
+          "commit": {
+            "abbreviatedOid": "a6ff968"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Also thank you!!!!!",
+          "createdAt": "2024-05-08T20:01:22Z",
+          "updatedAt": "2024-05-08T20:01:22Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
