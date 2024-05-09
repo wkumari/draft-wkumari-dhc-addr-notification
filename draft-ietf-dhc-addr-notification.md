@@ -109,8 +109,6 @@ It is very common operational practice, especially in enterprise networks, to us
 
 This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{!RFC4862}}) are used.
 
-The lack of this parity with IPv4 is one of the reasons that may be hindering IPv6 deployment, especially in enterprise networks.
-
 This document provides a mechanism for a device to inform the DHCPv6 server that the device has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4 in this aspect.
 
 
