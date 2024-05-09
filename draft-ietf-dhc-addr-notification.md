@@ -233,7 +233,7 @@ On clients with multiple interfaces, the client MUST only send the packet on the
 The client MUST only send the ADDR-REG-INFORM message for valid ({{!RFC4862}}) addresses of global scope ({{!RFC4007}}). This includes ULA addresses, which are defined in {{!RFC4193}} to have global scope.
 The client MUST NOT send the  ADDR-REG-INFORM message for addresses configured by DHCPv6.
 
-The client SHOULD NOT send the ADDR-REG-INFORM message if it has not received any Router Advertisement message with either M or O flags set to 1.
+The client SHOULD NOT send the ADDR-REG-INFORM message unles it has received a Router Advertisement message with either M or O flags set to 1.
 
 Clients MUST discard any received ADDR-REG-INFORM messages.
 
