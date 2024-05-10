@@ -1534,7 +1534,7 @@ The client <span class="bcp14">MUST NOT</span> send the ADDR-REG-INFORM message 
           <h4 id="name-statically-assigned-address">
 <a href="#section-4.6.2" class="section-number selfRef">4.6.2. </a><a href="#name-statically-assigned-address" class="section-name selfRef">Statically Assigned Addresses</a>
           </h4>
-<p id="section-4.6.2-1">A statically assigned address has an infinite valid lifetime which can not be refreshed by a PIO. Therefore whenever the client registers or refreshes a statically assigned address, the next refresh is scheduled for StaticAddrRegRefreshInterval seconds in the future. The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. The StaticAddrRegRefreshInterval interval <span class="bcp14">SHOULD</span> be configurable.<a href="#section-4.6.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-1">A statically assigned address has an infinite valid lifetime which is not affected by Router Advertisements. Therefore whenever the client registers or refreshes a statically assigned address, the next refresh is scheduled for StaticAddrRegRefreshInterval seconds in the future. The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. The StaticAddrRegRefreshInterval interval <span class="bcp14">SHOULD</span> be configurable.<a href="#section-4.6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="transmitting-refreshes">
