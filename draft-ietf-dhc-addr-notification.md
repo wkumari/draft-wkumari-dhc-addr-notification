@@ -321,19 +321,20 @@ If an ADDR-REG-REPLY message is received for the address being registered, the c
 
 The client MUST refresh registrations to ensure that the server is always aware of which addresses are still valid. The client SHOULD perform refreshes as described below.
 
-A function AddrRegRefreshInterval(address) is defined as 80% of the address's current Valid Lifetime, or StaticAddrRegRefreshInterval for statically-configured addresses. When calculating this value, the client applies a multiplier of AddrRegDesyncMultiplier to avoid synchronization causing a large number of registration messages from different clients at the same time. AddrRegDesyncMultiplier is a random value uniformly distributed between 0.9 and 1.1 (inclusive) and is chosen by the client when it starts the registration process, to ensure that refreshes for addresses with the same lifetime are coalesced (see below).
+Whenever the client registers or refreshes a statically assigned  address, it schedules the next refresh for StaticAddrRegRefreshInterval seconds in the future.
+The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. This interval SHOULD be configurable.
 
-Whenever the client registers or refreshes an address, it calculates a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval seconds in the future but does not schedule any refreshes.
+For an address configured using SLAAC, a function AddrRegRefreshInterval(address) is defined as 80% of the address's current Valid Lifetime. When calculating this value, the client applies a multiplier of AddrRegDesyncMultiplier to avoid synchronization causing a large number of registration messages from different clients at the same time. AddrRegDesyncMultiplier is a random value uniformly distributed between 0.9 and 1.1 (inclusive) and is chosen by the client when it starts the registration process, to ensure that refreshes for addresses with the same lifetime are coalesced (see below).
+
+Whenever the client registers or refreshes a SLAAC address, it calculates a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval seconds in the future but does not schedule any refreshes.
 
 Whenever the client receives a Prefix Information option (PIO, [RFC4861]) which changes the Valid Lifetime of an existing address by more than 1%, then the client calculates a new AddrRegRefreshInterval. The client schedules a refresh for min(now + AddrRegRefreshInterval, NextAddrRegRefreshTime). If the refresh would be scheduled in the past, then the refresh occurs immediately.
 
 When a refresh is performed, the client MAY refresh all addresses assigned to the interface that are scheduled to be refreshed within the next AddrRegRefreshCoalesce seconds. The value of AddrRegRefreshCoalesce is implementation-dependent, and a suggested default is 60 seconds.
 
-The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. This interval SHOULD be configurable.
-
 Justification: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically, after every registration:
 
-- If the client never receives a PIO that changes the lifetime (e.g., if no further PIOs are received, or if all PIO lifetimes decrease in step with the passage of time), then no refreshes occur. Refreshes are not necessary, because the address expires at the time the server expects it to expire.
+- If the client never receives a PIO that changes the lifetime of an address assigned via SLAAC  (e.g., if no further PIOs are received, or if all PIO lifetimes decrease in step with the passage of time), then no refreshes occur. Refreshes are not necessary, because the address expires at the time the server expects it to expire.
 - Any time a PIO changes the lifetime of the address (i.e., changes the time at which the address will expire) the client ensures that a refresh is scheduled, so that server will be informed of the new expiry.
 - Because AddrRegDesyncMultiplier is at most 1.1, the refresh never occurs later than a point 88% between the time when the address was registered and the time when the address will expire. This allows the client to retransmit the registration for up to 12% of the original interval before it expires. This may not be possible if the network sends a Router Advertisement (RA, [RFC4861]) very close to the time when the address would have expired. In this case, the client refreshes immediately, which is the best it can do.
 - The 1% tolerance ensures that the client will not refresh or reschedule refreshes if the Valid Lifetime experiences minor changes due to transmission delays or clock skew between the client and the router(s) sending the Router Advertisement.
