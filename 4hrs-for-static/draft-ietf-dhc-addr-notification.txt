@@ -511,11 +511,10 @@ Table of Contents
    registration:
 
    *  If the client never receives a PIO that changes the lifetime of an
-      address assigned via SLAAC (e.g., if no further PIOs are received,
-      or if all PIO lifetimes decrease in step with the passage of
-      time), then no refreshes occur.  Refreshes are not necessary,
-      because the address expires at the time the server expects it to
-      expire.
+      address (e.g., if no further PIOs are received, or if all PIO
+      lifetimes decrease in step with the passage of time), then no
+      refreshes occur.  Refreshes are not necessary, because the address
+      expires at the time the server expects it to expire.
 
    *  Any time a PIO changes the lifetime of the address (i.e., changes
       the time at which the address will expire) the client ensures that

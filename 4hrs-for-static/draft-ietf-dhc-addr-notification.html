@@ -1506,7 +1506,7 @@ The client <span class="bcp14">MUST NOT</span> send the ADDR-REG-INFORM message 
 <p id="section-4.6.1-4">Justification: this algorithm ensures that refreshes are not sent too frequently, while ensuring that the server never believes that the address has expired when it has not. Specifically, after every registration:<a href="#section-4.6.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.6.1-5.1">
-              <p id="section-4.6.1-5.1.1">If the client never receives a PIO that changes the lifetime of an address assigned via SLAAC  (e.g., if no further PIOs are received, or if all PIO lifetimes decrease in step with the passage of time), then no refreshes occur. Refreshes are not necessary, because the address expires at the time the server expects it to expire.<a href="#section-4.6.1-5.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4.6.1-5.1.1">If the client never receives a PIO that changes the lifetime of an address (e.g., if no further PIOs are received, or if all PIO lifetimes decrease in step with the passage of time), then no refreshes occur. Refreshes are not necessary, because the address expires at the time the server expects it to expire.<a href="#section-4.6.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.6.1-5.2">
               <p id="section-4.6.1-5.2.1">Any time a PIO changes the lifetime of the address (i.e., changes the time at which the address will expire) the client ensures that a refresh is scheduled, so that server will be informed of the new expiry.<a href="#section-4.6.1-5.2.1" class="pilcrow">¶</a></p>
