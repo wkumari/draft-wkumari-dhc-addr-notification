@@ -107,9 +107,10 @@ This document defines a method to inform a DHCPv6 server that a device has one o
 
 It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or forensics purposes. Examples of this include a help desk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the printer's IPv4 address can be retrieved from the DHCP log or lease table and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
 
-This operational practice relies on the DHCP server knowing the IP address assignments. Therefore, the practice does not work if static IP addresses are manually configured on devices or self-assigned addresses (such as when self-configuring an IPv6 address using SLAAC {{!RFC4862}}) are used.
+This operational practice relies on the DHCP server knowing the IP address assignments. 
+This works quite well for IPv4 addresses, as most addresses are either assigned by DHCP {{!RFC2131}} or statically configured by the network operator. For IPv6, however, this practice is much harder to implement, as devices often self-configure IPv6 addresses via SLAAC {{!RFC4862}}.
 
-This document provides a mechanism for a device to inform the DHCPv6 server that the device has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4 in this aspect.
+This document provides a mechanism for a device to inform the DHCPv6 server that the device has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4, by making DHCPv6 infrastructure aware of self-assigned IPv6 addresses.
 
 
 # Conventions and Definitions
@@ -303,6 +304,8 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 To avoid undesired multicast traffic, the client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it SHOULD start the registration process and immediately register any addresses that are already in use. The client SHOULD NOT stop registering addresses until it disconnects from the link, even if subsequent Advertise or Reply messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
 The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
+
+The client with multiple interfaces MUST discover address registration support for each interface independently. The client MUST NOT send address registration messsages via a given interface unless the client has discovered that this interface is connected to a network which supports address registration.
 
 ## Retransmission
 
