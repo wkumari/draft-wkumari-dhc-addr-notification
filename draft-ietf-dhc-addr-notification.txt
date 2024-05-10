@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 10 November 2024                            Cisco Systems, Inc.
+Expires: 11 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 10 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                              9 May 2024
+                                                             10 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 November 2024.
+   This Internet-Draft will expire on 11 November 2024.
 
 Copyright Notice
 
@@ -478,12 +478,13 @@ Table of Contents
    always aware of which addresses are still valid.  The client SHOULD
    perform refreshes as described below.
 
-   A function AddrRegRefreshInterval(address) is defined as min(4 hours,
-   80% of the address's current Valid Lifetime).  When calculating this
-   value, the client applies a multiplier of AddrRegDesyncMultiplier to
-   avoid synchronization causing a large number of registration messages
-   from different clients at the same time.  AddrRegDesyncMultiplier is
-   a random value uniformly distributed between 0.9 and 1.1 (inclusive)
+   A function AddrRegRefreshInterval(address) is defined as 80% of the
+   address's current Valid Lifetime, or StaticAddrRegRefreshInterval for
+   statically-configured addresses.  When calculating this value, the
+   client applies a multiplier of AddrRegDesyncMultiplier to avoid
+   synchronization causing a large number of registration messages from
+   different clients at the same time.  AddrRegDesyncMultiplier is a
+   random value uniformly distributed between 0.9 and 1.1 (inclusive)
    and is chosen by the client when it starts the registration process,
    to ensure that refreshes for addresses with the same lifetime are
    coalesced (see below).
@@ -504,6 +505,11 @@ Table of Contents
    the next AddrRegRefreshCoalesce seconds.  The value of
    AddrRegRefreshCoalesce is implementation-dependent, and a suggested
    default is 60 seconds.
+
+   The default value of StaticAddrRegRefreshInterval is 4 hours.  This
+   ensures static addresses are still refreshed periodically, but
+   refreshes for static addresses do not cause excessive multicast
+   traffic.  This interval SHOULD be configurable.
 
    Justification: this algorithm ensures that refreshes are not sent too
    frequently, while ensuring that the server never believes that the
@@ -551,6 +557,11 @@ Table of Contents
       algorithm will refresh on the order of once per address lifetime,
       which is similar to the number of refreshes that are necessary
       using stateful DHCPv6.
+
+   *  Because refreshes occur at least once per address lifetime, the
+      network administrator can control the address refresh frequency by
+      appropriately setting the Valid Lifetime in the Prefix Information
+      Option.
 
    Registration refresh packets SHOULD be retransmitted using the same
    logic as described in the 'Retransmission' section above.
