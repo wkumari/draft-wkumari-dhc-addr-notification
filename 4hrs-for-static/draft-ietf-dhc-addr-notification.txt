@@ -494,10 +494,9 @@ Table of Contents
    to ensure that refreshes for addresses with the same lifetime are
    coalesced (see below).
 
-   Whenever the client registers or refreshes a SLAAC address, it
-   calculates a NextAddrRegRefreshTime for that address as
-   AddrRegRefreshInterval seconds in the future but does not schedule
-   any refreshes.
+   Whenever the client registers or refreshes an address, it calculates
+   a NextAddrRegRefreshTime for that address as AddrRegRefreshInterval
+   seconds in the future but does not schedule any refreshes.
 
    Whenever the client receives a Prefix Information option (PIO,
    [RFC4861]) which changes the Valid Lifetime of an existing address by
