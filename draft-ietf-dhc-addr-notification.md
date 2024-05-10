@@ -341,7 +341,7 @@ Justification: this algorithm ensures that refreshes are not sent too frequently
 
 ### Statically Assigned Addresses
 
-A statically assigned address has an infinite valid lifetime which can not be refreshed by a PIO. Therefore whenever the client registers or refreshes a statically assigned address, the next refresh is scheduled for StaticAddrRegRefreshInterval seconds in the future. The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. The StaticAddrRegRefreshInterval interval SHOULD be configurable.
+A statically assigned address has an infinite valid lifetime which is not affected by Router Advertisements. Therefore whenever the client registers or refreshes a statically assigned address, the next refresh is scheduled for StaticAddrRegRefreshInterval seconds in the future. The default value of StaticAddrRegRefreshInterval is 4 hours. This ensures static addresses are still refreshed periodically, but refreshes for static addresses do not cause excessive multicast traffic. The StaticAddrRegRefreshInterval interval SHOULD be configurable.
 
 ### Transmitting Refreshes
 
