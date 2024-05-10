@@ -1,0 +1,786 @@
+
+
+
+
+Dynamic Host Configuration                                     W. Kumari
+Internet-Draft                                               Google, LLC
+Intended status: Standards Track                             S. Krishnan
+Expires: 11 November 2024                            Cisco Systems, Inc.
+                                                                R. Asati
+                                                             Independent
+                                                              L. Colitti
+                                                              J. Linkova
+                                                             Google, LLC
+                                                                S. Jiang
+                      Beijing University of Posts and Telecommunications
+                                                             10 May 2024
+
+
+         Registering Self-generated IPv6 Addresses using DHCPv6
+                draft-ietf-dhc-addr-notification-latest
+
+Abstract
+
+   This document defines a method to inform a DHCPv6 server that a
+   device has one or more self-generated or statically configured
+   addresses.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://wkumari.github.io/draft-wkumari-dhc-addr-notification/draft-
+   wkumari-dhc-addr-notification.html.  Status information for this
+   document may be found at https://datatracker.ietf.org/doc/draft-ietf-
+   dhc-addr-notification/.
+
+   Discussion of this document takes place on the Dynamic Host
+   Configuration Working Group mailing list (mailto:dhcwg@ietf.org),
+   which is archived at https://mailarchive.ietf.org/arch/browse/dhcwg/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/dhcwg/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/wkumari/draft-wkumari-dhc-addr-notification.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 11 November 2024.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  Registration Mechanism Overview
+   4.  DHCPv6 Address Registration Procedure
+     4.1.  DHCPv6 Address Registration Option
+     4.2.  DHCPv6 Address Registration Request Message
+       4.2.1.  Server message processing
+     4.3.  DHCPv6 Address Registration Acknowledgement
+     4.4.  Signaling Address Registration Support
+     4.5.  Retransmission
+     4.6.  Registration Expiry and Refresh
+   5.  Host configuration
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Acknowledgments
+   Contributors
+   Authors' Addresses
+
+1.  Introduction
+
+   It is very common operational practice, especially in enterprise
+   networks, to use IPv4 DHCP logs for troubleshooting or forensics
+   purposes.  Examples of this include a help desk dealing with a ticket
+   such as "The CEO's laptop cannot connect to the printer"; if the MAC
+   address of the printer is known (for example from an inventory
+   system), the printer's IPv4 address can be retrieved from the DHCP
+   log or lease table and the printer pinged to determine if it is
+   reachable.  Another common example is a Security Operations team
+   discovering suspicious events in outbound firewall logs and then
+   consulting DHCP logs to determine which employee's laptop had that
+   IPv4 address at that time so that they can quarantine it and remove
+   the malware.
+
+   This operational practice relies on the DHCP server knowing the IP
+   address assignments.  Therefore, the practice does not work if static
+   IP addresses are manually configured on devices or self-assigned
+   addresses (such as when self-configuring an IPv6 address using SLAAC
+   [RFC4862]) are used.
+
+   This document provides a mechanism for a device to inform the DHCPv6
+   server that the device has a self-configured IPv6 address (or has a
+   statically configured address), and thus provides parity with IPv4 in
+   this aspect.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Registration Mechanism Overview
+
+   The DHCPv6 protocol is used as the address registration protocol when
+   a DHCPv6 server performs the role of an address registration server.
+   This document introduces a new Address Registration
+   (OPTION_ADDR_REG_ENABLE) option which indicates that the server
+   supports the registration mechanism.  Before registering any
+   addresses, the client MUST determine whether the network supports
+   address registration.  It can do this by including the Address
+   Registration option code in the Option Request option (see
+   Section 21.7 of [RFC8415]) of the Information-Request, Solicit,
+   Request, Renew, or Rebind messages it sends to the server as part of
+   the regular stateless or stateful DHCPv6 configuration process.  If
+   the server supports address registration, it includes an Address
+   Registration option in its Advertise or Reply messages.  To avoid
+   undesired multicast traffic, if the DHCPv6 infrastructure does not
+   support (or is not willing to receive) any address registration
+   information, the client MUST NOT register any addresses.  Otherwise,
+   the client registers addresses as described below.
+
+   After successfully assigning a self-generated or statically
+   configured IPv6 address on one of its interfaces, a client
+   implementing this specification SHOULD multicast an ADDR-REG-INFORM
+   message (see Section 4.2) in order to inform the DHCPv6 server that
+   this self-generated address is in use.  Each ADDR-REG-INFORM message
+   contains a DHCPv6 IA Address option [RFC8415] to specify the address
+   being registered.
+
+   The address registration mechanism overview is shown in Fig.1.
+
+   +------+          +------------------+       +---------------+
+   | HOST |          | FIRST-HOP ROUTER |       | DHCPv6 SERVER |
+   +---+--+          +---------+--------+       +-------+-------+
+       |      SLAAC            |                        |
+       |<--------------------> |                        |
+       |                       |                        |
+       |                                                |
+       |  src: link-local address                       |
+       | -------------------------------------------->  |
+       |    INFORMATION-REQUEST or SOLICIT/...          |
+       |       - OPTION REQUEST OPTION                  |
+       |          -- OPTION_ADDR_REG_ENABLE             |
+       |                                                |
+       |    ...                                         |
+       |                                                |
+       |                                                |
+       |<---------------------------------------------  |
+       |     REPLY or ADVERTISE MESSAGE                 |
+       |       - OPTION_ADDR_REG_ENABLE                 |
+       |                                                |
+       |                                                |
+       |  src: address being registered                 |
+       | -------------------------------------------->  |
+       |    ADDR-REG-INFORM MESSAGE                     |Register/
+       |                                                |log addresses
+       |                                                |
+       |                                                |
+       | <--------------------------------------------  |
+       |        ADDR-REG-REPLY MESSAGE                  |
+       |                                                |
+
+   Figure 1: Address Registration Procedure Overview
+
+4.  DHCPv6 Address Registration Procedure
+
+4.1.  DHCPv6 Address Registration Option
+
+   The Address Registration option (OPTION_ADDR_REG_ENABLE) indicates
+   that the server supports the mechanism described in this document.
+   The format of the Address Registration option is described as
+   follows:
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |          option-code          |           option-len          |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    option-code           OPTION_ADDR_REG_ENABLE (TBA0)
+
+    option-len            0
+
+   Figure 2: DHCPv6 Address Registration option
+
+   If a client has the address registration mechanism enabled, it SHOULD
+   include this option in all Option Request options that it sends.
+
+   A server which is configured to support the address registration
+   mechanism MUST include this option in Advertise and Reply messages if
+   the client message it is replying to contained this option in the
+   Option Request option.
+
+4.2.  DHCPv6 Address Registration Request Message
+
+   The DHCPv6 client sends an ADDR-REG-INFORM message to inform that an
+   IPv6 address is assigned to the client's interface.  The format of
+   the ADDR-REG-INFORM message is described as follows:
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |    msg-type   |               transaction-id                  |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    .                            options                            .
+    .                           (variable)                          .
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     msg-type             Identifies the DHCPv6 message type;
+                          Set to ADDR-REG-INFORM (TBA1).
+
+     transaction-id       The transaction ID for this message exchange.
+
+     options              Options carried in this message.
+
+   Figure 3: DHCPv6 ADDR-REG-INFORM message
+
+   The client MUST generate a transaction ID as described in [RFC8415]
+   and insert this value in the "transaction-id" field.
+
+   The client MUST include the Client Identifier option [RFC8415] in the
+   ADDR-REG-INFORM message.
+
+   The ADDR-REG-INFORM message MUST NOT contain the Server Identifier
+   option and MUST contain exactly one IA Address option containing the
+   address being registered.  The valid-lifetime and preferred-lifetime
+   fields in the option MUST match the current Valid Lifetime and
+   Preferred Lifetime of the address being registered.
+
+   The ADDR-REG-INFORM message is dedicated for clients to initiate an
+   address registration request toward an address registration server.
+   Consequently, clients MUST NOT put any Option Request Option(s) in
+   the ADDR-REG-INFORM message.  Clients MAY include other options, such
+   as the Client FQDN Option [RFC4704].
+
+   The client sends the DHCPv6 ADDR-REG-INFORM message to the
+   All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2).  The
+   client MUST send separate messages for each address being registered.
+
+   Unlike other types of messages, which are sent from the link-local
+   address of the client, the ADDR-REG-INFORM message MUST be sent from
+   the address being registered.  This is primarily for "fate sharing"
+   purposes - for example, if the network implements some form of
+   layer-2 security to prevent a client from spoofing other clients' MAC
+   addresses, this prevents an attacker from spoofing ADDR-REG-INFORM
+   messages.
+
+   On clients with multiple interfaces, the client MUST only send the
+   packet on the network interface that has the address being
+   registered, even if it has multiple interfaces with different
+   addresses.  If the same address is configured on multiple interfaces,
+   then the client MUST send ADDR-REG-INFORM each time the address is
+   configured on an interface that did not previously have it, and
+   refresh each registration independently from the others.
+
+   The client MUST only send the ADDR-REG-INFORM message for valid
+   ([RFC4862]) addresses of global scope ([RFC4007]).  This includes ULA
+   addresses, which are defined in [RFC4193] to have global scope.  This
+   also includes statically assigned addresses of global scope (such
+   addresses are considered to have an infinite Valid Lifetime).  The
+   client MUST NOT send the ADDR-REG-INFORM message for addresses
+   configured by DHCPv6.
+
+   The client SHOULD NOT send the ADDR-REG-INFORM message unless it has
+   received a Router Advertisement message with either M or O flags set
+   to 1.
+
+   Clients MUST discard any received ADDR-REG-INFORM messages.
+
+4.2.1.  Server message processing
+
+   Servers MUST discard any ADDR-REG-INFORM messages that meet any of
+   the following conditions:
+
+   *  the message does not include a Client Identifier option;
+
+   *  the message includes a Server Identifier option;
+
+   *  the message does not include the IA Address option, or the IP
+      address in the IA Address option does not match the source address
+      of the original ADDR-REG-INFORM message sent by the client.  The
+      source address of the original message is the source IP address of
+      the packet if it is not relayed, or the Peer-Address field of the
+      innermost Relay-Forward message if it is relayed.
+
+   *  the message includes an Option Request Option.
+
+   If the message is not discarded, the address registration server
+   SHOULD verify that the address being registered is "appropriate to
+   the link" as defined by [RFC8415] or within a prefix delegated to the
+   client via DHCPv6-PD (see Section 6.3 of [RFC8415]).  Otherwise, it
+   MUST drop the message, and SHOULD log this fact.  Otherwise, the
+   server:
+
+   *  SHOULD register or update a binding between the provided Client
+      Identifier and IPv6 address in its database.  The lifetime of the
+      binding is equal to the Valid Lifetime of the address reported by
+      the client.  If there is already a binding between the registered
+      address and another client, the server SHOULD log the fact and
+      update the binding.
+
+   *  SHOULD log the address registration information (as is done
+      normally for clients to which it has assigned an address), unless
+      configured not to do so.  The server SHOULD log the client DUID
+      and the link-layer address, if available.  The server MAY log any
+      other information.
+
+   *  SHOULD mark the address as unavailable for use and not include it
+      in future ADVERTISE messages.
+
+   *  MUST send back an ADDR-REG-REPLY message to ensure the client does
+      not retransmit.
+
+   If a client is multihomed (connected to multiple administrative
+   domains, each operating its own DHCPv6 infrastructure), the
+   requirement to verify that the registered address is appropriate for
+   the link or belongs to a delegated prefix ensures that each DHCPv6
+   server only registers bindings for addresses from the given
+   administrative domain.
+
+   Although a client "MUST NOT send the ADDR-REG-INFORM message for
+   addresses configured by DHCPv6", if a server does receive such a
+   message, it should log and discard it.
+
+   DHCPv6 relay agents and switches that relay address registration
+   messages directly from clients MUST include the client's link-layer
+   address in the relayed message using the Client Link-Layer Address
+   option ([RFC6939]) if they would do so for other DHCPv6 client
+   messages such as SOLICIT, REQUEST, and REBIND.
+
+4.3.  DHCPv6 Address Registration Acknowledgement
+
+   The server MUST acknowledge receipt of a valid ADDR-REG-INFORM
+   message by sending back an ADDR-REG-REPLY message.  The format of the
+   ADDR-REG-REPLY message is described as follows:
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |    msg-type   |               transaction-id                  |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    .                            options                            .
+    .                           (variable)                          .
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     msg-type             Identifies the DHCPv6 message type;
+                          Set to ADDR-REG-REPLY (TBA2).
+
+     transaction-id       The transaction ID for this message exchange.
+
+     options              Options carried in this message.
+
+   Figure 4: DHCPv6 ADDR-REG-REPLY message
+
+   If the ADDR-REG-INFORM message that the server is replying to was not
+   relayed, then the IPv6 destination address of the message MUST be the
+   address being registered.  If the ADDR-REG-INFORM message was
+   relayed, then the server MUST construct the Relay-reply message as
+   specified in [RFC8415] section 19.3.
+
+   The server MUST copy the transaction-id from the ADDR-REG-INFORM
+   message to the transaction-id field of the ADDR-REG-REPLY.
+
+   The ADDR-REG-REPLY message MUST contain an IA Address option for the
+   address being registered.  The option MUST be identical to the one in
+   the ADDR-REG-INFORM message that the server is replying to.
+
+   Servers MUST ignore any received ADDR-REG-REPLY messages.
+
+   Clients MUST discard any ADDR-REG-REPLY messages that meet any of the
+   following conditions:
+
+   *  The IPv6 destination address does not match the address being
+      registered.
+
+   *  The IA Address option does not match the address being registered.
+
+   *  The address being registered is not assigned to the interface
+      receiving the message.
+
+   *  The transaction-id does not match the transaction-id the client
+      used in the corresponding ADDR-REG-INFORM message.
+
+   The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM
+   message has been received and that the client should not retransmit
+   it.  The ADDR-REG-REPLY message MUST NOT be considered as any
+   indication of the address validity and MUST NOT be required for the
+   address to be usable.  DHCPv6 relays, or other devices that snoop
+   ADDR-REG-REPLY messages, MUST NOT add or alter any forwarding or
+   security state based on the ADDR-REG-REPLY message.
+
+4.4.  Signaling Address Registration Support
+
+   To avoid undesired multicast traffic, the client MUST NOT register
+   addresses using this mechanism unless the network's DHCPv6 servers
+   support address registration.  The client can discover this using the
+   OPTION_ADDR_REG_ENABLE option.  The client SHOULD include this option
+   code in all Option Request options that it sends.  If the client
+   receives and processes an Advertise or Reply message with the
+   OPTION_ADDR_REG_ENABLE option, it concludes that the network supports
+   address registration.  When the client detects that the network
+   supports address registration, it SHOULD start the registration
+   process and immediately register any addresses that are already in
+   use.  The client SHOULD NOT stop registering addresses until it
+   disconnects from the link, even if subsequent Advertise or Reply
+   messages do not contain the OPTION_ADDR_REG_ENABLE option.
+
+   The client MUST discover whether the network supports address
+   registration every time it connects to a network or when it detects
+   it has moved to a new link, without utilizing any prior knowledge
+   about address registration support by that network or link.  This
+   host behavior allows networks to progressively roll out support for
+   the address registration option across the DHCPv6 infrastructure
+   without causing clients to frequently stop and restart address
+   registration if some of the network's DHCPv6 servers support it and
+   some of them do not.
+
+4.5.  Retransmission
+
+   To reduce the effects of packet loss on registration, the client
+   SHOULD retransmit the registration message.  Retransmissions SHOULD
+   follow the standard retransmission logic specified by section 15 of
+   [RFC8415] with the following default parameters:
+
+   *  IRT 1 sec
+
+   *  MRC 3
+
+   The client SHOULD allow these parameters to be configured by the
+   administrator.
+
+   To comply with section 16.1 of [RFC8415], the client MUST leave the
+   transaction ID unchanged in retransmissions of an ADDR-REG-INFORM
+   message.  When the client retransmits the registration message, the
+   lifetimes in the packet MUST be updated so that they match the
+   current lifetimes of the address.
+
+   If an ADDR-REG-REPLY message is received for the address being
+   registered, the client MUST stop retransmission.
+
+4.6.  Registration Expiry and Refresh
+
+   The client MUST refresh registrations to ensure that the server is
+   always aware of which addresses are still valid.  The client SHOULD
+   perform refreshes as described below.
+
+   A function AddrRegRefreshInterval(address) is defined as
+   min(MaxAddrRegRefreshInterval, 80% of the address's current Valid
+   Lifetime).  When calculating this value, the client applies a
+   multiplier of AddrRegDesyncMultiplier to avoid synchronization
+   causing a large number of registration messages from different
+   clients at the same time.  AddrRegDesyncMultiplier is a random value
+   uniformly distributed between 0.9 and 1.1 (inclusive) and is chosen
+   by the client when it starts the registration process, to ensure that
+   refreshes for addresses with the same lifetime are coalesced (see
+   below).
+
+   Whenever the client registers or refreshes an address, it calculates
+   a NextAddrRegRefreshDeadline for that address as (now +
+   AddrRegRefreshInterval) but does not schedule any refreshes.
+
+   Whenever the client receives a Prefix Information option (PIO,
+   [RFC4861]) which changes the Valid Lifetime of an existing address by
+   more than 1%, or when more than MaxAddrRegRefreshInterval has elapsed
+   since the last refresh, then the client calculates a new
+   AddrRegRefreshInterval.  The client schedules a refresh for min(now +
+   AddrRegRefreshInterval, NextAddrRegRefreshDeadline).  If the refresh
+   would be scheduled in the past, then the refresh occurs immediately.
+
+   When a refresh is performed, the client MAY refresh all addresses
+   assigned to the interface that are scheduled to be refreshed within
+   the next AddrRegRefreshCoalesce seconds.  The value of
+   AddrRegRefreshCoalesce is implementation-dependent, and a suggested
+   default is 60 seconds.
+
+   MaxAddrRegRefreshInterval is chosen to ensure that address
+   registration does not cause excessive multicast traffic, but still
+   periodically notifies the network of which addresses are registered.
+   The default value is 4 hours.
+
+   Justification: this algorithm ensures that refreshes are not sent too
+   frequently, while ensuring that the server never believes that the
+   address has expired when it has not.  It also guarantees that
+   refreshes will occur at most every MaxAddrRegRefreshInterval
+   regardless of address lifetime.  Specifically, after every
+   registration:
+
+   *  If the network never modifies the address lifetime (e.g., if no
+      further PIOs are received, or if all PIO lifetimes decrease in
+      step with the passage of time, or the address is statically
+      configured), then refreshes occur every MaxAddrRegRefreshInterval.
+
+   *  If the network modifies the address lifetime (i.e., changes the
+      time at which the address will expire) the client ensures that a
+      refresh is scheduled, so that server will be informed of the new
+      expiry.
+
+   *  Because AddrRegDesyncMultiplier is at most 1.1, the refresh never
+      occurs later than a point 88% between the time when the address
+      was registered or refreshed, and the time when the address will
+      expire.  This allows the client to retransmit the registration for
+      up to 12% of the original interval before it expires.  This may
+      not be possible if the network sends a Router Advertisement (RA,
+      [RFC4861]) that extends the address's lifetime very close to the
+      time when the address would have expired.  In this case, the
+      client refreshes immediately, which is the best it can do.
+
+   *  The 1% tolerance ensures that the client will not refresh or
+      reschedule refreshes if the Valid Lifetime experiences minor
+      changes due to transmission delays or clock skew between the
+      client and the router(s) sending the Router Advertisement.
+
+   *  AddrRegRefreshCoalesce allows battery-powered hosts to wake up
+      less often.  In particular, it allows the client to coalesce
+      refreshes for multiple addresses formed from the same prefix, such
+      as the stable and privacy addresses.  Higher values will result in
+      fewer wakeups, but may result in more network traffic, because if
+      a refresh is sent early, then the next RA received will cause the
+      client to immediately send a refresh message.
+
+   *  In typical networks, the lifetimes in periodic Router
+      Advertisements either contain constant values, or values that
+      decrease over time to match another lifetime, such as the lifetime
+      of a prefix delegated to the network.  In both these cases, this
+      algorithm will refresh on the order of once per
+      MaxAddrRegRefreshInterval.
+
+   Registration refresh packets SHOULD be retransmitted using the same
+   logic as described in the 'Retransmission' section above.
+
+   The client MUST generate a new transaction ID when refreshing the
+   registration.
+
+   When the Client-Identifier-to-IPv6-address binding has expired, the
+   server SHOULD remove it and consider the address as available for
+   use.
+
+   The client MAY choose to notify the server when an address is no
+   longer being used (e.g., if the client is disconnecting from the
+   network, the address lifetime expired, or the address is being
+   removed from the interface).  To indicate that the address is not
+   being used anymore the client MUST set the preferred-lifetime and
+   valid-lifetime fields of the IA Address option in the ADDR-REG-INFORM
+   message to zero.  If the server receives a message with a valid-
+   lifetime of zero, it SHOULD act as if the address has expired.
+
+5.  Host configuration
+
+   DHCP clients SHOULD allow the administrator to disable sending ADDR-
+   REG-INFORM messages.  This could be used, for example, to reduce
+   network traffic on networks where the servers are known not to
+   support the message type.  Sending the messages SHOULD be enabled by
+   default.
+
+6.  Security Considerations
+
+   An attacker may attempt to register a large number of addresses in
+   quick succession in order to overwhelm the address registration
+   server and / or fill up log files.  Similar attack vectors exist
+   today, e.g., an attacker can DoS the server with messages containing
+   spoofed DHCP Unique Identifiers (DUIDs) [RFC8415].
+
+   If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can
+   trust that the ADDR-REG-INFORM message was sent by the legitimate
+   holder of the address.  This prevents a host from registering an
+   address configured on another host.
+
+   If the network doesn't have MLD snooping enabled, then IPv6 link-
+   local multicast traffic is effectively transmitted as broadcast.  In
+   such networks, an on-link attacker listening to DHCPv6 messages might
+   obtain information about IPv6 addresses assigned to the host.
+   However, hiding information about the specific IPv6 address should
+   not be considered a security measure, as such information is usually
+   disclosed via Duplicate Address Detection [RFC4862] to all nodes
+   anyway, if MLD snooping is not enabled.
+
+   If MLD snooping is enabled, an attacker might be able to join the
+   All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group
+   to listen for address registration messages.  However, the same
+   result can be achieved by joining the All Routers Address (ff02::2)
+   group and listen to Gratuitous Neighbor Advertisement messages
+   [RFC9131].  It should be noted that this particular scenario shares
+   the fate with DHCPv6 address assignment: if an attacker can join the
+   All_DHCP_Relay_Agents_and_Servers multicast group, they would be able
+   to monitor all DHCPv6 messages sent from the client to DHCPv6 servers
+   and relays, and therefore obtain the information about addresses
+   being assigned via DHCPv6.  Layer 2 isolation allows mitigating this
+   threat by blocking onlink peer-to-peer communication between hosts.
+
+   One of the use cases for the mechanism described in this document is
+   to identify sources of malicious traffic after the fact.  Note,
+   however, that as the device itself is responsible for informing the
+   DHCPv6 server that it is using an address, a malicious or compromised
+   device can simply not send the ADDR-REG-INFORM message.  This is an
+   informational, optional mechanism, and is designed to aid in
+   troubleshooting and forensics.  On its own, it is not intended to be
+   a strong security access mechanism.  In particular, the ADDR-REG-
+   INFORM message MUST NOT be used for authentication and authorization
+   purposes, because in addition to the reasons above, the packets
+   containing the message may be dropped.
+
+7.  IANA Considerations
+
+   This document introduces the following new entities which require an
+   allocation out of the DHCPv6 registries defined at
+   http://www.iana.org/assignments/dhcpv6-parameters/:
+
+   *  one new DHCPv6 option, described in Section 4.1 which requires an
+      allocation out of the registry of DHCPv6 Option Codes:
+
+      -  Value: TBA0
+
+      -  Description: OPTION_ADDR_REG_ENABLE
+
+      -  Client ORO: Yes
+
+      -  Singleton Option: Yes
+
+   *  two new DHCPv6 messages which require an allocation out of the
+      registry of Message Types:
+
+      -  ADDR-REG-INFORM message (TBA1) described in Section 4.2
+
+      -  ADDR-REG-REPLY (TBA2) described in Section 4.3.
+
+8.  References
+
+8.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4007]  Deering, S., Haberman, B., Jinmei, T., Nordmark, E., and
+              B. Zill, "IPv6 Scoped Address Architecture", RFC 4007,
+              DOI 10.17487/RFC4007, March 2005,
+              <https://www.rfc-editor.org/rfc/rfc4007>.
+
+   [RFC4193]  Hinden, R. and B. Haberman, "Unique Local IPv6 Unicast
+              Addresses", RFC 4193, DOI 10.17487/RFC4193, October 2005,
+              <https://www.rfc-editor.org/rfc/rfc4193>.
+
+   [RFC4704]  Volz, B., "The Dynamic Host Configuration Protocol for
+              IPv6 (DHCPv6) Client Fully Qualified Domain Name (FQDN)
+              Option", RFC 4704, DOI 10.17487/RFC4704, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4704>.
+
+   [RFC4862]  Thomson, S., Narten, T., and T. Jinmei, "IPv6 Stateless
+              Address Autoconfiguration", RFC 4862,
+              DOI 10.17487/RFC4862, September 2007,
+              <https://www.rfc-editor.org/rfc/rfc4862>.
+
+   [RFC6939]  Halwasia, G., Bhandari, S., and W. Dec, "Client Link-Layer
+              Address Option in DHCPv6", RFC 6939, DOI 10.17487/RFC6939,
+              May 2013, <https://www.rfc-editor.org/rfc/rfc6939>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8415]  Mrugalski, T., Siodelski, M., Volz, B., Yourtchenko, A.,
+              Richardson, M., Jiang, S., Lemon, T., and T. Winters,
+              "Dynamic Host Configuration Protocol for IPv6 (DHCPv6)",
+              RFC 8415, DOI 10.17487/RFC8415, November 2018,
+              <https://www.rfc-editor.org/rfc/rfc8415>.
+
+   [RFC9131]  Linkova, J., "Gratuitous Neighbor Discovery: Creating
+              Neighbor Cache Entries on First-Hop Routers", RFC 9131,
+              DOI 10.17487/RFC9131, October 2021,
+              <https://www.rfc-editor.org/rfc/rfc9131>.
+
+8.2.  Informative References
+
+   [RFC4861]  Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
+              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
+              DOI 10.17487/RFC4861, September 2007,
+              <https://www.rfc-editor.org/rfc/rfc4861>.
+
+   [RFC6620]  Nordmark, E., Bagnulo, M., and E. Levy-Abegnoli, "FCFS
+              SAVI: First-Come, First-Served Source Address Validation
+              Improvement for Locally Assigned IPv6 Addresses",
+              RFC 6620, DOI 10.17487/RFC6620, May 2012,
+              <https://www.rfc-editor.org/rfc/rfc6620>.
+
+Acknowledgments
+
+   Many thanks to Bernie Volz for significant review and feedback, as
+   well as Hermin Anggawijaya, Brian Carpenter, Stuart Cheshire, Alan
+   DeKok, James Guichard, James Guichard, Erik Kline, Mallory Knodel,
+   David Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim
+   Reid, Michael Richardson, Mark Smith, Gunter Van de Velde, Eric
+   Vyncke, Timothy Winters, Peter Yee for their feedback, comments and
+   guidance.  We apologize if we inadvertently forgot to acknowledge
+   anyone's contributions.
+
+   This document borrows heavily from a previous document, draft-ietf-
+   dhc-addr-registration, which defined "a mechanism to register self-
+   generated and statically configured addresses in DNS through a DHCPv6
+   server".  That document was written Sheng Jiang, Gang Chen, Suresh
+   Krishnan, and Rajiv Asati.
+
+Contributors
+
+   Gang Chen
+   China Mobile
+   53A, Xibianmennei Ave.
+   Xuanwu District
+   Beijing
+   P.R. China
+   Email: phdgang@gmail.com
+
+
+Authors' Addresses
+
+   Warren Kumari
+   Google, LLC
+   Email: warren@kumari.net
+
+
+   Suresh Krishnan
+   Cisco Systems, Inc.
+   Email: suresh.krishnan@gmail.com
+
+
+   Rajiv Asati
+   Independent
+   Email: rajiv.asati@gmail.com
+
+
+   Lorenzo Colitti
+   Google, LLC
+   Shibuya 3-21-3,
+   Japan
+   Email: lorenzo@google.com
+
+
+   Jen Linkova
+   Google, LLC
+   1 Darling Island Rd
+   Pyrmont  2009
+   Australia
+   Email: furry13@gmail.com
+
+
+   Sheng Jiang
+   Beijing University of Posts and Telecommunications
+   No. 10 Xitucheng Road
+   Beijing
+   Haidian District, 100083
+   China
+   Email: shengjiang@bupt.edu.cn
