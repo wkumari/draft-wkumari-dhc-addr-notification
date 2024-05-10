@@ -107,7 +107,7 @@ This document defines a method to inform a DHCPv6 server that a device has one o
 
 It is very common operational practice, especially in enterprise networks, to use IPv4 DHCP logs for troubleshooting or forensics purposes. Examples of this include a help desk dealing with a ticket such as "The CEO's laptop cannot connect to the printer"; if the MAC address of the printer is known (for example from an inventory system), the printer's IPv4 address can be retrieved from the DHCP log or lease table and the printer pinged to determine if it is reachable. Another common example is a Security Operations team discovering suspicious events in outbound firewall logs and then consulting DHCP logs to determine which employee's laptop had that IPv4 address at that time so that they can quarantine it and remove the malware.
 
-This operational practice relies on the DHCP server knowing the IP address assignments. 
+This operational practice relies on the DHCP server knowing the IP address assignments.
 This works quite well for IPv4 addresses, as most addresses are either assigned by DHCP {{!RFC2131}} or statically configured by the network operator. For IPv6, however, this practice is much harder to implement, as devices often self-configure IPv6 addresses via SLAAC {{!RFC4862}}.
 
 This document provides a mechanism for a device to inform the DHCPv6 server that the device has a self-configured IPv6 address (or has a statically configured address), and thus provides parity with IPv4, by making DHCPv6 infrastructure aware of self-assigned IPv6 addresses.
