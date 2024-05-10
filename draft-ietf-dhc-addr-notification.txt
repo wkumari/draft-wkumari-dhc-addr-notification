@@ -87,6 +87,9 @@ Table of Contents
      4.4.  Signaling Address Registration Support
      4.5.  Retransmission
      4.6.  Registration Expiry and Refresh
+       4.6.1.  SLAAC Addresses
+       4.6.2.  Statically Assigned Addresses
+       4.6.3.  Transmitting Refreshes
    5.  Host configuration
    6.  Security Considerations
    7.  IANA Considerations
@@ -478,10 +481,12 @@ Table of Contents
    always aware of which addresses are still valid.  The client SHOULD
    perform refreshes as described below.
 
-   A function AddrRegRefreshInterval(address) is defined as 80% of the
-   address's current Valid Lifetime, or StaticAddrRegRefreshInterval for
-   statically-configured addresses.  When calculating this value, the
-   client applies a multiplier of AddrRegDesyncMultiplier to avoid
+4.6.1.  SLAAC Addresses
+
+   For an address configured using SLAAC, a function
+   AddrRegRefreshInterval(address) is defined as 80% of the address's
+   current Valid Lifetime.  When calculating this value, the client
+   applies a multiplier of AddrRegDesyncMultiplier to avoid
    synchronization causing a large number of registration messages from
    different clients at the same time.  AddrRegDesyncMultiplier is a
    random value uniformly distributed between 0.9 and 1.1 (inclusive)
@@ -500,27 +505,16 @@ Table of Contents
    AddrRegRefreshInterval, NextAddrRegRefreshTime).  If the refresh
    would be scheduled in the past, then the refresh occurs immediately.
 
-   When a refresh is performed, the client MAY refresh all addresses
-   assigned to the interface that are scheduled to be refreshed within
-   the next AddrRegRefreshCoalesce seconds.  The value of
-   AddrRegRefreshCoalesce is implementation-dependent, and a suggested
-   default is 60 seconds.
-
-   The default value of StaticAddrRegRefreshInterval is 4 hours.  This
-   ensures static addresses are still refreshed periodically, but
-   refreshes for static addresses do not cause excessive multicast
-   traffic.  This interval SHOULD be configurable.
-
    Justification: this algorithm ensures that refreshes are not sent too
    frequently, while ensuring that the server never believes that the
    address has expired when it has not.  Specifically, after every
    registration:
 
-   *  If the client never receives a PIO that changes the lifetime
-      (e.g., if no further PIOs are received, or if all PIO lifetimes
-      decrease in step with the passage of time), then no refreshes
-      occur.  Refreshes are not necessary, because the address expires
-      at the time the server expects it to expire.
+   *  If the client never receives a PIO that changes the lifetime of an
+      address (e.g., if no further PIOs are received, or if all PIO
+      lifetimes decrease in step with the passage of time), then no
+      refreshes occur.  Refreshes are not necessary, because the address
+      expires at the time the server expects it to expire.
 
    *  Any time a PIO changes the lifetime of the address (i.e., changes
       the time at which the address will expire) the client ensures that
@@ -562,6 +556,26 @@ Table of Contents
       network administrator can control the address refresh frequency by
       appropriately setting the Valid Lifetime in the Prefix Information
       Option.
+
+4.6.2.  Statically Assigned Addresses
+
+   A statically assigned address has an infinite valid lifetime which is
+   not affected by Router Advertisements.  Therefore whenever the client
+   registers or refreshes a statically assigned address, the next
+   refresh is scheduled for StaticAddrRegRefreshInterval seconds in the
+   future.  The default value of StaticAddrRegRefreshInterval is 4
+   hours.  This ensures static addresses are still refreshed
+   periodically, but refreshes for static addresses do not cause
+   excessive multicast traffic.  The StaticAddrRegRefreshInterval
+   interval SHOULD be configurable.
+
+4.6.3.  Transmitting Refreshes
+
+   When a refresh is performed, the client MAY refresh all addresses
+   assigned to the interface that are scheduled to be refreshed within
+   the next AddrRegRefreshCoalesce seconds.  The value of
+   AddrRegRefreshCoalesce is implementation-dependent, and a suggested
+   default is 60 seconds.
 
    Registration refresh packets SHOULD be retransmitted using the same
    logic as described in the 'Retransmission' section above.
