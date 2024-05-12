@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-09T00:05:14.338792+00:00",
+  "timestamp": "2024-05-12T00:06:01.305941+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -506,15 +506,15 @@
       "id": "I_kwDOG4kJEc5iKxp9",
       "title": "Document behaviour of switches/relays that forward the message",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/35",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "lcolitti",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "1. Document how relays forward the message. Though we already say:\r\n\r\nDHCPv6 relay agents that relay address registration messages directly from clients SHOULD include the client's link-layer address in the relayed message using the Client Link-Layer Address option ([RFC6939])\r\n\r\n\r\n2. Ensure that switches and relays do not do anything special (e.g., update DHCPv6 binding tables) when they see a REPLY..",
       "createdAt": "2023-03-30T06:25:00Z",
-      "updatedAt": "2023-03-30T13:38:00Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-09T07:39:34Z",
+      "closedAt": "2024-05-09T07:39:34Z",
       "comments": [
         {
           "author": "eqvinox",
@@ -648,15 +648,15 @@
       "id": "I_kwDOG4kJEc5pqzjX",
       "title": "Clarify \"address appropriate for the host\"",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/46",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "From Michael Richardson's comment:\r\n\r\n\"> > \"the address is not appropriate for the link;\"\r\n> We agreed that this would include DHCPv6-PD for the host, but it might be\r\n> good to say so explicitely.\"\r\n\r\n",
       "createdAt": "2023-06-24T16:50:58Z",
-      "updatedAt": "2023-06-24T16:50:58Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-09T07:39:35Z",
+      "closedAt": "2024-05-09T07:39:34Z",
       "comments": []
     },
     {
@@ -688,15 +688,15 @@
       "id": "I_kwDOG4kJEc5um7K8",
       "title": "Brian Carpenter's comment re: DHCPv6 addresses",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/61",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "\"\"The client MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6.\"\r\n\r\nFair enough, but since this is a possible buggy behaviour, I think you need to specify what the server should do if it receives such a message - discard, or discard and log?\"\r\n\r\n1. IMHO the server should discard and MAY log\r\n2. do we want to clarify the difference between DHCPv6 and DHCPv6-PD? Can a host register an address from a delegated prefix?",
       "createdAt": "2023-08-17T20:53:53Z",
-      "updatedAt": "2023-08-17T20:53:53Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-09T07:39:35Z",
+      "closedAt": "2024-05-09T07:39:35Z",
       "comments": []
     },
     {
@@ -704,7 +704,7 @@
       "id": "I_kwDOG4kJEc50xirL",
       "title": "Bernie's comments on -05",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/65",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -713,8 +713,8 @@
       "labels": [],
       "body": "1. Clean up  OPTION_ADDR_REG_ENABLE and OPTION_ADDR_REG (& ADDR_REG_ENABLE) \r\n2. Add more text in section 4.4 (Signalling) about \"inconsistent servers support\" - when some servers do not (yet) support the mechanism",
       "createdAt": "2023-10-24T12:25:42Z",
-      "updatedAt": "2023-10-24T12:25:42Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-09T07:39:35Z",
+      "closedAt": "2024-05-09T07:39:35Z",
       "comments": []
     },
     {
@@ -733,6 +733,22 @@
       "createdAt": "2023-12-29T10:36:18Z",
       "updatedAt": "2024-01-08T19:26:57Z",
       "closedAt": "2024-01-08T19:26:57Z",
+      "comments": []
+    },
+    {
+      "number": 83,
+      "id": "I_kwDOG4kJEc6IUk7i",
+      "title": "What to do with static addresses?",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/issues/83",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- They would have infinite lifetime?",
+      "createdAt": "2024-05-09T07:40:19Z",
+      "updatedAt": "2024-05-09T07:40:19Z",
+      "closedAt": null,
       "comments": []
     }
   ],
@@ -3190,7 +3206,7 @@
       "labels": [],
       "body": "From:\r\n-Peter Yee\r\n- Mallory Knodel \r\n- James Guichard\r\n- Gunter Van de Velde",
       "createdAt": "2024-05-08T14:51:38Z",
-      "updatedAt": "2024-05-08T20:02:12Z",
+      "updatedAt": "2024-05-09T03:27:47Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "b0506812a05c64a1b33499486851aaf4058317de",
@@ -3238,8 +3254,419 @@
           "createdAt": "2024-05-08T20:01:22Z",
           "updatedAt": "2024-05-08T20:01:22Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56BAPp",
+          "commit": {
+            "abbreviatedOid": "a6ff968"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-09T03:27:46Z",
+          "updatedAt": "2024-05-09T03:27:47Z",
+          "comments": [
+            {
+              "originalPosition": 118,
+              "body": "Nit: Guichard sorts after Globus.",
+              "createdAt": "2024-05-09T03:27:47Z",
+              "updatedAt": "2024-05-09T03:27:47Z"
+            }
+          ]
         }
       ]
+    },
+    {
+      "number": 80,
+      "id": "PR_kwDOG4kJEc5u8pc6",
+      "title": "Address some of the directorate comments.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/80",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-09T04:37:00Z",
+      "updatedAt": "2024-05-09T04:57:16Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "cd9143eba2910e150585735adf6c9e840b6c529a",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "address-directorate-comments",
+      "headRefOid": "2e97a0f67567f29986b266f6ec872d361cb0873e",
+      "closedAt": "2024-05-09T04:57:16Z",
+      "mergedAt": "2024-05-09T04:57:16Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "52d3ed522583eaf518d94df99f6bd8982fd4dfad"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56BPCW",
+          "commit": {
+            "abbreviatedOid": "2e97a0f"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-09T04:57:11Z",
+          "updatedAt": "2024-05-09T04:57:11Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 81,
+      "id": "PR_kwDOG4kJEc5u8_j3",
+      "title": "Addressing more of Gunter's comments",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/81",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also adding 'ADVERTISE' message to the diagram",
+      "createdAt": "2024-05-09T06:18:38Z",
+      "updatedAt": "2024-05-09T07:38:56Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "52d3ed522583eaf518d94df99f6bd8982fd4dfad",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "pretelechat1",
+      "headRefOid": "68d27252a6ea79647d6bd1a65bee7ea19224d2fd",
+      "closedAt": "2024-05-09T07:38:21Z",
+      "mergedAt": "2024-05-09T07:38:21Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "ec6e01e91c9bb6e4d7e1b50364cb0c5cfe86a354"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56B4I3",
+          "commit": {
+            "abbreviatedOid": "68d2725"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-09T07:19:19Z",
+          "updatedAt": "2024-05-09T07:21:02Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "Nit: maybe say it's \"assigned to\" the interface instead of \"configured on\"?",
+              "createdAt": "2024-05-09T07:19:19Z",
+              "updatedAt": "2024-05-09T07:21:02Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "... and maybe remove \"and can be used\".",
+              "createdAt": "2024-05-09T07:19:41Z",
+              "updatedAt": "2024-05-09T07:21:02Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "I'm not sure it's a good idea to say addresses last forever....",
+              "createdAt": "2024-05-09T07:20:57Z",
+              "updatedAt": "2024-05-09T07:21:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56B_P7",
+          "commit": {
+            "abbreviatedOid": "68d2725"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-09T07:38:56Z",
+          "updatedAt": "2024-05-09T07:38:56Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "Let's sort it out tomorrow - I'm merging meantime.",
+              "createdAt": "2024-05-09T07:38:56Z",
+              "updatedAt": "2024-05-09T07:38:56Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 82,
+      "id": "PR_kwDOG4kJEc5u9S3u",
+      "title": "Simplify double negative.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/82",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-09T07:22:53Z",
+      "updatedAt": "2024-05-09T07:37:52Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "52d3ed522583eaf518d94df99f6bd8982fd4dfad",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "simplify-double-negative",
+      "headRefOid": "0b438758cef9e5d6e4192348bf3bda837f61e40f",
+      "closedAt": "2024-05-09T07:37:52Z",
+      "mergedAt": "2024-05-09T07:37:52Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "f8cae9e5f6ac91645387d346f9de4fd92ad339ee"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56B-us",
+          "commit": {
+            "abbreviatedOid": "0b43875"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-09T07:37:31Z",
+          "updatedAt": "2024-05-09T07:37:31Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 84,
+      "id": "PR_kwDOG4kJEc5u9ZvX",
+      "title": "Rephrasing the sentence about what ADDR-REG-INFROM is used for",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/84",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-09T07:44:04Z",
+      "updatedAt": "2024-05-09T17:47:02Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "ec6e01e91c9bb6e4d7e1b50364cb0c5cfe86a354",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "pretelechat2",
+      "headRefOid": "042c80cb523f51cf35fdd3e0dce735e2c606fa6d",
+      "closedAt": "2024-05-09T17:42:40Z",
+      "mergedAt": "2024-05-09T17:42:40Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "2e953e8c4ec04145d86807aa5ed50d93046ba1df"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "thank you!",
+          "createdAt": "2024-05-09T17:47:01Z",
+          "updatedAt": "2024-05-09T17:47:01Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56GYNm",
+          "commit": {
+            "abbreviatedOid": "042c80c"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-09T17:42:35Z",
+          "updatedAt": "2024-05-09T17:42:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 85,
+      "id": "PR_kwDOG4kJEc5vDbGi",
+      "title": "Force refeshes to occur periodically.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/85",
+      "state": "OPEN",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This guarantees that refreshes occur every four hours, regardless of the address's lifetime.\r\n\r\nIt's not clear whether this is an improvement, though - the network operator can already force refreshes to occur every 4 hours, by setting the address lifetime to 4 hours.\r\n\r\nIt might be simpler to instead get rid of the 4-hour minimum and just add text to point out that the operator can control the address refresh frequency by setting the RA lifetime. If we do this, we need to do something about static addresses.",
+      "createdAt": "2024-05-10T04:08:15Z",
+      "updatedAt": "2024-05-10T04:08:32Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "74b27cc535dbc83493d5c623cf2154ad3367403c",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "force-periodic-refresh",
+      "headRefOid": "ced4c011deded8afbfad8e27be7ac86a6b3a73cc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 86,
+      "id": "PR_kwDOG4kJEc5vDdCO",
+      "title": "Get rid of the 4-hour minimum.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/86",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This didn't really make sense because it did not guarantee that refreshes were sent every 4 hours. Just remove it, and instead, note in the text that the network administrator can control the frequency of refreshes by setting the PIO lifetime appropriately.\r\n\r\nRetain the 4-hour value for static addresses, but say that it SHOULD be configurable.",
+      "createdAt": "2024-05-10T04:18:50Z",
+      "updatedAt": "2024-05-10T04:21:24Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "74b27cc535dbc83493d5c623cf2154ad3367403c",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "remove-4-hour-minimum",
+      "headRefOid": "56d43d78ae402f90b3b3877ea521cfdd103940a6",
+      "closedAt": "2024-05-10T04:21:23Z",
+      "mergedAt": "2024-05-10T04:21:23Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "5cd12e9d03e0ec7891d5f24952271ee6e51b04b2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56JIMB",
+          "commit": {
+            "abbreviatedOid": "56d43d7"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-10T04:21:19Z",
+          "updatedAt": "2024-05-10T04:21:19Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 87,
+      "id": "PR_kwDOG4kJEc5vDoa0",
+      "title": "Make sure static addresses are refreshed",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/87",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-10T05:09:09Z",
+      "updatedAt": "2024-05-10T10:04:31Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "c81b251c8bc9f1668a9373f604c9e0e167ab2b99",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "4hrs-for-static",
+      "headRefOid": "eb53bf7961fb85a8d3d23c023e7ba6c04c5d7624",
+      "closedAt": "2024-05-10T10:04:30Z",
+      "mergedAt": "2024-05-10T10:04:30Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "8ea09ab9f247016cfc3bb3d3fd04b9a8358e9ab4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56LKUH",
+          "commit": {
+            "abbreviatedOid": "fbdfc8a"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-10T09:58:14Z",
+          "updatedAt": "2024-05-10T09:58:14Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "We can remove SLAAC here too, since it's in the SLAAC section.",
+              "createdAt": "2024-05-10T09:58:14Z",
+              "updatedAt": "2024-05-10T09:58:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56LKzE",
+          "commit": {
+            "abbreviatedOid": "fbdfc8a"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-10T09:59:31Z",
+          "updatedAt": "2024-05-10T09:59:31Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "Done",
+              "createdAt": "2024-05-10T09:59:31Z",
+              "updatedAt": "2024-05-10T09:59:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56LMGw",
+          "commit": {
+            "abbreviatedOid": "eb53bf7"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-10T10:02:53Z",
+          "updatedAt": "2024-05-10T10:02:53Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 88,
+      "id": "PR_kwDOG4kJEc5vFXZS",
+      "title": "Addressing Intdir telechat review",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/88",
+      "state": "OPEN",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-10T10:25:38Z",
+      "updatedAt": "2024-05-10T11:15:32Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "8ea09ab9f247016cfc3bb3d3fd04b9a8358e9ab4",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "intdir",
+      "headRefOid": "f58682733909739570048c1d326568be624f6ac4",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
