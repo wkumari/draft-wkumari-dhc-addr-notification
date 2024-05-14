@@ -385,16 +385,19 @@ In particular, the ADDR-REG-INFORM message MUST NOT be used for authentication a
 
 # IANA Considerations
 
-This document introduces the following new entities which require an allocation out of the DHCPv6 registries defined at http://www.iana.org/assignments/dhcpv6-parameters/:
+This document introduces the following new entities which require an allocation out of the Dynamic Host Configuration Protocol for IPv6 (DHCPv6) registry group defined at http://www.iana.org/assignments/dhcpv6-parameters/:
 
-*   one new DHCPv6 option, described in Section 4.1 which requires an allocation out of the registry of DHCPv6 Option Codes:
+*   one new DHCPv6 option, described in Section 4.1 which requires an allocation out of the Option Codes registry:
     * Value: TBA0
     * Description: OPTION_ADDR_REG_ENABLE
     * Client ORO: Yes
     * Singleton Option: Yes
-*   two new DHCPv6 messages which require an allocation out of the registry of Message Types:
+    * Reference: This document (draft-ietf-dhc-addr-notification)
+
+*   two new DHCPv6 messages which require an allocation out of the Message Types registry:
     *  ADDR-REG-INFORM message (TBA1) described in Section 4.2
     *  ADDR-REG-REPLY (TBA2) described in Section 4.3.
+    *  Reference: This document (draft-ietf-dhc-addr-notification)
 
 --- back
 
