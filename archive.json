@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-12T00:06:01.305941+00:00",
+  "timestamp": "2024-05-14T00:05:33.961043+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -3497,25 +3497,33 @@
       "id": "PR_kwDOG4kJEc5vDbGi",
       "title": "Force refeshes to occur periodically.",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/85",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "lcolitti",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This guarantees that refreshes occur every four hours, regardless of the address's lifetime.\r\n\r\nIt's not clear whether this is an improvement, though - the network operator can already force refreshes to occur every 4 hours, by setting the address lifetime to 4 hours.\r\n\r\nIt might be simpler to instead get rid of the 4-hour minimum and just add text to point out that the operator can control the address refresh frequency by setting the RA lifetime. If we do this, we need to do something about static addresses.",
       "createdAt": "2024-05-10T04:08:15Z",
-      "updatedAt": "2024-05-10T04:08:32Z",
+      "updatedAt": "2024-05-13T12:04:03Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "74b27cc535dbc83493d5c623cf2154ad3367403c",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "force-periodic-refresh",
       "headRefOid": "ced4c011deded8afbfad8e27be7ac86a6b3a73cc",
-      "closedAt": null,
+      "closedAt": "2024-05-13T12:04:03Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We decided not to do this",
+          "createdAt": "2024-05-13T12:04:03Z",
+          "updatedAt": "2024-05-13T12:04:03Z"
+        }
+      ],
       "reviews": []
     },
     {
