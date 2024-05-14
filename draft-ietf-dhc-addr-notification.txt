@@ -454,11 +454,11 @@ Table of Contents
    registration if some of the network's DHCPv6 servers support it and
    some of them do not.
 
-   The client with multiple interfaces MUST discover address
-   registration support for each interface independently.  The client
-   MUST NOT send address registration messsages via a given interface
-   unless the client has discovered that this interface is connected to
-   a network which supports address registration.
+   A client with multiple interfaces MUST discover address registration
+   support for each interface independently.  The client MUST NOT send
+   address registration messsages on a given interface unless the client
+   has discovered that the interface is connected to a network which
+   supports address registration.
 
 4.5.  Retransmission
 
