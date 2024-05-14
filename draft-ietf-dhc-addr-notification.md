@@ -18,7 +18,7 @@ venue:
   mail: "dhcwg@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/dhcwg/"
   github: "wkumari/draft-wkumari-dhc-addr-notification"
-  latest: "https://wkumari.github.io/draft-wkumari-dhc-addr-notification/draft-wkumari-dhc-addr-notification.html"
+  latest: "https://wkumari.github.io/draft-wkumari-dhc-addr-notification/draft-ietf-dhc-addr-notification.html"
 
 stand_alone: yes
 smart_quotes: no
