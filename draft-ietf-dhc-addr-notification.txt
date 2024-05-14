@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 11 November 2024                            Cisco Systems, Inc.
+Expires: 15 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 11 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                             10 May 2024
+                                                             14 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 November 2024.
+   This Internet-Draft will expire on 15 November 2024.
 
 Copyright Notice
 
@@ -116,15 +116,17 @@ Table of Contents
    the malware.
 
    This operational practice relies on the DHCP server knowing the IP
-   address assignments.  Therefore, the practice does not work if static
-   IP addresses are manually configured on devices or self-assigned
-   addresses (such as when self-configuring an IPv6 address using SLAAC
-   [RFC4862]) are used.
+   address assignments.  This works quite well for IPv4 addresses, as
+   most addresses are either assigned by DHCP [RFC2131] or statically
+   configured by the network operator.  For IPv6, however, this practice
+   is much harder to implement, as devices often self-configure IPv6
+   addresses via SLAAC [RFC4862].
 
    This document provides a mechanism for a device to inform the DHCPv6
    server that the device has a self-configured IPv6 address (or has a
-   statically configured address), and thus provides parity with IPv4 in
-   this aspect.
+   statically configured address), and thus provides parity with IPv4,
+   by making DHCPv6 infrastructure aware of self-assigned IPv6
+   addresses.
 
 2.  Conventions and Definitions
 
@@ -452,6 +454,12 @@ Table of Contents
    registration if some of the network's DHCPv6 servers support it and
    some of them do not.
 
+   The client with multiple interfaces MUST discover address
+   registration support for each interface independently.  The client
+   MUST NOT send address registration messsages via a given interface
+   unless the client has discovered that this interface is connected to
+   a network which supports address registration.
+
 4.5.  Retransmission
 
    To reduce the effects of packet loss on registration, the client
@@ -683,6 +691,10 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol",
+              RFC 2131, DOI 10.17487/RFC2131, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2131>.
 
    [RFC4007]  Deering, S., Haberman, B., Jinmei, T., Nordmark, E., and
               B. Zill, "IPv6 Scoped Address Architecture", RFC 4007,
