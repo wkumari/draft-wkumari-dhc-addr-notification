@@ -305,7 +305,7 @@ To avoid undesired multicast traffic, the client MUST NOT register addresses usi
 
 The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
-The client with multiple interfaces MUST discover address registration support for each interface independently. The client MUST NOT send address registration messsages via a given interface unless the client has discovered that this interface is connected to a network which supports address registration.
+A client with multiple interfaces MUST discover address registration support for each interface independently. The client MUST NOT send address registration messsages on a given interface unless the client has discovered that the interface is connected to a network which supports address registration.
 
 ## Retransmission
 
