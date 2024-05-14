@@ -525,7 +525,7 @@ Table of Contents
       Refreshes are not necessary, because the address expires at the
       time the server expects it to expire.
 
-   *  Any time the network changes the lifetime of the address (i.e.,
+   *  Any time the network changes the lifetime of an address (i.e.,
       changes the time at which the address will expire) the client
       ensures that a refresh is scheduled, so that server will be
       informed of the new expiry.
