@@ -647,7 +647,7 @@ Table of Contents
    such networks, an on-link attacker listening to DHCPv6 messages might
    obtain information about IPv6 addresses assigned to the host.  As
    ADDR-REG-INFORM messages contain unique identifiers such as DUID, the
-   attacket may be able to track addresses being registered and map them
+   attacker may be able to track addresses being registered and map them
    to the same client, even if the client uses randomized MAC addresses.
    This privacy consideration is not specific to the proposed mechanism.
    Section 4.3 of [RFC7844] discusses using DUID for device tracking in
