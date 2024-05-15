@@ -377,8 +377,8 @@ In particular, the ADDR-REG-INFORM message MUST NOT be used for authentication a
 
 If the network doesn't have MLD snooping enabled, then IPv6 link-local multicast traffic is effectively transmitted as broadcast.
 In such networks, an on-link attacker listening to DHCPv6 messages might obtain information about IPv6 addresses assigned to the host.
-As ADDR-REG-INFORM messages contain unique identifiers such as DUID, the attacker may be able to track addresses being registered and map them to the same client, even if the client uses randomized MAC addresses.
-This privacy consideration is not specific to the proposed mechanism. Section 4.3 of {{!RFC7844}} discusses using DUID for device tracking in DHCPv6 envinronment and provides mitigation recommendations.
+As ADDR-REG-INFORM messages contain unique identifiers such as the client's DUID, the attacker may be able to track addresses being registered and map them to the same client, even if the client uses randomized MAC addresses.
+This privacy consideration is not specific to the proposed mechanism. Section 4.3 of {{!RFC7844}} discusses using the DUID for device tracking in DHCPv6 envinronment and provides mitigation recommendations.
 
 In general, hiding information about the specific IPv6 address from on-link observers should not be considered a security measure, as such information is usually disclosed via Duplicate Address Detection {{!RFC4862}} to all nodes anyway, if MLD snooping is not enabled.
 
