@@ -159,12 +159,12 @@ Table of Contents
    addresses as described below.
 
    After successfully assigning a self-generated or statically
-   configured valid IPv6 address on one of its interfaces, a client
-   implementing this specification SHOULD multicast an ADDR-REG-INFORM
-   message (see Section 4.2) in order to inform the DHCPv6 server that
-   this self-generated address is in use.  Each ADDR-REG-INFORM message
-   contains a DHCPv6 IA Address option [RFC8415] to specify the address
-   being registered.
+   configured Valid ([RFC4862]) IPv6 address on one of its interfaces, a
+   client implementing this specification SHOULD multicast an ADDR-REG-
+   INFORM message (see Section 4.2) in order to inform the DHCPv6 server
+   that this self-generated address is in use.  Each ADDR-REG-INFORM
+   message contains a DHCPv6 IA Address option [RFC8415] to specify the
+   address being registered.
 
    The address registration mechanism overview is shown in Fig.1.
 
