@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 15 November 2024                            Cisco Systems, Inc.
+Expires: 16 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 15 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                             14 May 2024
+                                                             15 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 November 2024.
+   This Internet-Draft will expire on 16 November 2024.
 
 Copyright Notice
 
@@ -154,11 +154,12 @@ Table of Contents
    Registration option in its Advertise or Reply messages.  To avoid
    undesired multicast traffic, if the DHCPv6 infrastructure does not
    support (or is not willing to receive) any address registration
-   information, the client MUST NOT register any addresses.  Otherwise,
-   the client registers addresses as described below.
+   information, the client MUST NOT register any addresses using the
+   mechanism in this specification.  Otherwise, the client registers
+   addresses as described below.
 
    After successfully assigning a self-generated or statically
-   configured IPv6 address on one of its interfaces, a client
+   configured valid IPv6 address on one of its interfaces, a client
    implementing this specification SHOULD multicast an ADDR-REG-INFORM
    message (see Section 4.2) in order to inform the DHCPv6 server that
    this self-generated address is in use.  Each ADDR-REG-INFORM message
