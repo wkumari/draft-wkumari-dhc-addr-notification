@@ -123,9 +123,9 @@ This document provides a mechanism for a device to inform the DHCPv6 server that
 The DHCPv6 protocol is used as the address registration protocol when a DHCPv6 server performs the role of an address registration server.
 This document introduces a new Address Registration (OPTION_ADDR_REG_ENABLE) option which indicates that the server supports the registration mechanism.
 Before registering any addresses, the client MUST determine whether the network supports address registration. It can do this by including the Address Registration option code in the Option Request option (see Section 21.7 of [RFC8415]) of the Information-Request, Solicit, Request, Renew, or Rebind messages it sends to the server as part of the regular stateless or stateful DHCPv6 configuration process. If the server supports address registration, it includes an Address Registration option in its Advertise or Reply messages.
-To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses. Otherwise, the client registers addresses as described below.
+To avoid undesired multicast traffic, if the DHCPv6 infrastructure does not support (or is not willing to receive) any address registration information, the client MUST NOT register any addresses using the mechanism in this specification. Otherwise, the client registers addresses as described below.
 
-After successfully assigning a self-generated or statically configured IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message (see Section 4.2) in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option {{!RFC8415}} to specify the address being registered.
+After successfully assigning a self-generated or statically configured valid IPv6 address on one of its interfaces, a client implementing this specification SHOULD multicast an ADDR-REG-INFORM message (see Section 4.2) in order to inform the DHCPv6 server that this self-generated address is in use. Each ADDR-REG-INFORM message contains a DHCPv6 IA Address option {{!RFC8415}} to specify the address being registered.
 
 The address registration mechanism overview is shown in Fig.1.
 
