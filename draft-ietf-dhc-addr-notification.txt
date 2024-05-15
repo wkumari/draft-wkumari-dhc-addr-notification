@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 15 November 2024                            Cisco Systems, Inc.
+Expires: 16 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 15 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                             14 May 2024
+                                                             15 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 November 2024.
+   This Internet-Draft will expire on 16 November 2024.
 
 Copyright Notice
 
@@ -92,10 +92,11 @@ Table of Contents
        4.6.3.  Transmitting Refreshes
    5.  Host configuration
    6.  Security Considerations
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   7.  Privacy Considerations
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Contributors
    Authors' Addresses
@@ -153,16 +154,17 @@ Table of Contents
    Registration option in its Advertise or Reply messages.  To avoid
    undesired multicast traffic, if the DHCPv6 infrastructure does not
    support (or is not willing to receive) any address registration
-   information, the client MUST NOT register any addresses.  Otherwise,
-   the client registers addresses as described below.
+   information, the client MUST NOT register any addresses using the
+   mechanism in this specification.  Otherwise, the client registers
+   addresses as described below.
 
    After successfully assigning a self-generated or statically
-   configured IPv6 address on one of its interfaces, a client
-   implementing this specification SHOULD multicast an ADDR-REG-INFORM
-   message (see Section 4.2) in order to inform the DHCPv6 server that
-   this self-generated address is in use.  Each ADDR-REG-INFORM message
-   contains a DHCPv6 IA Address option [RFC8415] to specify the address
-   being registered.
+   configured Valid ([RFC4862]) IPv6 address on one of its interfaces, a
+   client implementing this specification SHOULD multicast an ADDR-REG-
+   INFORM message (see Section 4.2) in order to inform the DHCPv6 server
+   that this self-generated address is in use.  Each ADDR-REG-INFORM
+   message contains a DHCPv6 IA Address option [RFC8415] to specify the
+   address being registered.
 
    The address registration mechanism overview is shown in Fig.1.
 
@@ -626,14 +628,36 @@ Table of Contents
    holder of the address.  This prevents a host from registering an
    address configured on another host.
 
+   One of the use cases for the mechanism described in this document is
+   to identify sources of malicious traffic after the fact.  Note,
+   however, that as the device itself is responsible for informing the
+   DHCPv6 server that it is using an address, a malicious or compromised
+   device can simply not send the ADDR-REG-INFORM message.  This is an
+   informational, optional mechanism, and is designed to aid in
+   troubleshooting and forensics.  On its own, it is not intended to be
+   a strong security access mechanism.  In particular, the ADDR-REG-
+   INFORM message MUST NOT be used for authentication and authorization
+   purposes, because in addition to the reasons above, the packets
+   containing the message may be dropped.
+
+7.  Privacy Considerations
+
    If the network doesn't have MLD snooping enabled, then IPv6 link-
    local multicast traffic is effectively transmitted as broadcast.  In
    such networks, an on-link attacker listening to DHCPv6 messages might
-   obtain information about IPv6 addresses assigned to the host.
-   However, hiding information about the specific IPv6 address should
-   not be considered a security measure, as such information is usually
-   disclosed via Duplicate Address Detection [RFC4862] to all nodes
-   anyway, if MLD snooping is not enabled.
+   obtain information about IPv6 addresses assigned to the host.  As
+   ADDR-REG-INFORM messages contain unique identifiers such as the
+   client's DUID, the attacker may be able to track addresses being
+   registered and map them to the same client, even if the client uses
+   randomized MAC addresses.  This privacy consideration is not specific
+   to the proposed mechanism.  Section 4.3 of [RFC7844] discusses using
+   the DUID for device tracking in DHCPv6 environments and provides
+   mitigation recommendations.
+
+   In general, hiding information about the specific IPv6 address from
+   on-link observers should not be considered a security measure, as
+   such information is usually disclosed via Duplicate Address Detection
+   [RFC4862] to all nodes anyway, if MLD snooping is not enabled.
 
    If MLD snooping is enabled, an attacker might be able to join the
    All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group
@@ -648,19 +672,7 @@ Table of Contents
    being assigned via DHCPv6.  Layer 2 isolation allows mitigating this
    threat by blocking onlink peer-to-peer communication between hosts.
 
-   One of the use cases for the mechanism described in this document is
-   to identify sources of malicious traffic after the fact.  Note,
-   however, that as the device itself is responsible for informing the
-   DHCPv6 server that it is using an address, a malicious or compromised
-   device can simply not send the ADDR-REG-INFORM message.  This is an
-   informational, optional mechanism, and is designed to aid in
-   troubleshooting and forensics.  On its own, it is not intended to be
-   a strong security access mechanism.  In particular, the ADDR-REG-
-   INFORM message MUST NOT be used for authentication and authorization
-   purposes, because in addition to the reasons above, the packets
-   containing the message may be dropped.
-
-7.  IANA Considerations
+8.  IANA Considerations
 
    This document introduces the following new entities which require an
    allocation out of the Dynamic Host Configuration Protocol for IPv6
@@ -689,9 +701,9 @@ Table of Contents
 
       -  Reference: This document (draft-ietf-dhc-addr-notification)
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -725,6 +737,11 @@ Table of Contents
               Address Option in DHCPv6", RFC 6939, DOI 10.17487/RFC6939,
               May 2013, <https://www.rfc-editor.org/rfc/rfc6939>.
 
+   [RFC7844]  Huitema, C., Mrugalski, T., and S. Krishnan, "Anonymity
+              Profiles for DHCP Clients", RFC 7844,
+              DOI 10.17487/RFC7844, May 2016,
+              <https://www.rfc-editor.org/rfc/rfc7844>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
@@ -740,7 +757,7 @@ Table of Contents
               DOI 10.17487/RFC9131, October 2021,
               <https://www.rfc-editor.org/rfc/rfc9131>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [RFC4861]  Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
               "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
