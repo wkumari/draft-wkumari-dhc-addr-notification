@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-14T00:05:33.961043+00:00",
+  "timestamp": "2024-05-16T00:04:55.168353+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -3655,26 +3655,224 @@
       "id": "PR_kwDOG4kJEc5vFXZS",
       "title": "Addressing Intdir telechat review",
       "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/88",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "furry13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-05-10T10:25:38Z",
-      "updatedAt": "2024-05-10T11:15:32Z",
+      "updatedAt": "2024-05-14T05:47:10Z",
       "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "baseRefName": "main",
       "baseRefOid": "8ea09ab9f247016cfc3bb3d3fd04b9a8358e9ab4",
       "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
       "headRefName": "intdir",
       "headRefOid": "f58682733909739570048c1d326568be624f6ac4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-05-14T00:46:58Z",
+      "mergedAt": "2024-05-14T00:46:58Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "5503066985a4353ccbb92ffe041c0fac759cf447"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Thank you!",
+          "createdAt": "2024-05-14T00:47:01Z",
+          "updatedAt": "2024-05-14T00:47:01Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56bhBH",
+          "commit": {
+            "abbreviatedOid": "f586827"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Ta!",
+          "createdAt": "2024-05-14T00:46:47Z",
+          "updatedAt": "2024-05-14T00:46:47Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56cpB9",
+          "commit": {
+            "abbreviatedOid": "f586827"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-05-14T05:46:53Z",
+          "updatedAt": "2024-05-14T05:47:10Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "A client",
+              "createdAt": "2024-05-14T05:46:53Z",
+              "updatedAt": "2024-05-14T05:47:10Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 89,
+      "id": "PR_kwDOG4kJEc5vWWpB",
+      "title": "Don't say that only PIOs can increase the lifetime",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/89",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-14T06:00:24Z",
+      "updatedAt": "2024-05-14T06:30:31Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "ef0924ff97c57442ed6aa507ec619f8b4a9e860f",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "not-only-pio",
+      "headRefOid": "746a865591a5fc3bd37299e675df97a0dfd86d88",
+      "closedAt": "2024-05-14T06:30:31Z",
+      "mergedAt": "2024-05-14T06:30:31Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "8bfe73df1923c017a9466ce4cb04cfb6e02c138e"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56c47d",
+          "commit": {
+            "abbreviatedOid": "746a865"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-14T06:27:58Z",
+          "updatedAt": "2024-05-14T06:27:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 90,
+      "id": "PR_kwDOG4kJEc5vXHxL",
+      "title": "Addressing Roman's comments",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/90",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-14T08:04:36Z",
+      "updatedAt": "2024-05-14T14:44:58Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "b62a73c0917554a78cfb3425b21df95ae51aa426",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "secid1",
+      "headRefOid": "4668b41990e3b9c85065520f8dc4979f5760df9c",
+      "closedAt": "2024-05-14T14:44:58Z",
+      "mergedAt": "2024-05-14T14:44:58Z",
+      "mergedBy": "wkumari",
+      "mergeCommit": {
+        "oid": "2a8982770132f0c6b06c94dcf09b955beea2d2cd"
+      },
+      "comments": [
+        {
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "body": "Thank you (once again!)",
+          "createdAt": "2024-05-14T14:44:54Z",
+          "updatedAt": "2024-05-14T14:44:54Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56hnMV",
+          "commit": {
+            "abbreviatedOid": "4668b41"
+          },
+          "author": "wkumari",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Wheeeeeeeeeeeeeeeeeeeeeee!",
+          "createdAt": "2024-05-14T14:44:40Z",
+          "updatedAt": "2024-05-14T14:44:40Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 91,
+      "id": "PR_kwDOG4kJEc5vdmeP",
+      "title": "Addressing Carlos's comment about DUID and client tracking",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/91",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Moving address tracking paragraphs from Security Considerations to Privacy Considerations.\r\n- Adding a reference to {{!RFC7844}}",
+      "createdAt": "2024-05-14T23:54:01Z",
+      "updatedAt": "2024-05-15T03:37:48Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "2a8982770132f0c6b06c94dcf09b955beea2d2cd",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "duid",
+      "headRefOid": "95f11feb3d418463cd1ed0ae8109b26d2bbe94cb",
+      "closedAt": "2024-05-15T03:37:48Z",
+      "mergedAt": "2024-05-15T03:37:48Z",
+      "mergedBy": "lcolitti",
+      "mergeCommit": {
+        "oid": "9c93ee46dcafb8c838e2d3beb499fdc1e92fab93"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56mEZ5",
+          "commit": {
+            "abbreviatedOid": "502c4e4"
+          },
+          "author": "ekline",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-15T03:01:47Z",
+          "updatedAt": "2024-05-15T03:01:53Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "s/attacket/attacker/",
+              "createdAt": "2024-05-15T03:01:48Z",
+              "updatedAt": "2024-05-15T03:01:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOG4kJEc56mKeH",
+          "commit": {
+            "abbreviatedOid": "95f11fe"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-15T03:37:32Z",
+          "updatedAt": "2024-05-15T03:37:32Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
