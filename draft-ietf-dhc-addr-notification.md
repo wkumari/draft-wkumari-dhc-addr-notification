@@ -187,7 +187,7 @@ The Address Registration option (OPTION_ADDR_REG_ENABLE) indicates that the serv
 
 Figure 2: DHCPv6 Address Registration option
 
-If a client has the address registration mechanism enabled, it SHOULD include this option in all Option Request options that it sends.
+If a client has the address registration mechanism enabled, it MUST include this option in all Option Request options that it sends.
 
 A server which is configured to support the address registration mechanism MUST include this option in Advertise and Reply messages if the client message it is replying to contained this option in the Option Request option.
 
@@ -248,7 +248,7 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 
 If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client via DHCPv6-PD (see Section 6.3 of {{!RFC8415}}). If the address being registered fails this verification, the server MUST drop the message, and SHOULD log this fact. If the message passes the verification, the server:
 
-*    SHOULD register a binding between the provided Client Identifier and IPv6 address in its database. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and the same client, the server MUST update its lifetime. If there is already a binding between the registered address and another client, the server SHOULD log the fact and update the binding.
+*    SHOULD register a binding between the provided Client Identifier and IPv6 address in its database, if none exists. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and the same client, the server MUST update its lifetime. If there is already a binding between the registered address and another client, the server SHOULD log the fact and update the binding.
 *    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so. The server SHOULD log the client DUID and the link-layer address, if available. The server MAY log any other information.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    MUST send back an ADDR-REG-REPLY message to ensure the client does not retransmit.
@@ -301,7 +301,7 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 ## Signaling Address Registration Support
 
-To avoid undesired multicast traffic, the client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this using the OPTION_ADDR_REG_ENABLE option. The client SHOULD include this option code in all Option Request options that it sends. If the client receives and processes an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it MUST start the registration process (unless configured not to do so) and immediately register any addresses that are already in use. Once the client starts the registration process, it MUST NOT stop registering addresses until it disconnects from the link, even if subsequent Advertise or Reply messages do not contain the OPTION_ADDR_REG_ENABLE option.
+To avoid undesired multicast traffic, the client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this by including using the OPTION_ADDR_REG_ENABLE option in the Option Request options that it sends. If the client receives and processes an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it MUST start the registration process (unless configured not to do so) and MUST immediately register any addresses that are already in use. Once the client starts the registration process, it MUST NOT stop registering addresses until it disconnects from the link, even if subsequent Advertise or Reply messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
 The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
