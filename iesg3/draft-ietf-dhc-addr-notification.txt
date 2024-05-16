@@ -442,13 +442,13 @@ Table of Contents
    Request options that it sends.  If the client receives and processes
    an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option,
    it concludes that the DHCPv6 infrastructure supports address
-   registration.  When the client detects the address registration
-   support, it MUST start the registration process (unless configured
-   not to do so) and MUST immediately register any addresses that are
-   already in use.  Once the client starts the registration process, it
-   MUST NOT stop registering addresses until it disconnects from the
-   link, even if subsequent Advertise or Reply messages do not contain
-   the OPTION_ADDR_REG_ENABLE option.
+   registration.  When the client detects address registration support,
+   it MUST start the registration process (unless configured not to do
+   so) and MUST immediately register any addresses that are already in
+   use.  Once the client starts the registration process, it MUST NOT
+   stop registering addresses until it disconnects from the link, even
+   if subsequent Advertise or Reply messages do not contain the
+   OPTION_ADDR_REG_ENABLE option.
 
    The client MUST discover whether the DHCPv6 infrastructure supports
    address registration every time it connects to a network or when it
