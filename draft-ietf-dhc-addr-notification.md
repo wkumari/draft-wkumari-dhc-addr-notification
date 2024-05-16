@@ -303,7 +303,7 @@ The ADDR-REG-REPLY message only indicates that the ADDR-REG-INFORM message has b
 
 To avoid undesired multicast traffic, the client MUST NOT register addresses using this mechanism unless the network's DHCPv6 servers support address registration. The client can discover this by including using the OPTION_ADDR_REG_ENABLE option in the Option Request options that it sends. If the client receives and processes an Advertise or Reply message with the OPTION_ADDR_REG_ENABLE option, it concludes that the network supports address registration. When the client detects that the network supports address registration, it MUST start the registration process (unless configured not to do so) and MUST immediately register any addresses that are already in use. Once the client starts the registration process, it MUST NOT stop registering addresses until it disconnects from the link, even if subsequent Advertise or Reply messages do not contain the OPTION_ADDR_REG_ENABLE option.
 
-The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This host behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
+The client MUST discover whether the network supports address registration every time it connects to a network or when it detects it has moved to a new link, without utilizing any prior knowledge about address registration support by that network or link. This client behavior allows networks to progressively roll out support for the address registration option across the DHCPv6 infrastructure without causing clients to frequently stop and restart address registration if some of the network's DHCPv6 servers support it and some of them do not.
 
 A client with multiple interfaces MUST discover address registration support for each interface independently. The client MUST NOT send address registration messsages on a given interface unless the client has discovered that the interface is connected to a network which supports address registration.
 
@@ -338,7 +338,7 @@ Justification: this algorithm ensures that refreshes are not sent too frequently
 - Any time the network changes the lifetime of an address (i.e., changes the time at which the address will expire) the client ensures that a refresh is scheduled, so that server will be informed of the new expiry.
 - Because AddrRegDesyncMultiplier is at most 1.1, the refresh never occurs later than a point 88% between the time when the address was registered and the time when the address will expire. This allows the client to retransmit the registration for up to 12% of the original interval before it expires. This may not be possible if the network sends a Router Advertisement (RA, [RFC4861]) very close to the time when the address would have expired. In this case, the client refreshes immediately, which is the best it can do.
 - The 1% tolerance ensures that the client will not refresh or reschedule refreshes if the Valid Lifetime experiences minor changes due to transmission delays or clock skew between the client and the router(s) sending the Router Advertisement.
-- AddrRegRefreshCoalesce (Section 4.6.3) allows battery-powered hosts to wake up less often. In particular, it allows the client to coalesce refreshes for multiple addresses formed from the same prefix, such as the stable and privacy addresses. Higher values will result in fewer wakeups, but may result in more network traffic, because if a refresh is sent early, then the next RA received will cause the client to immediately send a refresh message.
+- AddrRegRefreshCoalesce (Section 4.6.3) allows battery-powered clients to wake up less often. In particular, it allows the client to coalesce refreshes for multiple addresses formed from the same prefix, such as the stable and privacy addresses. Higher values will result in fewer wakeups, but may result in more network traffic, because if a refresh is sent early, then the next RA received will cause the client to immediately send a refresh message.
 - In typical networks, the lifetimes in periodic Router Advertisements either contain constant values, or values that decrease over time to match another lifetime, such as the lifetime of a prefix delegated to the network. In both these cases, this algorithm will refresh on the order of once per address lifetime, which is similar to the number of refreshes that are necessary using stateful DHCPv6.
 - Because refreshes occur at least once per address lifetime, the network administrator can control the address refresh frequency by appropriately setting the Valid Lifetime in the Prefix Information Option.
 
@@ -359,7 +359,7 @@ When a Client-Identifier-to-IPv6-address binding expires, the server MUST remove
 The client MAY choose to notify the server when an address is no longer being used (e.g., if the client is disconnecting from the network, the address lifetime expired, or the address is being removed from the interface). To indicate that the address is not being used anymore the client MUST set the preferred-lifetime and valid-lifetime fields of the IA Address option in the ADDR-REG-INFORM message to zero. If the server receives a message with a valid-lifetime of zero, it MUST act as if the address has expired.
 
 
-# Host configuration
+# Client configuration
 
 DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM messages. This could be used, for example, to reduce network traffic on networks where the servers are known not to support the message type. Sending the messages SHOULD be enabled by default.
 
@@ -368,7 +368,7 @@ DHCP clients SHOULD allow the administrator to disable sending ADDR-REG-INFORM m
 
 An attacker may attempt to register a large number of addresses in quick succession in order to overwhelm the address registration server and / or fill up log files. Similar attack vectors exist today, e.g., an attacker can DoS the server with messages containing spoofed DHCP Unique Identifiers (DUIDs) {{!RFC8415}}.
 
-If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a host from registering an address configured on another host.
+If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can trust that the ADDR-REG-INFORM message was sent by the legitimate holder of the address. This prevents a client from registering an address configured on another client.
 
 One of the use cases for the mechanism described in this document is to identify sources of malicious traffic after the fact. Note, however, that as the device itself is responsible for informing the DHCPv6 server that it is using an address, a malicious or compromised device can simply not send the ADDR-REG-INFORM message. This is an informational, optional mechanism, and is designed to aid in troubleshooting and forensics. On its own, it is not intended to be a strong security access mechanism.
 In particular, the ADDR-REG-INFORM message MUST NOT be used for authentication and authorization purposes, because in addition to the reasons above, the packets containing the message may be dropped.
@@ -376,7 +376,7 @@ In particular, the ADDR-REG-INFORM message MUST NOT be used for authentication a
 # Privacy Considerations
 
 If the network doesn't have MLD snooping enabled, then IPv6 link-local multicast traffic is effectively transmitted as broadcast.
-In such networks, an on-link attacker listening to DHCPv6 messages might obtain information about IPv6 addresses assigned to the host.
+In such networks, an on-link attacker listening to DHCPv6 messages might obtain information about IPv6 addresses assigned to the client.
 As ADDR-REG-INFORM messages contain unique identifiers such as the client's DUID, the attacker may be able to track addresses being registered and map them to the same client, even if the client uses randomized MAC addresses.
 This privacy consideration is not specific to the proposed mechanism. Section 4.3 of {{!RFC7844}} discusses using the DUID for device tracking in DHCPv6 environments and provides mitigation recommendations.
 
@@ -384,7 +384,7 @@ In general, hiding information about the specific IPv6 address from on-link obse
 
 If MLD snooping is enabled, an attacker might be able to join the All_DHCP_Relay_Agents_and_Servers multicast address (ff02::1:2) group to listen for address registration messages.
 However, the same result can be achieved by joining the All Routers Address (ff02::2) group and listen to Gratuitous Neighbor Advertisement messages {{!RFC9131}}. It should be noted that this particular scenario shares the fate with DHCPv6 address assignment: if an attacker can join the All_DHCP_Relay_Agents_and_Servers multicast group, they would be able to monitor all DHCPv6 messages sent from the client to DHCPv6 servers and relays, and therefore obtain the information about addresses being assigned via DHCPv6.
-Layer 2 isolation allows mitigating this threat by blocking onlink peer-to-peer communication between hosts.
+Layer 2 isolation allows mitigating this threat by blocking onlink peer-to-peer communication between nodes.
 
 # IANA Considerations
 
