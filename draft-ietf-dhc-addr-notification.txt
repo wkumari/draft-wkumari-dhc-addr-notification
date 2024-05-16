@@ -90,7 +90,7 @@ Table of Contents
        4.6.1.  SLAAC Addresses
        4.6.2.  Statically Assigned Addresses
        4.6.3.  Transmitting Refreshes
-   5.  Host configuration
+   5.  Client configuration
    6.  Security Considerations
    7.  Privacy Considerations
    8.  IANA Considerations
@@ -454,7 +454,7 @@ Table of Contents
    registration every time it connects to a network or when it detects
    it has moved to a new link, without utilizing any prior knowledge
    about address registration support by that network or link.  This
-   host behavior allows networks to progressively roll out support for
+   client behavior allows networks to progressively roll out support for
    the address registration option across the DHCPv6 infrastructure
    without causing clients to frequently stop and restart address
    registration if some of the network's DHCPv6 servers support it and
@@ -552,12 +552,12 @@ Table of Contents
       client and the router(s) sending the Router Advertisement.
 
    *  AddrRegRefreshCoalesce (Section 4.6.3) allows battery-powered
-      hosts to wake up less often.  In particular, it allows the client
-      to coalesce refreshes for multiple addresses formed from the same
-      prefix, such as the stable and privacy addresses.  Higher values
-      will result in fewer wakeups, but may result in more network
-      traffic, because if a refresh is sent early, then the next RA
-      received will cause the client to immediately send a refresh
+      clients to wake up less often.  In particular, it allows the
+      client to coalesce refreshes for multiple addresses formed from
+      the same prefix, such as the stable and privacy addresses.  Higher
+      values will result in fewer wakeups, but may result in more
+      network traffic, because if a refresh is sent early, then the next
+      RA received will cause the client to immediately send a refresh
       message.
 
    *  In typical networks, the lifetimes in periodic Router
@@ -612,7 +612,7 @@ Table of Contents
    message to zero.  If the server receives a message with a valid-
    lifetime of zero, it MUST act as if the address has expired.
 
-5.  Host configuration
+5.  Client configuration
 
    DHCP clients SHOULD allow the administrator to disable sending ADDR-
    REG-INFORM messages.  This could be used, for example, to reduce
@@ -630,8 +630,8 @@ Table of Contents
 
    If a network is using FCFS SAVI [RFC6620], then the DHCPv6 server can
    trust that the ADDR-REG-INFORM message was sent by the legitimate
-   holder of the address.  This prevents a host from registering an
-   address configured on another host.
+   holder of the address.  This prevents a client from registering an
+   address configured on another client.
 
    One of the use cases for the mechanism described in this document is
    to identify sources of malicious traffic after the fact.  Note,
@@ -650,7 +650,7 @@ Table of Contents
    If the network doesn't have MLD snooping enabled, then IPv6 link-
    local multicast traffic is effectively transmitted as broadcast.  In
    such networks, an on-link attacker listening to DHCPv6 messages might
-   obtain information about IPv6 addresses assigned to the host.  As
+   obtain information about IPv6 addresses assigned to the client.  As
    ADDR-REG-INFORM messages contain unique identifiers such as the
    client's DUID, the attacker may be able to track addresses being
    registered and map them to the same client, even if the client uses
@@ -675,7 +675,7 @@ Table of Contents
    to monitor all DHCPv6 messages sent from the client to DHCPv6 servers
    and relays, and therefore obtain the information about addresses
    being assigned via DHCPv6.  Layer 2 isolation allows mitigating this
-   threat by blocking onlink peer-to-peer communication between hosts.
+   threat by blocking onlink peer-to-peer communication between nodes.
 
 8.  IANA Considerations
 
