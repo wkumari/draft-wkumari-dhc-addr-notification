@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 16 November 2024                            Cisco Systems, Inc.
+Expires: 17 November 2024                            Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 16 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                             15 May 2024
+                                                             16 May 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 November 2024.
+   This Internet-Draft will expire on 17 November 2024.
 
 Copyright Notice
 
@@ -160,11 +160,11 @@ Table of Contents
 
    After successfully assigning a self-generated or statically
    configured Valid ([RFC4862]) IPv6 address on one of its interfaces, a
-   client implementing this specification SHOULD multicast an ADDR-REG-
-   INFORM message (see Section 4.2) in order to inform the DHCPv6 server
-   that this self-generated address is in use.  Each ADDR-REG-INFORM
-   message contains a DHCPv6 IA Address option [RFC8415] to specify the
-   address being registered.
+   client implementing this specification multicasts an ADDR-REG-INFORM
+   message (see Section 4.2) in order to inform the DHCPv6 server that
+   this self-generated address is in use.  Each ADDR-REG-INFORM message
+   contains a DHCPv6 IA Address option [RFC8415] to specify the address
+   being registered.
 
    The address registration mechanism overview is shown in Fig.1.
 
@@ -328,9 +328,10 @@ Table of Contents
    If the message is not discarded, the address registration server
    SHOULD verify that the address being registered is "appropriate to
    the link" as defined by [RFC8415] or within a prefix delegated to the
-   client via DHCPv6-PD (see Section 6.3 of [RFC8415]).  Otherwise, it
-   MUST drop the message, and SHOULD log this fact.  Otherwise, the
-   server:
+   client via DHCPv6-PD (see Section 6.3 of [RFC8415]).  If the address
+   being registered fails this verification, the server MUST drop the
+   message, and SHOULD log this fact.  If the message passes the
+   verification, the server:
 
    *  SHOULD register or update a binding between the provided Client
       Identifier and IPv6 address in its database.  The lifetime of the
@@ -547,13 +548,14 @@ Table of Contents
       changes due to transmission delays or clock skew between the
       client and the router(s) sending the Router Advertisement.
 
-   *  AddrRegRefreshCoalesce allows battery-powered hosts to wake up
-      less often.  In particular, it allows the client to coalesce
-      refreshes for multiple addresses formed from the same prefix, such
-      as the stable and privacy addresses.  Higher values will result in
-      fewer wakeups, but may result in more network traffic, because if
-      a refresh is sent early, then the next RA received will cause the
-      client to immediately send a refresh message.
+   *  AddrRegRefreshCoalesce (Section 4.6.3) allows battery-powered
+      hosts to wake up less often.  In particular, it allows the client
+      to coalesce refreshes for multiple addresses formed from the same
+      prefix, such as the stable and privacy addresses.  Higher values
+      will result in fewer wakeups, but may result in more network
+      traffic, because if a refresh is sent early, then the next RA
+      received will cause the client to immediately send a refresh
+      message.
 
    *  In typical networks, the lifetimes in periodic Router
       Advertisements either contain constant values, or values that
@@ -775,18 +777,12 @@ Acknowledgments
    Many thanks to Bernie Volz for significant review and feedback, as
    well as Hermin Anggawijaya, Carlos Jesus Bernardos, Brian Carpenter,
    Stuart Cheshire, Roman Danyliw, Alan DeKok, James Guichard, James
-   Guichard, Erik Kline, Mallory Knodel, David Lamparter, Ted Lemon,
-   Eric Levy-Abegnoli, Aditi Patange, Jim Reid, Michael Richardson,
-   Patrick Rohr, Mark Smith, Gunter Van de Velde, Eric Vyncke, Timothy
-   Winters, Peter Yee for their feedback, comments and guidance.  We
-   apologize if we inadvertently forgot to acknowledge anyone's
-   contributions.
-
-   This document borrows heavily from a previous document, draft-ietf-
-   dhc-addr-registration, which defined "a mechanism to register self-
-   generated and statically configured addresses in DNS through a DHCPv6
-   server".  That document was written Sheng Jiang, Gang Chen, Suresh
-   Krishnan, and Rajiv Asati.
+   Guichard, Erik Kline, Mallory Knodel, Murray Kucherawy, David
+   Lamparter, Ted Lemon, Eric Levy-Abegnoli, Aditi Patange, Jim Reid,
+   Michael Richardson, Patrick Rohr, John Scudder, Mark Smith, Gunter
+   Van de Velde, Eric Vyncke, Timothy Winters, Peter Yee for their
+   feedback, comments and guidance.  We apologize if we inadvertently
+   forgot to acknowledge anyone's contributions.
 
 Contributors
 
