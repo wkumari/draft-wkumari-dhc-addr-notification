@@ -340,13 +340,13 @@ Table of Contents
       other information.
 
    *  SHOULD register a binding between the provided Client Identifier
-      and IPv6 address in its database, if none exists.  The lifetime of
-      the binding is equal to the Valid Lifetime of the address reported
-      by the client.  If there is already a binding between the
-      registered address and the same client, the server MUST update its
-      lifetime.  If there is already a binding between the registered
-      address and another client, the server SHOULD log the fact and
-      update the binding.
+      and IPv6 address in its database, if no binding exists.  The
+      lifetime of the binding is equal to the Valid Lifetime of the
+      address reported by the client.  If there is already a binding
+      between the registered address and the same client, the server
+      MUST update its lifetime.  If there is already a binding between
+      the registered address and another client, the server SHOULD log
+      the fact and update the binding.
 
    *  SHOULD mark the address as unavailable for use and not include it
       in future ADVERTISE messages.
