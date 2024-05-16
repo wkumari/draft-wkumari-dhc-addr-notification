@@ -248,14 +248,14 @@ Servers MUST discard any ADDR-REG-INFORM messages that meet any of the following
 
 If the message is not discarded, the address registration server SHOULD verify that the address being registered is "appropriate to the link" as defined by [RFC8415] or within a prefix delegated to the client via DHCPv6-PD (see Section 6.3 of {{!RFC8415}}). If the address being registered fails this verification, the server MUST drop the message, and SHOULD log this fact. If the message passes the verification, the server:
 
+*    MUST log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so. The server SHOULD log the client DUID and the link-layer address, if available. The server MAY log any other information.
 *    SHOULD register a binding between the provided Client Identifier and IPv6 address in its database, if none exists. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. If there is already a binding between the registered address and the same client, the server MUST update its lifetime. If there is already a binding between the registered address and another client, the server SHOULD log the fact and update the binding.
-*    SHOULD log the address registration information (as is done normally for clients to which it has assigned an address), unless configured not to do so. The server SHOULD log the client DUID and the link-layer address, if available. The server MAY log any other information.
 *    SHOULD mark the address as unavailable for use and not include it in future ADVERTISE messages.
 *    MUST send back an ADDR-REG-REPLY message to ensure the client does not retransmit.
 
 If a client is multihomed (connected to multiple administrative domains, each operating its own DHCPv6 infrastructure), the requirement to verify that the registered address is appropriate for the link or  belongs to a delegated prefix ensures that each DHCPv6 server only registers bindings for addresses from the given administrative domain.
 
-Although a client "MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6", if a server does receive such a message, it should log and discard it.
+Although a client "MUST NOT send the ADDR-REG-INFORM message for addresses configured by DHCPv6", if a server does receive such a message, it SHOULD log and discard it.
 
 DHCPv6 relay agents and switches that relay address registration messages directly from clients MUST include the client's link-layer address in the relayed message using the Client Link-Layer Address option ({{!RFC6939}}) if they would do so for other DHCPv6 client messages such as SOLICIT, REQUEST, and REBIND.
 
