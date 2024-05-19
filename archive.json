@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-16T00:04:55.168353+00:00",
+  "timestamp": "2024-05-19T00:05:30.862313+00:00",
   "repo": "wkumari/draft-wkumari-dhc-addr-notification",
   "labels": [
     {
@@ -3870,6 +3870,244 @@
           "body": "",
           "createdAt": "2024-05-15T03:37:32Z",
           "updatedAt": "2024-05-15T03:37:32Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 92,
+      "id": "PR_kwDOG4kJEc5vn33z",
+      "title": "Addressing comments from Murray Kucherawy and John Scudder",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/92",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-16T07:35:47Z",
+      "updatedAt": "2024-05-16T08:32:36Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "9c93ee46dcafb8c838e2d3beb499fdc1e92fab93",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "telechat2",
+      "headRefOid": "193910a09834a324b5a4700adadde7830954dfdb",
+      "closedAt": "2024-05-16T08:32:36Z",
+      "mergedAt": "2024-05-16T08:32:35Z",
+      "mergedBy": "lcolitti",
+      "mergeCommit": {
+        "oid": "4612ae6bc7f6aae20fb48e932afa0604f3acd911"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56yQfQ",
+          "commit": {
+            "abbreviatedOid": "193910a"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-16T08:32:28Z",
+          "updatedAt": "2024-05-16T08:32:28Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 93,
+      "id": "PR_kwDOG4kJEc5vog0M",
+      "title": "Change SHOULDs to MUSTs.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/93",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-16T08:55:43Z",
+      "updatedAt": "2024-05-16T09:14:50Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "4612ae6bc7f6aae20fb48e932afa0604f3acd911",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "should-to-must",
+      "headRefOid": "437d7f7e7a9fea4c5a9d9afc0a3772c708ba7628",
+      "closedAt": "2024-05-16T09:14:50Z",
+      "mergedAt": "2024-05-16T09:14:50Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "824b6ffe16719a9b4be4e85d4e4df1c4eaae84c1"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 94,
+      "id": "PR_kwDOG4kJEc5voqKY",
+      "title": "Change host to client.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/94",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-16T09:15:05Z",
+      "updatedAt": "2024-05-16T09:16:21Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "824b6ffe16719a9b4be4e85d4e4df1c4eaae84c1",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "host-to-client",
+      "headRefOid": "bc44d5929e5397388f298923a3a0015ebd307a68",
+      "closedAt": "2024-05-16T09:16:21Z",
+      "mergedAt": "2024-05-16T09:16:21Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "be98e30c69d5d3f91c72ba3eb18801619ea5182e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56ysmq",
+          "commit": {
+            "abbreviatedOid": "bc44d59"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-16T09:16:17Z",
+          "updatedAt": "2024-05-16T09:16:17Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 95,
+      "id": "PR_kwDOG4kJEc5vovgF",
+      "title": "Changing 'network support' to DHCPv6 support",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/95",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Also s/HOST/CLIENT/",
+      "createdAt": "2024-05-16T09:24:12Z",
+      "updatedAt": "2024-05-16T09:26:46Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "be98e30c69d5d3f91c72ba3eb18801619ea5182e",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "iesg3",
+      "headRefOid": "bc0d59b8ebfcd52ec71408ac2d4bb653b99573ed",
+      "closedAt": "2024-05-16T09:26:46Z",
+      "mergedAt": "2024-05-16T09:26:46Z",
+      "mergedBy": "lcolitti",
+      "mergeCommit": {
+        "oid": "f6e93d9940726d199afbc9884755640c04674db3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56y3fm",
+          "commit": {
+            "abbreviatedOid": "bc0d59b"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-16T09:26:36Z",
+          "updatedAt": "2024-05-16T09:26:36Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 96,
+      "id": "PR_kwDOG4kJEc5vo2Hp",
+      "title": "Say that server MUST log.",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/96",
+      "state": "MERGED",
+      "author": "lcolitti",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-16T09:38:27Z",
+      "updatedAt": "2024-05-16T09:41:05Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "f6e93d9940726d199afbc9884755640c04674db3",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "server-must-log",
+      "headRefOid": "ddaad270baa9ce57295d67337e6f1cb093a68f28",
+      "closedAt": "2024-05-16T09:41:05Z",
+      "mergedAt": "2024-05-16T09:41:05Z",
+      "mergedBy": "furry13",
+      "mergeCommit": {
+        "oid": "2870bcc6cf6418d09682696f4819b898bdcc9dd9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56y_ml",
+          "commit": {
+            "abbreviatedOid": "ddaad27"
+          },
+          "author": "furry13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-16T09:40:59Z",
+          "updatedAt": "2024-05-16T09:40:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 97,
+      "id": "PR_kwDOG4kJEc5vo3zp",
+      "title": "s/none/no binding/",
+      "url": "https://github.com/wkumari/draft-wkumari-dhc-addr-notification/pull/97",
+      "state": "MERGED",
+      "author": "furry13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-05-16T09:42:13Z",
+      "updatedAt": "2024-05-16T09:43:11Z",
+      "baseRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "baseRefName": "main",
+      "baseRefOid": "2870bcc6cf6418d09682696f4819b898bdcc9dd9",
+      "headRepository": "wkumari/draft-wkumari-dhc-addr-notification",
+      "headRefName": "iesg4",
+      "headRefOid": "6794f29ad4f987080918e039f22a214723d52ce8",
+      "closedAt": "2024-05-16T09:43:11Z",
+      "mergedAt": "2024-05-16T09:43:11Z",
+      "mergedBy": "lcolitti",
+      "mergeCommit": {
+        "oid": "aef5fd589441a4d462d10046bca916dea9619053"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOG4kJEc56zA0f",
+          "commit": {
+            "abbreviatedOid": "6794f29"
+          },
+          "author": "lcolitti",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-05-16T09:43:04Z",
+          "updatedAt": "2024-05-16T09:43:04Z",
           "comments": []
         }
       ]
