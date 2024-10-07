@@ -5,7 +5,7 @@
 Dynamic Host Configuration                                     W. Kumari
 Internet-Draft                                               Google, LLC
 Intended status: Standards Track                             S. Krishnan
-Expires: 17 November 2024                            Cisco Systems, Inc.
+Expires: 10 April 2025                               Cisco Systems, Inc.
                                                                 R. Asati
                                                              Independent
                                                               L. Colitti
@@ -13,7 +13,7 @@ Expires: 17 November 2024                            Cisco Systems, Inc.
                                                              Google, LLC
                                                                 S. Jiang
                       Beijing University of Posts and Telecommunications
-                                                             16 May 2024
+                                                          7 October 2024
 
 
          Registering Self-generated IPv6 Addresses using DHCPv6
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 November 2024.
+   This Internet-Draft will expire on 10 April 2025.
 
 Copyright Notice
 
